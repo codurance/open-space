@@ -2,6 +2,10 @@ version: 2.1
 
 parameters:
 
+  main_workflow:
+    type: boolean
+    default: true
+
   # A parameter per package
   backend:
     type: boolean
@@ -48,7 +52,7 @@ workflows:
   # The main workflow responsible for triggering all other workflows
   # in which changes are detected.
   ci:
-    when: << pipeline.parameters.trigger >>
+    when: << pipeline.parameters.main_workflow >>
     jobs:
       - check-folder
 
