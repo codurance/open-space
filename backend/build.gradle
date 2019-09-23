@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '2.1.8.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'com.adarshr.test-logger' version '1.7.0'
+    id 'com.bmuschko.docker-spring-boot-application' version '5.1.0'
 }
 
 group = 'com.codurance.open_space'
@@ -42,5 +43,14 @@ test {
 clean {
     doFirst {
         delete 'out'
+    }
+}
+
+docker {
+    springBootApplication {
+        baseImage = 'openjdk:8-alpine'
+        ports = [8080]
+        tag = 'awesome-spring-boot:1.115'
+        jvmArgs = ['-Xmx2048m']
     }
 }
