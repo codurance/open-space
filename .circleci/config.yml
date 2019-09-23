@@ -25,7 +25,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Trigger workflows
+          name: Trigger Workflows
+          # The shell script requires an environment variable - CIRCLE_TOKEN.
+          # The CIRCLE_TOKEN value should correspond to a manually created
+          # API Token in CircleCI.
           command: chmod +x ./circle_trigger.sh && ./circle_trigger.sh
 
   build:
@@ -43,7 +46,6 @@ jobs:
       - run:
           name: Content 
           command: |
-            cat README.md 
             echo "<< parameters.package_name >> built." > build.txt
 
 workflows:
