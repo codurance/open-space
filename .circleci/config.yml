@@ -17,7 +17,7 @@ parameters:
 executors:
   alpine:
     docker:
-      - image: alpine:3.7
+      - image: circleci/node
 
 jobs:
   check-folder:
@@ -26,7 +26,6 @@ jobs:
       - checkout
       - run:
           name: Trigger workflows
-          working_directory: ~/project/
           command: chmod +x ./circle_trigger.sh && ./circle_trigger.sh
 
   build:
