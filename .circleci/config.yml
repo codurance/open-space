@@ -41,8 +41,8 @@ jobs:
     working_directory: ~/project/packages/<< parameters.package_name >>
 
     steps:
-      - checkout
-      #     path: ~/project
+      - checkout:
+        path: ~/project/packages
       # This step is added only to show that we are in the package directory
       - run:
           name: Content 
