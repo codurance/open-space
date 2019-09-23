@@ -23,7 +23,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### `docker-compose up`
 
-Launches a build and runs the container. The first time this may take a little longer. Open a browser at `http://localhost:5000`.
+Launches a build and runs the container. The first time this may take a little longer. Open a browser at `http://localhost:5000` and you will see the app.
 
 ## How to run in production
 
