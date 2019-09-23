@@ -10,6 +10,7 @@ parameters:
   backend:
     type: boolean
     default: false
+    
   frontend:
     type: boolean
     default: false
@@ -46,7 +47,10 @@ jobs:
       - run:
           name: Content 
           command: |
+            pwd
+            ls -l
             echo "<< parameters.package_name >> built." > build.txt
+            cat build.txt
 
 workflows:
   version: 2
