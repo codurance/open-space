@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.1.8.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'com.adarshr.test-logger' version '1.7.0'
+    id 'com.bmuschko.docker-spring-boot-application' version '5.1.0'
+}
+
+group = 'com.codurance.open_space'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    junitVersion = '5.5.2'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
+}
+
+wrapper {
+    gradleVersion = '5.6.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+clean {
+    doFirst {
+        delete 'out'
+    }
+}
+
+docker {
+    springBootApplication {
+        baseImage = 'openjdk:11.0.4-jre-slim'
+        maintainer = '@oystr'
+        ports = [8080]
+        tag = 'open-space-backend:0.0.1'
+        jvmArgs = ['-Xmx2048m']
+    }
+}
