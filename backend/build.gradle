@@ -48,9 +48,10 @@ clean {
 
 docker {
     springBootApplication {
-        baseImage = 'openjdk:8-alpine'
+        baseImage = 'openjdk:11.0.4-jre-slim'
+        maintainer = '@oystr'
         ports = [8080]
-        tag = 'awesome-spring-boot:1.115'
+        tag = 'open-space-backend:0.0.1'
         jvmArgs = ['-Xmx2048m']
     }
 }
