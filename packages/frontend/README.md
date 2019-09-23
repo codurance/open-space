@@ -19,6 +19,12 @@ You will also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+## Run in Docker
+
+### `docker-compose up`
+
+Launches a build and runs the container. The first time this may take a little longer. Open a browser at `http://localhost:5000`.
+
 ## How to run in production
 
 ### `yarn run build`
