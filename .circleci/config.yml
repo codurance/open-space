@@ -6,7 +6,6 @@ parameters:
     type: boolean
     default: true
 
-  # A parameter per package
   backend:
     type: boolean
     default: false
@@ -29,7 +28,8 @@ jobs:
           name: Trigger Workflows
           # The shell script requires an environment variable - CIRCLE_TOKEN.
           # The CIRCLE_TOKEN value should correspond to a manually created
-          # API Token in CircleCI.
+          # Personal API Token in CircleCI. The Personal API Token is mandatory
+          # since it has write permissions.
           command: chmod +x ./circle_trigger.sh && ./circle_trigger.sh
 
   build:
@@ -42,7 +42,6 @@ jobs:
 
     steps:
       - checkout
-      # This step is added only to show that we are in the package directory
       - run:
           name: Content 
           command: |
