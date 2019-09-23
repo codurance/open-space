@@ -26,7 +26,8 @@ jobs:
       - checkout
       - run:
           name: Trigger workflows
-          command: ls && chmod +x circle_trigger.sh && circle_trigger.sh
+          working_directory: ~/project/
+          command: chmod +x ./circle_trigger.sh && ./circle_trigger.sh
 
   build:
     parameters:
