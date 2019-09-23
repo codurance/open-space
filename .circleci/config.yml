@@ -1,25 +1,71 @@
 version: 2.1
-jobs:
-  build:
+
+parameters:
+
+  # A parameter per package
+  backend:
+    type: boolean
+    default: false
+  frontend:
+    type: boolean
+    default: false
+
+executors:
+  alpine:
     docker:
       - image: alpine:3.7
 
+jobs:
+  check-folder:
+    executor: alpine
     steps:
       - checkout
-
       - run:
-          name: Greeting
-          command: echo Hello, world.
+          name: Trigger workflows
+          command: chmod +x ./circle_trigger.sh && ./circle_trigger.sh
 
+  build:
+    parameters:
+      package_name:
+        type: string
+
+    executor: alpine
+    working_directory: ~/project/packages/<< parameters.package_name >>
+
+    steps:
+      - checkout:
+          path: ~/project
+      # This step is added only to show that we are in the package directory
       - run:
-          name: Print the Current Time
-          command: date
+          name: Content 
+          command: |
+            cat README.md 
+            echo "<< parameters.package_name >> built." > build.txt
 
-workflow:
+workflows:
   version: 2
-  main_workflow:
+
+  # The main workflow responsible for triggering all other workflows
+  # in which changes are detected.
+  ci:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - check-folder
+
+
+  # Workflows defined for each package.
+
+  backend:
+    when: << pipeline.parameters.backend >>
     jobs:
       - build:
-        filters:
-          branches:
-            only: "ci-setup"
+          name: backend-build
+          package_name: backend
+  
+  frontend:
+    when: << pipeline.parameters.frontend >>
+    jobs:
+      - build:
+          name: frontend-build
+          package_name: frontend
+      
