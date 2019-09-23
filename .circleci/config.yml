@@ -1,0 +1,79 @@
+version: 2.1
+
+parameters:
+
+  trigger:
+    type: boolean
+    default: true
+
+  backend:
+    type: boolean
+    default: false
+
+  frontend:
+    type: boolean
+    default: false
+
+executors:
+  node:
+    docker:
+      - image: circleci/node
+
+jobs:
+  check-folder:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Trigger Workflows
+          # The shell script requires an environment variable - CIRCLE_TOKEN.
+          # The CIRCLE_TOKEN value should correspond to a manually created
+          # Personal API Token in CircleCI. The Personal API Token is mandatory
+          # since it has write permissions.
+          command: chmod +x ./circle_trigger.sh && ./circle_trigger.sh
+
+  build:
+    parameters:
+      package_name:
+        type: string
+
+    executor: node
+    working_directory: ~/project/packages/<< parameters.package_name >>
+
+    steps:
+      - checkout
+      - run:
+          name: Content 
+          command: |
+            pwd
+            echo "<< parameters.package_name >> built." > build.txt
+            ls
+            cat build.txt
+
+workflows:
+  version: 2
+
+  # The main workflow responsible for triggering all other workflows
+  # in which changes are detected.
+  ci:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - check-folder
+
+
+  # Workflows defined for each package.
+
+  backend:
+    when: << pipeline.parameters.backend >>
+    jobs:
+      - build:
+          name: backend-build
+          package_name: backend
+  
+  frontend:
+    when: << pipeline.parameters.frontend >>
+    jobs:
+      - build:
+          name: frontend-build
+          package_name: frontend
+      
