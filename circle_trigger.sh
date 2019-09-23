@@ -84,6 +84,7 @@ echo "Triggering pipeline with data:"
 echo -e "  $DATA"
 
 URL="${CIRCLE_API}/v2/project/${REPOSITORY_TYPE}/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pipeline"
+echo -e " $URL"
 HTTP_RESPONSE=$(curl -s -u ${CIRCLE_TOKEN}: -o response.txt -w "%{http_code}" -X POST --header "Content-Type: application/json" -d "$DATA" $URL)
 
 if [ $HTTP_RESPONSE != "202" ]; then
