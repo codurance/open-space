@@ -1,1 +1,1 @@
-# open-space
+# OpenSpace App
