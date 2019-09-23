@@ -40,7 +40,7 @@ jobs:
       - run:
           name: Test package 
           command: |
-            echo "<< parameters.package_name >>
+            echo "<< parameters.package_name >>"
 
       - checkout:
           path: ~/project
