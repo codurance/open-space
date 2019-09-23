@@ -37,13 +37,8 @@ jobs:
     working_directory: ~/project/packages/<< parameters.package_name >>
 
     steps:
-      - run:
-          name: Test package 
-          command: |
-            echo "<< parameters.package_name >>"
-
-      - checkout:
-          path: ~/project
+      # - checkout:
+      #     path: ~/project
       # This step is added only to show that we are in the package directory
       - run:
           name: Content 
