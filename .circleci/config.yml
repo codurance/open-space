@@ -1,79 +1,37 @@
 version: 2.1
 
-parameters:
+jobs:
 
-  trigger:
-    type: boolean
-    default: true
+  build_frontend:
 
-  backend:
-    type: boolean
-    default: false
+    working_directory: ~/project/packages/frontend/app
 
-  frontend:
-    type: boolean
-    default: false
-
-executors:
-  node:
     docker:
       - image: circleci/node
 
-jobs:
-  check-folder:
-    executor: node
     steps:
-      - checkout
+      - checkout: 
+          path: ~/project
       - run:
-          name: Trigger Workflows
-          # The shell script requires an environment variable - CIRCLE_TOKEN.
-          # The CIRCLE_TOKEN value should correspond to a manually created
-          # Personal API Token in CircleCI. The Personal API Token is mandatory
-          # since it has write permissions.
-          command: chmod +x ./circle_trigger.sh && ./circle_trigger.sh
-
-  build:
-    parameters:
-      package_name:
-        type: string
-
-    executor: node
-    working_directory: ~/project/packages/<< parameters.package_name >>
-
-    steps:
-      - checkout
+          name: Run Yarn
+          command: yarn
       - run:
-          name: Content 
+          name: Run Yarn CI Tests
+          command: yarn test:ci
+      - setup_remote_docker
+      - run:
+          name: Build Docker Image
+          command: cd .. && docker build -t codurance/open-space:${CIRCLE_SHA1} .
+      - run:
+          name: Publish Docker Image to Docker Hub
           command: |
-            pwd
-            echo "<< parameters.package_name >> built." > build.txt
-            ls
-            cat build.txt
+              echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER_NAME" --password-stdin
+              docker push codurance/open-space:${CIRCLE_SHA1}
 
 workflows:
   version: 2
 
-  # The main workflow responsible for triggering all other workflows
-  # in which changes are detected.
-  ci:
-    when: << pipeline.parameters.trigger >>
+  build:
     jobs:
-      - check-folder
-
-
-  # Workflows defined for each package.
-
-  backend:
-    when: << pipeline.parameters.backend >>
-    jobs:
-      - build:
-          name: backend-build
-          package_name: backend
-  
-  frontend:
-    when: << pipeline.parameters.frontend >>
-    jobs:
-      - build:
-          name: frontend-build
-          package_name: frontend
+      - build_frontend
       
