@@ -3,6 +3,11 @@ variable "aws_region" {
   default     = "eu-west-2"
 }
 
+variable "lb_port" {
+  description = "Port exposed by the load balancer to listen to internet traffic"
+  default     = 80
+}
+
 variable "ecs_task_execution_role_name" {
   description = "ECS task execution role name"
   default = "myEcsTaskExecutionRole"
@@ -20,12 +25,22 @@ variable "az_count" {
 
 variable "app_image" {
   description = "Docker image to run in the ECS cluster"
-  default     = "codurance/open-space:6385445313ff0c51487de45955e5f67513e10424"
+  default     = "codurance/open-space"
 }
 
 variable "app_port" {
   description = "Port exposed by the docker image to redirect traffic to"
   default     = 80
+}
+
+variable "app_backend_image" {
+  description = "Docker backend image to run in the ECS cluster"
+  default     = "codurance/open-space-backend"
+}
+
+variable "app_backend_port" {
+  description = "Port exposed by the backend docker image to redirect traffic to"
+  default     = 8080
 }
 
 variable "app_count" {
@@ -35,6 +50,10 @@ variable "app_count" {
 
 variable "health_check_path" {
   default = "/"
+}
+
+variable "health_check_backend_path" {
+  default = "/api"
 }
 
 variable "fargate_cpu" {
