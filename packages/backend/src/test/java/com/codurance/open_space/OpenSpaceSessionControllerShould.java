@@ -1,6 +1,7 @@
 package com.codurance.open_space;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,46 +25,36 @@ public class OpenSpaceSessionControllerShould {
     @MockBean
     private OpenSpaceSessionRepository repository;
 
+    private OpenSpaceSession openSpaceSession;
+    private static final String API_PATH = "/api/sessions";
+
+    @BeforeEach
+    void setUp() {
+        openSpaceSession = new OpenSpaceSession(1, "Session 1", "Location 1", "11:00", "David");
+    }
+
     @Test
     void get_all_open_space_sessions_from_the_repository() throws Exception {
-        when(repository.findAll()).thenReturn(
-                List.of(new OpenSpaceSession(
-                        1,
-                        "Session 1",
-                        "Location 1",
-                        "11:00",
-                        "David")));
+        final String expectedJson = "[{\"id\":1,\"title\":\"Session 1\",\"location\":\"Location 1\",\"time\":\"11:00\",\"presenter\":\"David\"}]";
 
-        mockMvc.perform(get("/api/sessions")
+        when(repository.findAll())
+                .thenReturn(List.of(openSpaceSession));
+
+        mockMvc.perform(get(API_PATH)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("[{\"id\":1,\"title\":\"Session 1\",\"location\":\"Location 1\",\"time\":\"11:00\",\"presenter\":\"David\"}]"));
+                .andExpect(content().json(expectedJson));
     }
 
     @Test
     void post_open_space_session() throws Exception {
-        when(repository.save(new OpenSpaceSession(
-                1,
-                "Session 1",
-                "Location 1",
-                "11:00",
-                "David")))
-                .thenReturn(new OpenSpaceSession(
-                        1,
-                        "Session 1",
-                        "Location 1",
-                        "11:00",
-                        "David"));
+        when(repository.save(openSpaceSession))
+                .thenReturn(openSpaceSession);
 
-        mockMvc.perform(post("/api/sessions")
-                .content(asJsonString(new OpenSpaceSession(
-                        1,
-                        "Session 1",
-                        "Location 1",
-                        "11:00",
-                        "David")))
+        mockMvc.perform(post(API_PATH)
+                .content(asJsonString(openSpaceSession))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
