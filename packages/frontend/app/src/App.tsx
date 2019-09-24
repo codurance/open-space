@@ -1,15 +1,8 @@
-<<<<<<< HEAD
 import React, { useState } from "react";
 import SessionForm from "./session/SessionForm";
 import Sessions from "./session/Sessions";
 import logo from "./logo.svg";
 import "./App.css";
-=======
-import React, { useState } from 'react';
-import SessionForm from './session/SessionForm';
-import logo from './logo.svg';
-import './App.css';
->>>>>>> eda1068e... Extract session form into it's own component
 
 const App: React.FC = () => {
   return (
