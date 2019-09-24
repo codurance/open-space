@@ -1,6 +1,6 @@
-resource "aws_s3_bucket" "app_state" {
-  bucket = "codurance-openspace-app-state"
-}
+// resource "aws_s3_bucket" "app_state" {
+//  bucket = "codurance-openspace-app-state"
+// }
 
 terraform {
   backend "s3" {
