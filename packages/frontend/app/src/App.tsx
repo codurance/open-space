@@ -5,6 +5,19 @@ import logo from "./logo.svg";
 import "./App.css";
 
 const App: React.FC = () => {
+  const [sessionTitle, setSessionTitle] = useState("");
+  const [sessionLocation, setSessionLocation] = useState("");
+  const [sessionTime, setSessionTime] = useState("");
+  const [sessionPresenter, setSessionPresenter] = useState("");
+
+  const postSession = (event: React.FormEvent) => {
+    event.preventDefault()
+    console.log(sessionTitle);
+    console.log(sessionLocation);
+    console.log(sessionTime);
+    console.log(sessionPresenter);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
