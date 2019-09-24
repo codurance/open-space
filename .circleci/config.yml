@@ -1,16 +1,14 @@
+---
 version: 2.1
 
 jobs:
 
   build_frontend:
-
     working_directory: ~/project/packages/frontend/app
-
     docker:
       - image: circleci/node
-
     steps:
-      - checkout: 
+      - checkout:
           path: ~/project
       - run:
           name: Run Yarn
@@ -28,10 +26,32 @@ jobs:
               echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER_NAME" --password-stdin
               docker push codurance/open-space:${CIRCLE_SHA1}
 
+  build_backend:
+    working_directory: ~/project/packages/backend
+    docker:
+      - image: circleci/openjdk:11-jdk
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Build and Run Test
+          command: ./gradlew test
+      - run:
+          name: Generate Dockerfile
+          command: ./gradlew dockerCreateDockerfile
+      - setup_remote_docker
+      - run:
+          name: Build Docker Image
+          command: cd build/docker && docker build -t codurance/open-space-backend:${CIRCLE_SHA1} .
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+              echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER_NAME" --password-stdin
+              docker push codurance/open-space-backend:${CIRCLE_SHA1}
 workflows:
   version: 2
 
   build:
     jobs:
       - build_frontend
-      
+      - build_backend
