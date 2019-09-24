@@ -20,6 +20,7 @@ public class OpenSpaceSessionController {
     }
 
     @ResponseStatus(CREATED)
+    @CrossOrigin
     @PostMapping
     public OpenSpaceSession create(@RequestBody OpenSpaceSession openSpaceSession) {
         return repository.save(openSpaceSession);
