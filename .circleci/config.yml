@@ -19,12 +19,15 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build Docker Image
-          command: cd .. && docker build -t codurance/open-space:${CIRCLE_SHA1} .
+          command: |
+            cd .. && docker build -t codurance/open-space:${CIRCLE_SHA1} .
+            docker tag codurance/open-space:${CIRCLE_SHA1} codurance/open-space:latest
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
               echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER_NAME" --password-stdin
               docker push codurance/open-space:${CIRCLE_SHA1}
+              docker push codurance/open-space:latest
 
   build_backend:
     working_directory: ~/project/packages/backend
@@ -42,12 +45,16 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build Docker Image
-          command: cd build/docker && docker build -t codurance/open-space-backend:${CIRCLE_SHA1} .
+          command: |
+              cd build/docker && docker build -t codurance/open-space-backend:${CIRCLE_SHA1} .
+              docker tag codurance/open-space-backend:${CIRCLE_SHA1} codurance/open-space-backend:latest
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
               echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER_NAME" --password-stdin
               docker push codurance/open-space-backend:${CIRCLE_SHA1}
+              docker push codurance/open-space-backend:latest
+
 workflows:
   version: 2
 
