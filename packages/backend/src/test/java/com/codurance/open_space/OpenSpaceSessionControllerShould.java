@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -125,6 +126,19 @@ public class OpenSpaceSessionControllerShould {
                 .andExpect(status().isNotFound());
 
         verify(repository).findById(1);
+    }
+
+
+    @Test
+    void delete_method_returns_404_status_if_id_not_found() throws Exception {
+        final int id = 30;
+
+        doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(id);
+
+        mockMvc.perform(delete("/api/sessions/" + id))
+                .andExpect(status().isNotFound());
+
+        verify(repository).deleteById(id);
     }
 
     @Test
