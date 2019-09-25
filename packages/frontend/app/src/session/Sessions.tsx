@@ -1,28 +1,13 @@
-import React, { useEffect, useState, FC } from "react";
-import { get, IHttpResponse } from "../common/http";
+import React, { FC } from "react";
 import { Session, SessionProps } from "./Session";
+import { ISession } from './SessionContainer'
 
-interface ISession {
-  id: number;
-  title: string;
-  location: string;
-  time: string;
-  presenter: string;
+type SessionsProps = {
+  sessions: ISession[]
 }
 
-const Sessions: FC = () => {
-  const [sessions, setSessions] = useState();
+const Sessions: FC<SessionsProps> = ({ sessions }) => {
 
-  useEffect(() => {
-    async function getSessionResponse() {
-      const getSessionResponse = await get<IHttpResponse<ISession[]>>(
-        `http://localhost:8080/api/sessions`
-      );
-      const sessions = getSessionResponse.parsedBody;
-      setSessions(sessions);
-    }
-    getSessionResponse();
-  }, []);
 
   return (
     <React.Fragment>

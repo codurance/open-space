@@ -1,17 +1,13 @@
-import React, { useState } from "react";
-import SessionForm from "./session/SessionForm";
-import Sessions from "./session/Sessions";
-import logo from "./logo.svg";
+import React from "react";
+import SessionContainer from "./session/SessionContainer";
 import "./App.css";
 
 const App: React.FC = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1 className="Hello-World">OpenSpace</h1>
-        <Sessions />
-        <SessionForm />
+        <h1 className="OpenSpace">OpenSpace</h1>
+        <SessionContainer />
       </header>
     </div>
   );
