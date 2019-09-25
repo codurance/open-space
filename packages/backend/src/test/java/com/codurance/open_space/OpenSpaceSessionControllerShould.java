@@ -19,15 +19,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(OpenSpaceSessionController.class)
 public class OpenSpaceSessionControllerShould {
+    private static final String API_PATH = "/api/sessions";
+    private static final String API_SESSION_1_PATH = "/api/sessions/1";
+
+    private OpenSpaceSession openSpaceSession;
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private OpenSpaceSessionRepository repository;
-
-    private OpenSpaceSession openSpaceSession;
-    private static final String API_PATH = "/api/sessions";
 
     @BeforeEach
     void setUp() {
@@ -90,8 +91,7 @@ public class OpenSpaceSessionControllerShould {
         when(repository.save(openSpaceSessionUpdated))
                 .thenReturn(openSpaceSessionUpdated);
 
-        final int id = 1;
-        mockMvc.perform(put("/api/sessions/"+id)
+        mockMvc.perform(put(API_SESSION_1_PATH)
                 .content(asJsonString(openSpaceSessionUpdated))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -108,9 +108,7 @@ public class OpenSpaceSessionControllerShould {
 
     @Test
     void delete_open_space_session_by_id() throws Exception {
-
-        final int id = 1;
-        mockMvc.perform(delete("/api/sessions/"+id))
+        mockMvc.perform(delete(API_SESSION_1_PATH))
                 .andExpect(status().is2xxSuccessful());
 
         verify(repository).deleteById(1);
