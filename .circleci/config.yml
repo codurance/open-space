@@ -77,6 +77,9 @@ workflows:
       - build_frontend
       - build_backend
       - deploy:
+          filters:
+            branches:
+              only: master
           requires:
             - build_frontend
             - build_backend
