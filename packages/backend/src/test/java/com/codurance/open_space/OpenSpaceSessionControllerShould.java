@@ -12,8 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -104,6 +103,28 @@ public class OpenSpaceSessionControllerShould {
 
         verify(repository).findById(1);
         verify(repository).save(openSpaceSessionUpdated);
+    }
+
+    @Test
+    void update_method_returns_404_status_if_id_not_found() throws Exception {
+
+        when(repository.findById(20)).thenReturn(null);
+
+        OpenSpaceSession openSpaceSessionUpdated = new OpenSpaceSession(
+                openSpaceSession.getId(),
+                openSpaceSession.getTitle(),
+                openSpaceSession.getLocation(),
+                openSpaceSession.getTime(),
+                openSpaceSession.getPresenter());
+        openSpaceSessionUpdated.setLocation("Location 2");
+
+        mockMvc.perform(put(API_SESSION_1_PATH)
+                .content(asJsonString(openSpaceSessionUpdated))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        verify(repository).findById(1);
     }
 
     @Test
