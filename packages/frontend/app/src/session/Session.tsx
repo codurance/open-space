@@ -14,4 +14,4 @@ export const Session = ({
   location,
   time,
   presenter
-}: SessionProps) => <div>{presenter}</div>;
+}: SessionProps) => <div className="session">{title}, {location}, {time}, {presenter}</div>;
