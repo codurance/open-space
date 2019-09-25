@@ -109,7 +109,8 @@ public class OpenSpaceSessionControllerShould {
     @Test
     void delete_open_space_session_by_id() throws Exception {
 
-        mockMvc.perform(delete("/api/sessions/1"))
+        final int id = 1;
+        mockMvc.perform(delete("/api/sessions/"+id))
                 .andExpect(status().is2xxSuccessful());
 
         verify(repository).deleteById(1);
