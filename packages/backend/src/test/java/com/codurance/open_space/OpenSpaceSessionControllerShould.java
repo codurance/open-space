@@ -11,9 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(OpenSpaceSessionController.class)
@@ -71,5 +71,14 @@ public class OpenSpaceSessionControllerShould {
         } catch (Exception e) {
             throw new RuntimeException();
         }
+    }
+
+    @Test
+    void delete_open_space_session_by_id() throws Exception {
+
+        mockMvc.perform(delete("/api/sessions/1"))
+                .andExpect(status().is2xxSuccessful());
+
+        verify(repository).deleteById(1);
     }
 }

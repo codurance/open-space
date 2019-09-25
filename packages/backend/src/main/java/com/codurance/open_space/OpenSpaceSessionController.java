@@ -25,4 +25,10 @@ public class OpenSpaceSessionController {
     public OpenSpaceSession create(@RequestBody OpenSpaceSession openSpaceSession) {
         return repository.save(openSpaceSession);
     }
+
+    @ResponseStatus(NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable int id){
+        repository.deleteById(id);
+    }
 }
