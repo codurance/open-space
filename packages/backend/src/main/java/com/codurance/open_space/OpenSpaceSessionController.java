@@ -3,10 +3,11 @@ package com.codurance.open_space;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,14 +30,14 @@ public class OpenSpaceSessionController {
 
     @PutMapping("/{id}")
     public OpenSpaceSession update(@PathVariable int id, @RequestBody OpenSpaceSession openSpaceSession) {
-        Optional<OpenSpaceSession> session = repository.findById(id);
-        if (session.isPresent()) {
-            session.get().setLocation(openSpaceSession.getLocation());
-            session.get().setPresenter(openSpaceSession.getPresenter());
-            session.get().setTime(openSpaceSession.getTime());
-            session.get().setTitle(openSpaceSession.getTitle());
-        }
-        return repository.save(session.get());
+        OpenSpaceSession session = repository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+
+        session.setLocation(openSpaceSession.getLocation());
+        session.setPresenter(openSpaceSession.getPresenter());
+        session.setTime(openSpaceSession.getTime());
+        session.setTitle(openSpaceSession.getTitle());
+        return repository.save(session);
     }
 
     @ResponseStatus(NO_CONTENT)
