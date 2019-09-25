@@ -55,6 +55,20 @@ jobs:
               docker push codurance/open-space-backend:${CIRCLE_SHA1}
               docker push codurance/open-space-backend:latest
 
+  deploy:
+    docker:
+      - image: hashicorp/terraform
+    working_directory: ~/project/terraform
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Initialize Terraform
+          command: terraform init
+      - run:
+          name: Deploy
+          command: env TF_VAR_app_image=codurance/open-space:${CIRCLE_SHA1} TF_VAR_app_backend_image=codurance/open-space-backend:${CIRCLE_SHA1} terraform apply -auto-approve
+
 workflows:
   version: 2
 
@@ -62,3 +76,7 @@ workflows:
     jobs:
       - build_frontend
       - build_backend
+      - deploy:
+          requires:
+            - build_frontend
+            - build_backend
