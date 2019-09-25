@@ -2,7 +2,6 @@
 version: 2.1
 
 jobs:
-
   build_frontend:
     working_directory: ~/project/packages/frontend/app
     docker:
@@ -10,9 +9,14 @@ jobs:
     steps:
       - checkout:
           path: ~/project
+      - restore_cache:
+          key: yarn-dependency-cache-({ checksum "yarn.lock" })
       - run:
-          name: Run Yarn
+          name: Install Dependencies
           command: yarn
+      - save_cache:
+          key: yarn-dependency-cache-({ checksum "yarn.lock" })
+          paths: "node_modules"
       - run:
           name: Run Yarn CI Tests
           command: yarn test:ci
