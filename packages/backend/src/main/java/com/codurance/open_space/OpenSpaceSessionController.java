@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -23,6 +24,17 @@ public class OpenSpaceSessionController {
     @CrossOrigin
     @PostMapping
     public OpenSpaceSession create(@RequestBody OpenSpaceSession openSpaceSession) {
+        return repository.save(openSpaceSession);
+    }
+
+    @PutMapping("/{id}")
+    public OpenSpaceSession update(@PathVariable int id, @RequestBody OpenSpaceSession openSpaceSession) {
+        Optional<OpenSpaceSession> session = repository.findById(id);
+
+        if (session.isPresent()) {
+            return repository.save(openSpaceSession);
+        }
+
         return repository.save(openSpaceSession);
     }
 

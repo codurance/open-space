@@ -74,6 +74,26 @@ public class OpenSpaceSessionControllerShould {
     }
 
     @Test
+    void update_open_space_session() throws Exception {
+        when(repository.save(openSpaceSession))
+                .thenReturn(openSpaceSession);
+
+        openSpaceSession.setLocation("Location 2");
+
+        final int id = 1;
+        mockMvc.perform(put("/api/sessions/" + id)
+                .content(asJsonString(openSpaceSession))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.title").value("Session 1"))
+                .andExpect(jsonPath("$.location").value("Location 1"))
+                .andExpect(jsonPath("$.time").value("11:00"))
+                .andExpect(jsonPath("$.presenter").value("David"));
+    }
+
+    @Test
     void delete_open_space_session_by_id() throws Exception {
 
         mockMvc.perform(delete("/api/sessions/1"))
