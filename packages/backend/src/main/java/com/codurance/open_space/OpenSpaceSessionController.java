@@ -30,12 +30,13 @@ public class OpenSpaceSessionController {
     @PutMapping("/{id}")
     public OpenSpaceSession update(@PathVariable int id, @RequestBody OpenSpaceSession openSpaceSession) {
         Optional<OpenSpaceSession> session = repository.findById(id);
-
         if (session.isPresent()) {
-            return repository.save(openSpaceSession);
+            session.get().setLocation(openSpaceSession.getLocation());
+            session.get().setPresenter(openSpaceSession.getPresenter());
+            session.get().setTime(openSpaceSession.getTime());
+            session.get().setTitle(openSpaceSession.getTitle());
         }
-
-        return repository.save(openSpaceSession);
+        return repository.save(session.get());
     }
 
     @ResponseStatus(NO_CONTENT)

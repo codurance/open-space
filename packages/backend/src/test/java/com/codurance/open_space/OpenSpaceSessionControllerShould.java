@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -75,22 +76,34 @@ public class OpenSpaceSessionControllerShould {
 
     @Test
     void update_open_space_session() throws Exception {
-        when(repository.save(openSpaceSession))
-                .thenReturn(openSpaceSession);
+        when(repository.findById(1))
+                .thenReturn(Optional.of(openSpaceSession));
 
-        openSpaceSession.setLocation("Location 2");
+        OpenSpaceSession openSpaceSessionUpdated = new OpenSpaceSession(
+                openSpaceSession.getId(),
+                openSpaceSession.getTitle(),
+                openSpaceSession.getLocation(),
+                openSpaceSession.getTime(),
+                openSpaceSession.getPresenter());
+        openSpaceSessionUpdated.setLocation("Location 2");
+
+        when(repository.save(openSpaceSessionUpdated))
+                .thenReturn(openSpaceSessionUpdated);
 
         final int id = 1;
-        mockMvc.perform(put("/api/sessions/" + id)
-                .content(asJsonString(openSpaceSession))
+        mockMvc.perform(put("/api/sessions/"+id)
+                .content(asJsonString(openSpaceSessionUpdated))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value("Session 1"))
-                .andExpect(jsonPath("$.location").value("Location 1"))
+                .andExpect(jsonPath("$.location").value("Location 2"))
                 .andExpect(jsonPath("$.time").value("11:00"))
                 .andExpect(jsonPath("$.presenter").value("David"));
+
+        verify(repository).findById(1);
+        verify(repository).save(openSpaceSessionUpdated);
     }
 
     @Test
