@@ -3,6 +3,7 @@ import { get, IHttpResponse } from "../common/http";
 
 import Sessions from './Sessions';
 import SessionForm from './SessionForm';
+import SessionEditForm from './SessionEditForm';
 
 export interface ISession {
     id: number;
@@ -14,6 +15,8 @@ export interface ISession {
 
 const SessionContainer: FC = () => {
     const [sessions, setSessions] = useState();
+    const [isEditing, setIsEditing] = useState(false);
+    const [sessionToEdit, setSessionToEdit] = useState();
 
     const getSessionResponse = async () => {
         const getSessionResponse = await get<IHttpResponse<ISession[]>>(
@@ -24,15 +27,24 @@ const SessionContainer: FC = () => {
     }
 
     useEffect(() => {
-
         getSessionResponse();
     }, []);
 
+    let currentForm;
+    if (isEditing) {
+        currentForm = (<SessionEditForm getSessions={getSessionResponse}
+            sessionToEdit={sessionToEdit} setIsEditing={setIsEditing} />);
+    } else {
+        currentForm = (<SessionForm getSessions={getSessionResponse} />);
+    }
+
     return (
-        <div>
-            <Sessions sessions={sessions} />
-            <SessionForm getSessions={getSessionResponse} />
-        </div>
+        <>
+            <Sessions sessions={sessions} setIsEditing={setIsEditing}
+                isEditing={isEditing}
+                setSessionToEdit={setSessionToEdit} />
+            {currentForm}
+        </>
     )
 }
 
