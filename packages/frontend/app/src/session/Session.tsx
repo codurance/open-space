@@ -1,5 +1,5 @@
 import * as React from "react";
-import { deleteSession, get } from "../common/http";
+import { deleteSession } from "../common/http";
 
 export type SessionProps = {
   id: number;
@@ -7,11 +7,13 @@ export type SessionProps = {
   location: string;
   time: string;
   presenter: string;
-  getSessions: Function;
+  getSessions?: Function;
 };
 
-const deleteSessionById = async (id: Number, getSessions: Function)=>{
-  await deleteSession(`/api/sessions/`+id).then(()=> getSessions());
+const deleteSessionById = async (id: Number, getSessions: Function | undefined) => {
+  await deleteSession(`/api/sessions/` + id).then(() => {
+    if (getSessions !== undefined) getSessions();
+  })
 }
 
 export const Session = ({

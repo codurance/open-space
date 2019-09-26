@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Session, SessionProps } from "./Session";
+import { Session } from "./Session";
 import { ISession } from './SessionContainer'
 
 type SessionsProps = {
