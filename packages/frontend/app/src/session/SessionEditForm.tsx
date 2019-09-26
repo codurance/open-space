@@ -1,20 +1,27 @@
 import React, { useState, FC } from "react";
-// import { post } from "../common/http";
 import { put } from "../common/http";
 import { ISession } from "./SessionContainer";
+import { Button, Form, Header } from "semantic-ui-react";
 
 interface SessionEditFormProps {
-  getSessions: any,
-  sessionToEdit: ISession,
-  setIsEditing: (isEditing: boolean) => void,
+  getSessions: any;
+  sessionToEdit: ISession;
+  setIsEditing: (isEditing: boolean) => void;
 }
 
-const SessionEditForm: FC<SessionEditFormProps> = ({ getSessions, sessionToEdit, setIsEditing }) => {
+const SessionEditForm: FC<SessionEditFormProps> = ({
+  getSessions,
+  sessionToEdit,
+  setIsEditing
+}) => {
   const [sessionTitle, setSessionTitle] = useState(sessionToEdit.title);
-  const [sessionLocation, setSessionLocation] = useState(sessionToEdit.location);
+  const [sessionLocation, setSessionLocation] = useState(
+    sessionToEdit.location
+  );
   const [sessionTime, setSessionTime] = useState(sessionToEdit.time);
-  const [sessionPresenter, setSessionPresenter] = useState(sessionToEdit.presenter);
-
+  const [sessionPresenter, setSessionPresenter] = useState(
+    sessionToEdit.presenter
+  );
 
   const postSession = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -40,42 +47,46 @@ const SessionEditForm: FC<SessionEditFormProps> = ({ getSessions, sessionToEdit,
   };
 
   return (
-    <form onSubmit={event => postSession(event)}>
-      <label>
-        Title:
-        <input
-          type="text"
-          value={sessionTitle}
-          onChange={e => setSessionTitle(e.target.value)}
-        />
-      </label>
-      <label>
-        Location:
-        <input
-          type="text"
-          value={sessionLocation}
-          onChange={e => setSessionLocation(e.target.value)}
-        />
-      </label>
-      <label>
-        Presenter:
-        <input
-          type="text"
-          value={sessionPresenter}
-          onChange={e => setSessionPresenter(e.target.value)}
-        />
-      </label>
-      <label>
-        Time:
-        <input
-          type="time"
-          value={sessionTime}
-          onChange={e => setSessionTime(e.target.value)}
-        />
-      </label>
-      <input type="submit" value="Edit" />
-      <button onClick={() => setIsEditing(false)}>Cancel</button>
-    </form>
+    <>
+      <Header>Submit A Session</Header>
+      <Form onSubmit={event => postSession(event)}>
+        <Form.Field>
+          <label>Title</label>
+          <input
+            placeholder="title"
+            value={sessionTitle}
+            onChange={e => setSessionTitle(e.target.value)}
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>Location</label>
+          <input
+            placeholder="location"
+            value={sessionLocation}
+            onChange={e => setSessionLocation(e.target.value)}
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>Presenter</label>
+          <input
+            placeholder="presenter"
+            value={sessionPresenter}
+            onChange={e => setSessionPresenter(e.target.value)}
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>Time</label>
+          <input
+            type="time"
+            placeholder="time"
+            value={sessionTime}
+            onChange={e => setSessionTime(e.target.value)}
+          />
+        </Form.Field>
+        <Button type="submit">Edit</Button>
+        <button onClick={() => setIsEditing(false)}>Cancel</button>
+      </Form>
+    </>
   );
 };
 
