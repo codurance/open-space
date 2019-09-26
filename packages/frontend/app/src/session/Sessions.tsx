@@ -3,10 +3,11 @@ import { Session, SessionProps } from "./Session";
 import { ISession } from './SessionContainer'
 
 type SessionsProps = {
-  sessions: ISession[]
+  sessions: ISession[],
+  getSessions: Function
 }
 
-const Sessions: FC<SessionsProps> = ({ sessions }) => {
+const Sessions: FC<SessionsProps> = ({ sessions, getSessions }) => {
 
   const bySessionTime = function (a: ISession, b: ISession) {
     if (a.time < b.time) return -1;
@@ -18,7 +19,7 @@ const Sessions: FC<SessionsProps> = ({ sessions }) => {
     <React.Fragment>
       <div>
         {sessions &&
-          sessions.sort(bySessionTime).map((session: SessionProps) => {
+          sessions.sort(bySessionTime).map((session: any) => {
             const { id, presenter, title, location, time } = session;
             return (
               <Session
@@ -28,6 +29,7 @@ const Sessions: FC<SessionsProps> = ({ sessions }) => {
                 location={location}
                 time={time}
                 key={id}
+                getSessions={getSessions}
               />
             );
           })}

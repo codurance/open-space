@@ -8,9 +8,10 @@ export const http = <T>(request: RequestInfo): Promise<IHttpResponse<T>> => {
     fetch(request)
       .then(res => {
         response = res;
+        if (response.status === 204) resolve();
         return res.json();
       })
-      .then(body => {
+      .then(body => { 
         if (response.ok) {
           response.parsedBody = body;
           resolve(response);
@@ -38,6 +39,15 @@ export const post = async <T>(
     method: "POST",
     headers: requestArgs.headers,
     body: requestArgs.body
+  }
+): Promise<IHttpResponse<T>> => {
+  return await http<T>(new Request(path, args));
+};
+
+export const deleteSession = async <T>(
+  path: string,
+  args: RequestInit = {
+    method: "DELETE"
   }
 ): Promise<IHttpResponse<T>> => {
   return await http<T>(new Request(path, args));

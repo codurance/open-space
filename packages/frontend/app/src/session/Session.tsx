@@ -1,4 +1,5 @@
 import * as React from "react";
+import { deleteSession, get } from "../common/http";
 
 export type SessionProps = {
   id: number;
@@ -6,12 +7,18 @@ export type SessionProps = {
   location: string;
   time: string;
   presenter: string;
+  getSessions: Function;
 };
+
+const deleteSessionById = async (id: Number, getSessions: Function)=>{
+  await deleteSession(`/api/sessions/`+id).then(()=> getSessions());
+}
 
 export const Session = ({
   id,
   title,
   location,
   time,
-  presenter
-}: SessionProps) => <div className="session">{title}, {location}, {time}, {presenter}</div>;
+  presenter,
+  getSessions
+}: SessionProps) => <div className="session">{title}, {location}, {time}, {presenter}<button onClick={() => deleteSessionById(id, getSessions)}>Delete</button></div>;

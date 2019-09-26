@@ -30,7 +30,7 @@ const SessionContainer: FC = () => {
 
     return (
         <div>
-            <Sessions sessions={sessions} />
+            <Sessions sessions={sessions} getSessions={getSessionResponse} />
             <SessionForm getSessions={getSessionResponse} />
         </div>
     )
