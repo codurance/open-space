@@ -8,13 +8,17 @@ type SessionsProps = {
 
 const Sessions: FC<SessionsProps> = ({ sessions }) => {
 
-  const compare = (a: ISession, b: ISession) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0);
-  
+  const bySessionTime = function (a: ISession, b: ISession) {
+    if (a.time < b.time) return -1;
+    if (a.time > b.time) return 1;
+    return 0;
+  }
+
   return (
     <React.Fragment>
       <div>
         {sessions &&
-          sessions.sort(compare).map((session: SessionProps) => {
+          sessions.sort(bySessionTime).map((session: SessionProps) => {
             const { id, presenter, title, location, time } = session;
             return (
               <Session
