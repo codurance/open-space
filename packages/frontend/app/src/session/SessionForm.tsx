@@ -40,8 +40,8 @@ const SessionForm: FC<SessionFormProps> = ({ getSessions }) => {
 
   return (
     <>
-      <Header>Submit A Session</Header>
-      <Form onSubmit={event => postSession(event)}>
+      <Header inverted >Submit A Session</Header>
+      <Form inverted onSubmit={event => postSession(event)}>
         <Form.Field>
           <label>Title</label>
           <input

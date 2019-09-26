@@ -49,7 +49,7 @@ const SessionEditForm: FC<SessionEditFormProps> = ({
   return (
     <>
       <Header>Submit A Session</Header>
-      <Form onSubmit={event => postSession(event)}>
+      <Form inverted onSubmit={event => postSession(event)}>
         <Form.Field>
           <label>Title</label>
           <input
