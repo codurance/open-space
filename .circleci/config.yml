@@ -1,7 +1,35 @@
----
 version: 2.1
 
+parameters:
+
+  trigger:
+    type: boolean
+    default: true
+
+  backend:
+    type: boolean
+    default: false
+
+  frontend:
+    type: boolean
+    default: false
+
 jobs:
+
+  check-folder:
+    docker:
+      - image: circleci/node
+    steps:
+      - checkout
+      - run:
+          name: Trigger Workflows
+          # The shell script requires an environment variable - CIRCLE_TOKEN.
+          # The CIRCLE_TOKEN value should correspond to a manually created
+          # Personal API Token in CircleCI. The Personal API Token is mandatory
+          # since it has write permissions.
+          command: chmod +x ./circle_trigger.sh && ./circle_trigger.sh
+
+
   build_frontend:
     working_directory: ~/project/packages/frontend/app
     docker:
@@ -59,7 +87,7 @@ jobs:
               docker push codurance/open-space-backend:${CIRCLE_SHA1}
               docker push codurance/open-space-backend:latest
 
-  deploy:
+  deploy_frontend:
     docker:
       - image: hashicorp/terraform
     working_directory: ~/project/terraform
@@ -71,19 +99,50 @@ jobs:
           command: terraform init
       - run:
           name: Deploy
-          command: env TF_VAR_app_image=codurance/open-space:${CIRCLE_SHA1} TF_VAR_app_backend_image=codurance/open-space-backend:${CIRCLE_SHA1} terraform apply -auto-approve
+          command: env TF_VAR_app_image=codurance/open-space:${CIRCLE_SHA1} terraform apply -auto-approve
+
+  deploy_backend:
+    docker:
+      - image: hashicorp/terraform
+    working_directory: ~/project/terraform
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Initialize Terraform
+          command: terraform init
+      - run:
+          name: Deploy
+          command: env TF_VAR_app_backend_image=codurance/open-space-backend:${CIRCLE_SHA1} terraform apply -auto-approve
 
 workflows:
   version: 2
 
-  build:
+  # The main workflow responsible for triggering all other workflows
+  # in which changes are detected.
+  ci:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - check-folder
+
+  build-frontend:
+    when: << pipeline.parameters.frontend >>
     jobs:
       - build_frontend
-      - build_backend
-      - deploy:
+      - deploy_frontend:
           filters:
             branches:
               only: master
           requires:
             - build_frontend
+            
+  build-backend:
+    when: << pipeline.parameters.backend >>
+    jobs:
+      - build_backend
+      - deploy_backend:
+          filters:
+            branches:
+              only: master
+          requires:
             - build_backend
