@@ -1,0 +1,7 @@
+.delete-session {
+  background: none !important;
+  position: absolute;
+  top: 0em;
+  right: 0em;
+  cursor: pointer !important;
+}

@@ -1,9 +1,10 @@
 import React, { useState, FC } from "react";
 import { post } from "../common/http";
+import { Button, Form, Header } from "semantic-ui-react";
 
 type SessionFormProps = {
-  getSessions: any
-}
+  getSessions: any;
+};
 
 const SessionForm: FC<SessionFormProps> = ({ getSessions }) => {
   const [sessionTitle, setSessionTitle] = useState("");
@@ -27,7 +28,7 @@ const SessionForm: FC<SessionFormProps> = ({ getSessions }) => {
     });
 
     if (response.ok) {
-      getSessions()
+      getSessions();
       setSessionLocation("");
       setSessionTitle("");
       setSessionTime("");
@@ -38,41 +39,45 @@ const SessionForm: FC<SessionFormProps> = ({ getSessions }) => {
   };
 
   return (
-    <form onSubmit={event => postSession(event)}>
-      <label>
-        Title:
-        <input
-          type="text"
-          value={sessionTitle}
-          onChange={e => setSessionTitle(e.target.value)}
-        />
-      </label>
-      <label>
-        Location:
-        <input
-          type="text"
-          value={sessionLocation}
-          onChange={e => setSessionLocation(e.target.value)}
-        />
-      </label>
-      <label>
-        Presenter:
-        <input
-          type="text"
-          value={sessionPresenter}
-          onChange={e => setSessionPresenter(e.target.value)}
-        />
-      </label>
-      <label>
-        Time:
-        <input
-          type="time"
-          value={sessionTime}
-          onChange={e => setSessionTime(e.target.value)}
-        />
-      </label>
-      <input type="submit" value="Submit" />
-    </form>
+    <>
+      <Header inverted >Submit A Session</Header>
+      <Form inverted onSubmit={event => postSession(event)}>
+        <Form.Field>
+          <label>Title</label>
+          <input
+            placeholder="title"
+            value={sessionTitle}
+            onChange={e => setSessionTitle(e.target.value)}
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>Location</label>
+          <input
+            placeholder="location"
+            value={sessionLocation}
+            onChange={e => setSessionLocation(e.target.value)}
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>Presenter</label>
+          <input
+            placeholder="presenter"
+            value={sessionPresenter}
+            onChange={e => setSessionPresenter(e.target.value)}
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>Time</label>
+          <input
+            type="time"
+            placeholder="time"
+            value={sessionTime}
+            onChange={e => setSessionTime(e.target.value)}
+          />
+        </Form.Field>
+        <Button type="submit">Submit</Button>
+      </Form>
+    </>
   );
 };
 
