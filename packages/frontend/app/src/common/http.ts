@@ -42,3 +42,15 @@ export const post = async <T>(
 ): Promise<IHttpResponse<T>> => {
   return await http<T>(new Request(path, args));
 };
+
+export const put = async <T>(
+  path: string,
+  requestArgs: any,
+  args: RequestInit = {
+    method: "PUT",
+    headers: requestArgs.headers,
+    body: requestArgs.body
+  }
+): Promise<IHttpResponse<T>> => {
+  return await http<T>(new Request(path, args));
+};
