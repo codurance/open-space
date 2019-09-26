@@ -15,7 +15,7 @@ const Sessions: FC<SessionsProps> = (args) => {
     args.setSessionToEdit(session);
     args.setIsEditing(true);
   };
-  
+
   const bySessionTime = function (a: ISession, b: ISession) {
     if (a.time < b.time) return -1;
     if (a.time > b.time) return 1;
