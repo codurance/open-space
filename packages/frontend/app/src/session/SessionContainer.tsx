@@ -17,7 +17,7 @@ const SessionContainer: FC = () => {
 
     const getSessionResponse = async () => {
         const getSessionResponse = await get<IHttpResponse<ISession[]>>(
-            `http://localhost:8080/api/sessions`
+            `/api/sessions`
         );
         const sessions = getSessionResponse.parsedBody;
         setSessions(sessions);

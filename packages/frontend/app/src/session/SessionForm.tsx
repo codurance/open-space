@@ -14,7 +14,7 @@ const SessionForm: FC<SessionFormProps> = ({ getSessions }) => {
   const postSession = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const response = await post(`http://localhost:8080/api/sessions`, {
+    const response = await post(`/api/sessions`, {
       headers: {
         "Content-Type": "application/json"
       },
