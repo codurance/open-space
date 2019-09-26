@@ -2,38 +2,37 @@ import React, { FC } from "react";
 import { Session } from "./Session";
 import { ISession } from './SessionContainer'
 
-type SessionsProps = {
+interface SessionsProps {
   sessions: ISession[],
+  isEditing: boolean,
+  setIsEditing: (isEditing: boolean) => void,
+  setSessionToEdit: (session: ISession) => void,
   getSessions: Function
 }
 
-const Sessions: FC<SessionsProps> = ({ sessions, getSessions }) => {
+const Sessions: FC<SessionsProps> = (args) => {
+
+  const editClicked = (session: ISession) => {
+    args.setSessionToEdit(session);
+    args.setIsEditing(true);
+  };
 
   const bySessionTime = function (a: ISession, b: ISession) {
     if (a.time < b.time) return -1;
     if (a.time > b.time) return 1;
     return 0;
-  }
+  };
 
   return (
     <React.Fragment>
-      <div>
-        {sessions &&
-          sessions.sort(bySessionTime).map((session: any) => {
-            const { id, presenter, title, location, time } = session;
-            return (
-              <Session
-                id={id}
-                presenter={presenter}
-                title={title}
-                location={location}
-                time={time}
-                key={id}
-                getSessions={getSessions}
-              />
-            );
-          })}
-      </div>
+      {
+        args.sessions && args.sessions.sort(bySessionTime).map((session: ISession) =>
+          <React.Fragment key={session.id}>
+            <Session {...session, getSessions={getSessions}} />
+            {!args.isEditing && <button onClick={() => editClicked(session)}> Edit </button>}
+          </React.Fragment>
+        )
+      }
     </React.Fragment>
   );
 };
