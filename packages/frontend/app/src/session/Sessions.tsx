@@ -8,16 +8,8 @@ type SessionsProps = {
 
 const Sessions: FC<SessionsProps> = ({ sessions }) => {
 
-  function compare(a: ISession, b: ISession) {
-    if (a.time < b.time) {
-      return - 1;
-    }
-    if (a.time > b.time) {
-      return 1;
-    }
-    return 0;
-  }
-
+  const compare = (a: ISession, b: ISession) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0);
+  
   return (
     <React.Fragment>
       <div>
