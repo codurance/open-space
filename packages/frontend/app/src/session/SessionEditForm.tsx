@@ -74,7 +74,7 @@ const SessionEditForm: FC<SessionEditFormProps> = ({ getSessions, sessionToEdit,
         />
       </label>
       <input type="submit" value="Edit" />
-      <button onClick={even => setIsEditing(false)}>Cancel</button>
+      <button onClick={() => setIsEditing(false)}>Cancel</button>
     </form>
   );
 };
