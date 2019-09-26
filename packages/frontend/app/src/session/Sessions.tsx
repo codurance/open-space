@@ -28,7 +28,7 @@ const Sessions: FC<SessionsProps> = (args) => {
       {
         args.sessions && args.sessions.sort(bySessionTime).map((session: ISession) =>
           <React.Fragment key={session.id}>
-            <Session {...session, getSessions={getSessions}} />
+            <Session {...session} />
             {!args.isEditing && <button onClick={() => editClicked(session)}> Edit </button>}
           </React.Fragment>
         )
