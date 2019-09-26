@@ -20,3 +20,14 @@ it('Displays session', () => {
   const sessionElement = wrapper.find(".session");
   expect(sessionElement.text()).toBe(`${title}, ${location}, ${time}, ${presenter}`);
 });
+
+it('Displays delete button', () => {
+  const wrapper = enzyme.shallow(<Session
+    id={id}
+    title={title}
+    presenter={presenter}
+    location={location}
+    time={time}/>);
+  const sessionElement = wrapper.find(".delete-session");
+  expect(sessionElement.text()).toBe(`Delete`);
+});

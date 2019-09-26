@@ -42,7 +42,8 @@ const SessionContainer: FC = () => {
         <>
             <Sessions sessions={sessions} setIsEditing={setIsEditing}
                 isEditing={isEditing}
-                setSessionToEdit={setSessionToEdit} />
+                setSessionToEdit={setSessionToEdit}
+                getSessions={getSessionResponse} />
             {currentForm}
         </>
     )
