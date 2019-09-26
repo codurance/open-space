@@ -6,27 +6,29 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(OpenSpaceSessionController.class)
 public class OpenSpaceSessionControllerShould {
+    private static final String API_PATH = "/api/sessions";
+    private static final String API_SESSION_1_PATH = "/api/sessions/1";
+
+    private OpenSpaceSession openSpaceSession;
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private OpenSpaceSessionRepository repository;
-
-    private OpenSpaceSession openSpaceSession;
-    private static final String API_PATH = "/api/sessions";
 
     @BeforeEach
     void setUp() {
@@ -74,10 +76,75 @@ public class OpenSpaceSessionControllerShould {
     }
 
     @Test
-    void delete_open_space_session_by_id() throws Exception {
+    void update_open_space_session() throws Exception {
+        when(repository.findById(1))
+                .thenReturn(Optional.of(openSpaceSession));
 
-        mockMvc.perform(delete("/api/sessions/1"))
-                .andExpect(status().is2xxSuccessful());
+        OpenSpaceSession openSpaceSessionUpdated = new OpenSpaceSession(
+                openSpaceSession.getId(),
+                openSpaceSession.getTitle(),
+                openSpaceSession.getLocation(),
+                openSpaceSession.getTime(),
+                openSpaceSession.getPresenter());
+        openSpaceSessionUpdated.setLocation("Location 2");
+
+        when(repository.save(openSpaceSessionUpdated))
+                .thenReturn(openSpaceSessionUpdated);
+
+        mockMvc.perform(put(API_SESSION_1_PATH)
+                .content(asJsonString(openSpaceSessionUpdated))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.title").value("Session 1"))
+                .andExpect(jsonPath("$.location").value("Location 2"))
+                .andExpect(jsonPath("$.time").value("11:00"))
+                .andExpect(jsonPath("$.presenter").value("David"));
+
+        verify(repository).findById(1);
+        verify(repository).save(openSpaceSessionUpdated);
+    }
+
+    @Test
+    void update_method_returns_404_status_if_id_not_found() throws Exception {
+
+        when(repository.findById(20)).thenReturn(null);
+
+        OpenSpaceSession openSpaceSessionUpdated = new OpenSpaceSession(
+                openSpaceSession.getId(),
+                openSpaceSession.getTitle(),
+                openSpaceSession.getLocation(),
+                openSpaceSession.getTime(),
+                openSpaceSession.getPresenter());
+        openSpaceSessionUpdated.setLocation("Location 2");
+
+        mockMvc.perform(put(API_SESSION_1_PATH)
+                .content(asJsonString(openSpaceSessionUpdated))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        verify(repository).findById(1);
+    }
+
+
+    @Test
+    void delete_method_returns_404_status_if_id_not_found() throws Exception {
+        final int id = 30;
+
+        doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(id);
+
+        mockMvc.perform(delete("/api/sessions/" + id))
+                .andExpect(status().isNotFound());
+
+        verify(repository).deleteById(id);
+    }
+
+    @Test
+    void delete_open_space_session_by_id() throws Exception {
+        mockMvc.perform(delete(API_SESSION_1_PATH))
+                .andExpect(status().isNoContent());
 
         verify(repository).deleteById(1);
     }
