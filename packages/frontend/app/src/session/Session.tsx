@@ -23,4 +23,11 @@ export const Session = ({
   time,
   presenter,
   getSessions
-}: SessionProps) => <div className="session">{title}, {location}, {time}, {presenter}<button onClick={() => deleteSessionById(id, getSessions)}>Delete</button></div>;
+}: SessionProps) => {
+  return (
+    <div>
+      <div className="session">{title}, {location}, {time}, {presenter}</div>
+      <button className="delete-session" onClick={() => deleteSessionById(id, getSessions)}>Delete</button>
+    </div>
+  )
+}
