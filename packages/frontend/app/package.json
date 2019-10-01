@@ -21,9 +21,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:ci": "CI=true react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress-run": "cypress run --browser chrome"
   },
   "proxy": "http://localhost:8080",
+  "cypress": "cypress open",
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -41,6 +43,7 @@
   },
   "devDependencies": {
     "@types/enzyme-adapter-react-16": "^1.0.5",
+    "cypress": "^3.4.1",
     "jest": "^24.9.0",
     "ts-jest": "^24.1.0"
   }
