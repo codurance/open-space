@@ -1,0 +1,3 @@
+{
+  "extends": ["airbnb", "tslint-config-prettier"]
+}
