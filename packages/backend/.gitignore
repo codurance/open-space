@@ -3,6 +3,5 @@
 *.iml
 *.ipr
 *.iws
-.editorconfig
 out
 build
