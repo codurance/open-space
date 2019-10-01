@@ -36,7 +36,11 @@ export const Session = ({
         <Card.Header>
           {title}
           <Button icon className="delete-session">
-            <Icon name="x" size="large" onClick={() => deleteSessionById(id, getSessions)} />
+            <Icon
+              name="x"
+              size="large"
+              onClick={() => deleteSessionById(id, getSessions)}
+            />
           </Button>
         </Card.Header>
         <Card.Description>

@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Session } from "./Session";
 import { ISession } from "./SessionContainer";
 
-import "./sessions.css"
+import "./sessions.css";
 
 interface SessionsProps {
   sessions: ISession[];
@@ -31,7 +31,12 @@ const Sessions: FC<SessionsProps> = args => {
           <React.Fragment key={session.id}>
             <Session {...session} getSessions={args.getSessions} />
             {!args.isEditing && (
-              <div className="edit-session" onClick={() => editClicked(session)}>Edit</div>
+              <div
+                className="edit-session"
+                onClick={() => editClicked(session)}
+              >
+                Edit
+              </div>
             )}
           </React.Fragment>
         ))}
