@@ -27,18 +27,16 @@ export const Session = ({
   id,
   title,
   location,
-  time, 
+  time,
   presenter,
   getSessions
 }: SessionProps) => {
 
-  let interestFromLocalStorage: boolean  = sessionStorage.getItemValue(id);
-  const [interest, setInterest] = useState(interestFromLocalStorage);
-  
-  const onInterest = () => {
-    const newValue:boolean = !interest;
-    setInterest(newValue);
-    sessionStorage.saveItemValue(String(id), newValue);
+  const [interest, setInterest] = useState(sessionStorage.checkInterest(id));
+
+  const toggleInterest = () => {
+    setInterest(!interest);
+    sessionStorage.saveItemValue(id, !interest);
   };
 
   return (
@@ -60,11 +58,7 @@ export const Session = ({
       </Card.Content>
       <Card.Content>
         <Button icon>
-          {interest? (
-            <Icon name="heart outline" onClick={() => onInterest()}/>
-          ) : (
-            <Icon name="heart" onClick={() => onInterest()}/>
-          )}
+          <Icon name={interest ? "heart" : "heart outline"} onClick={() => toggleInterest()} />
         </Button>
       </Card.Content>
     </Card>

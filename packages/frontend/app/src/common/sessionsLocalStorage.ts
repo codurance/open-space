@@ -1,13 +1,7 @@
-
-export const saveItemValue = (key: string, value: boolean) => {
-  const keyValue = value ? "1":"0";
-  localStorage.setItem(key, keyValue);
+export const saveItemValue = (key: number, value: boolean) => {
+  localStorage.setItem(key.toString(), value.toString());
 }
 
-export const getItemValue = (key: number):boolean => {
-    return localStorage.getItem(key.toString()) === "1";
+export const checkInterest = (key: number): boolean => {
+  return localStorage.getItem(key.toString()) === "true";
 }
-
- 
-
-
