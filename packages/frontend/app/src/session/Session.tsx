@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { deleteSession } from "../common/http";
 import { Button, Card, Icon } from "semantic-ui-react";
+import * as sessionStorage from "../common/sessionsLocalStorage"
 
 import "./session.css";
 
@@ -26,22 +27,18 @@ export const Session = ({
   id,
   title,
   location,
-  time,
+  time, 
   presenter,
   getSessions
 }: SessionProps) => {
 
-  const key = title+"-"+presenter;
-  let interestFromLocalStorage = String(localStorage.getItem(key));
-  interestFromLocalStorage = (interestFromLocalStorage === "null") ? "0":interestFromLocalStorage;
-
+  let interestFromLocalStorage: boolean  = sessionStorage.getItemValue(id);
   const [interest, setInterest] = useState(interestFromLocalStorage);
   
   const onInterest = () => {
-    const newValue = (interest ==="0")? "1":"0";
-    const key = title+"-"+presenter;
+    const newValue:boolean = !interest;
     setInterest(newValue);
-    localStorage.setItem(key, newValue);
+    sessionStorage.saveItemValue(String(id), newValue);
   };
 
   return (
@@ -63,7 +60,7 @@ export const Session = ({
       </Card.Content>
       <Card.Content>
         <Button icon>
-          {interest==="0" ? (
+          {interest? (
             <Icon name="heart outline" onClick={() => onInterest()}/>
           ) : (
             <Icon name="heart" onClick={() => onInterest()}/>
