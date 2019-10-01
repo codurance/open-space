@@ -1,10 +1,6 @@
 spring:
-  h2:
-    console:
-      enabled: true
-      path: "/h2"
   datasource:
-    url: "jdbc:h2:mem:testdb"
-    driverClassName: org.h2.Driver
-    username: user
-    password: password
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: postgres
+    password: example
