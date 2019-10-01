@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://localhost:5432/postgres"
+    url: "jdbc:postgresql://open-space.czxuatmdut7q.eu-west-2.rds.amazonaws.com:5432/"
     username: postgres
-    password: example
+    password: craftatheart
     continueOnError: true
     initialize: false
     initialSize: 0
@@ -14,12 +14,12 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: auto
       naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         hbm2ddl:
-          auto: create
+          auto: update
         temp:
           use_jdbc_metadata_defaults: false
