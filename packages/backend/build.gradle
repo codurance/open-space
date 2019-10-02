@@ -57,6 +57,6 @@ docker {
         maintainer = '@oystr'
         ports = [8080]
         tag = 'open-space-backend:0.0.1'
-        jvmArgs = ['-Xmx2048m', '-Dspring.profiles.active=dev']
+        jvmArgs = ['-Xmx2048m', '-Dspring.profiles.active=${SPRING_ENV}']
     }
 }
