@@ -1,10 +1,8 @@
 import React, { FC, useState } from "react";
 import { Session } from "./Session";
 import { ISession } from "./SessionContainer";
-import { Button } from "semantic-ui-react";
+import { Checkbox } from "semantic-ui-react";
 import * as sessionStorage from "../common/sessionsLocalStorage";
-
-import "./sessions.css";
 
 interface SessionsProps {
   sessions: ISession[];
@@ -18,7 +16,7 @@ const Sessions: FC<SessionsProps> = args => {
   const [filterByInterest, setFilterByInterest] = useState(false);
 
   const editClicked = (id: number) => {
-    const session: ISession = args.sessions.find(s => s.id === id) as ISession;
+    const session: ISession = args.sessions.find(s => s.id === id)!;
     args.setSessionToEdit(session);
     args.setIsEditing(true);
   };
@@ -35,9 +33,10 @@ const Sessions: FC<SessionsProps> = args => {
 
   return (
     <React.Fragment>
-      <Button onClick={() => setFilterByInterest(!filterByInterest)}>
-        Filter by Interest
-      </Button>
+      <Checkbox
+        label="Filter by Interest"
+        onClick={() => setFilterByInterest(!filterByInterest)}
+      />
       {args.sessions &&
         args.sessions
           .filter(byInterest)
