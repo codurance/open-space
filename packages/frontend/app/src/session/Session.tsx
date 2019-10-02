@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { deleteSession } from "../common/http";
 import { Button, Card, Icon } from "semantic-ui-react";
-import * as sessionStorage from "../common/sessionsLocalStorage";
+import * as sessionsLocalStorage from "../common/sessionsLocalStorage";
 
 export type SessionProps = {
   id: number;
@@ -33,11 +33,13 @@ export const Session = ({
   isEditing,
   onEditClicked
 }: SessionProps) => {
-  const [interest, setInterest] = useState(sessionStorage.checkInterest(id));
+  const [interest, setInterest] = useState(
+    sessionsLocalStorage.checkInterest(id)
+  );
 
   const toggleInterest = () => {
     setInterest(!interest);
-    sessionStorage.saveItemValue(id, !interest);
+    sessionsLocalStorage.setInterest(id, !interest);
   };
 
   return (
