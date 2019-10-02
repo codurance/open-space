@@ -21,3 +21,9 @@ import "./commands";
 Cypress.Screenshot.defaults({
   screenshotOnRunFailure: false
 });
+
+// disable fetch so that a polyfill will takeover by using xhr
+// to support Cypress.server/route/wait
+Cypress.on("window:before:load", win => {
+  delete win.fetch;
+});
