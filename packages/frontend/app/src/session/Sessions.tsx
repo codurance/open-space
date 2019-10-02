@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { Session } from "./Session";
 import { ISession } from "./SessionContainer";
-import { Checkbox } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import * as sessionStorage from "../common/sessionsLocalStorage";
 
 interface SessionsProps {
@@ -33,10 +33,9 @@ const Sessions: FC<SessionsProps> = args => {
 
   return (
     <React.Fragment>
-      <Checkbox
-        label="Filter by Interest"
-        onClick={() => setFilterByInterest(!filterByInterest)}
-      />
+      <Button onClick={() => setFilterByInterest(!filterByInterest)}>
+        Filter by Interest
+      </Button>
       {args.sessions &&
         args.sessions
           .filter(byInterest)
