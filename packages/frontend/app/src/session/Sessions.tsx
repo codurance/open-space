@@ -17,7 +17,8 @@ interface SessionsProps {
 const Sessions: FC<SessionsProps> = args => {
   const [filterByInterest, setFilterByInterest] = useState(false);
 
-  const editClicked = (session: ISession) => {
+  const editClicked = (id: number) => {
+    const session: ISession = args.sessions.find(s => s.id === id) as ISession;
     args.setSessionToEdit(session);
     args.setIsEditing(true);
   };
@@ -43,15 +44,12 @@ const Sessions: FC<SessionsProps> = args => {
           .sort(bySessionTime)
           .map((session: ISession) => (
             <React.Fragment key={session.id}>
-              <Session {...session} getSessions={args.getSessions} />
-              {!args.isEditing && (
-                <div
-                  className="edit-session"
-                  onClick={() => editClicked(session)}
-                >
-                  Edit
-                </div>
-              )}
+              <Session
+                {...session}
+                getSessions={args.getSessions}
+                onEditClicked={editClicked}
+                isEditing={args.isEditing}
+              />
             </React.Fragment>
           ))}
     </React.Fragment>

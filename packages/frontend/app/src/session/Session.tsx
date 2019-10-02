@@ -10,6 +10,8 @@ export type SessionProps = {
   time: string;
   presenter: string;
   getSessions?: Function;
+  onEditClicked: Function;
+  isEditing: boolean;
 };
 
 const deleteSessionById = async (
@@ -27,7 +29,9 @@ export const Session = ({
   location,
   time,
   presenter,
-  getSessions
+  getSessions,
+  isEditing,
+  onEditClicked
 }: SessionProps) => {
   const [interest, setInterest] = useState(sessionStorage.checkInterest(id));
 
@@ -61,6 +65,7 @@ export const Session = ({
             onClick={() => deleteSessionById(id, getSessions)}
           />
         </Button>
+        {!isEditing && <Button onClick={() => onEditClicked(id)}>Edit</Button>}
       </Card.Content>
     </Card>
   );
