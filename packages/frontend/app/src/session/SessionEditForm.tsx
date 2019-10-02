@@ -84,7 +84,7 @@ const SessionEditForm: FC<SessionEditFormProps> = ({
           />
         </Form.Field>
         <Button type="submit">Edit</Button>
-        <button onClick={() => setIsEditing(false)}>Cancel</button>
+        <Button onClick={() => setIsEditing(false)}>Cancel</Button>
       </Form>
     </>
   );
