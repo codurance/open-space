@@ -1,25 +1,26 @@
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://open-space.czxuatmdut7q.eu-west-2.rds.amazonaws.com:5432/"
-    username: postgres
-    password: craftatheart
-    continueOnError: true
-    initialize: false
-    initialSize: 0
-    timeBetweenEvictionRunsMillis: 5000
-    minEvictableIdleTimeMillis: 5000
-    minIdle: 0
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        #    url: "jdbc:postgresql://localhost:5432/open-space"
+        url: "jdbc:postgresql://open-space.czxuatmdut7q.eu-west-2.rds.amazonaws.com:5432/"
+        username: postgres
+        password: craftatheart
+        continueOnError: true
+        initialize: false
+        initialSize: 0
+        timeBetweenEvictionRunsMillis: 5000
+        minEvictableIdleTimeMillis: 5000
+        minIdle: 0
 
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: auto
-      naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        hbm2ddl:
-          auto: update
-        temp:
-          use_jdbc_metadata_defaults: false
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: auto
+            naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+                hbm2ddl:
+                    auto: update
+                temp:
+                    use_jdbc_metadata_defaults: false
