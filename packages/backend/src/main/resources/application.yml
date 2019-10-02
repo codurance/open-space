@@ -16,6 +16,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
 
 ---
 
@@ -31,3 +36,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
