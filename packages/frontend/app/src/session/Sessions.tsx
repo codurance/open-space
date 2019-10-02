@@ -1,7 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Session } from "./Session";
 import { ISession } from "./SessionContainer";
 import { Button } from "semantic-ui-react";
+import * as sessionStorage from "../common/sessionsLocalStorage";
 
 import "./sessions.css";
 
@@ -14,6 +15,8 @@ interface SessionsProps {
 }
 
 const Sessions: FC<SessionsProps> = args => {
+  const [filterByInterest, setFilterByInterest] = useState(false);
+
   const editClicked = (session: ISession) => {
     args.setSessionToEdit(session);
     args.setIsEditing(true);
@@ -25,23 +28,32 @@ const Sessions: FC<SessionsProps> = args => {
     return 0;
   };
 
+  const byInterest = function(session: ISession) {
+    return !filterByInterest || sessionStorage.checkInterest(session.id);
+  };
+
   return (
     <React.Fragment>
-      <Button>Filter on Interest</Button>
+      <Button onClick={() => setFilterByInterest(!filterByInterest)}>
+        Filter by Interest
+      </Button>
       {args.sessions &&
-        args.sessions.sort(bySessionTime).map((session: ISession) => (
-          <React.Fragment key={session.id}>
-            <Session {...session} getSessions={args.getSessions} />
-            {!args.isEditing && (
-              <div
-                className="edit-session"
-                onClick={() => editClicked(session)}
-              >
-                Edit
-              </div>
-            )}
-          </React.Fragment>
-        ))}
+        args.sessions
+          .filter(byInterest)
+          .sort(bySessionTime)
+          .map((session: ISession) => (
+            <React.Fragment key={session.id}>
+              <Session {...session} getSessions={args.getSessions} />
+              {!args.isEditing && (
+                <div
+                  className="edit-session"
+                  onClick={() => editClicked(session)}
+                >
+                  Edit
+                </div>
+              )}
+            </React.Fragment>
+          ))}
     </React.Fragment>
   );
 };
