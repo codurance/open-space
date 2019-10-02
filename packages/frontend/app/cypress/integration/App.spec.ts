@@ -36,13 +36,18 @@ describe("OPEN-SPACE e2e", function() {
     cy.route("/api/sessions").as("getSessions");
 
     // get card to edit
-    cy.get("div.description")
+    cy.get("div")
       .contains("Enric")
-      .closest(".session")
+      .parent()
+      .parent()
       .as("sessionDiv");
+
+    // get Edit button
     cy.get("@sessionDiv")
-      .next(".edit-session")
+      .find(".edit-session")
       .as("edit");
+
+    // perform Edit
     cy.get("@edit").click();
 
     // check correct card is being edited
@@ -80,13 +85,19 @@ describe("OPEN-SPACE e2e", function() {
   });
 
   it("Delete submitted session", function() {
+    // get card to edit
     cy.get("div")
       .contains("Enric")
       .parent()
-      .as("conferenceDiv");
-    cy.get("@conferenceDiv")
-      .find("button.delete-session")
+      .parent()
+      .as("sessionDiv");
+
+    // get Delete button
+    cy.get("@sessionDiv")
+      .find(".delete-session")
       .as("buttonDelete");
+
+    // perform Delete
     return cy.get("@buttonDelete").click();
   });
 });
