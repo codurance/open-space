@@ -8,7 +8,7 @@ spring:
   profiles: dev
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://localhost:5432/open-space"
+    url: "jdbc:postgresql://postgres:5432/open-space"
     username: postgres
     password: example
     initialization-mode: always
