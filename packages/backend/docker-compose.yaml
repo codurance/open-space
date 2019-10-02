@@ -11,5 +11,10 @@ services:
     ports:
       - 5432:5432
 
+  spring:
+    build: build/docker/.
+    ports:
+      - "8080:8080"
+
 volumes:
   db-data:
