@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { Session } from "./Session";
 import { ISession } from "./SessionContainer";
+import { Button } from "semantic-ui-react";
 
 import "./sessions.css";
 
@@ -26,6 +27,7 @@ const Sessions: FC<SessionsProps> = args => {
 
   return (
     <React.Fragment>
+      <Button>Filter on Interest</Button>
       {args.sessions &&
         args.sessions.sort(bySessionTime).map((session: ISession) => (
           <React.Fragment key={session.id}>
