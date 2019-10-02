@@ -1,6 +1,7 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { deleteSession } from "../common/http";
 import { Button, Card, Icon } from "semantic-ui-react";
+import * as sessionStorage from "../common/sessionsLocalStorage"
 
 import "./session.css";
 
@@ -30,13 +31,25 @@ export const Session = ({
   presenter,
   getSessions
 }: SessionProps) => {
+
+  const [interest, setInterest] = useState(sessionStorage.checkInterest(id));
+
+  const toggleInterest = () => {
+    setInterest(!interest);
+    sessionStorage.saveItemValue(id, !interest);
+  };
+
   return (
     <Card className="session" fluid>
       <Card.Content>
         <Card.Header>
           {title}
           <Button icon className="delete-session">
-            <Icon name="x" size="large" onClick={() => deleteSessionById(id, getSessions)} />
+            <Icon
+              name="x"
+              size="large"
+              onClick={() => deleteSessionById(id, getSessions)}
+            />
           </Button>
         </Card.Header>
         <Card.Description>
@@ -46,6 +59,11 @@ export const Session = ({
       </Card.Content>
       <Card.Content extra>
         {location} @ {time}
+      </Card.Content>
+      <Card.Content>
+        <Button icon>
+          <Icon name={interest ? "heart" : "heart outline"} onClick={() => toggleInterest()} />
+        </Button>
       </Card.Content>
     </Card>
   );
