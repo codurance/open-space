@@ -1,7 +1,7 @@
 describe("OPEN-SPACE e2e", function() {
   it("Submit a session", function() {
     cy.server();
-    cy.route("/api/sessions").as("postSession");
+    cy.route("POST", "/api/sessions").as("postSession");
     cy.visit("/");
     cy.get("label")
       .contains("Title")
@@ -24,12 +24,18 @@ describe("OPEN-SPACE e2e", function() {
       .first()
       .type("15:00");
 
+    cy.route("/api/sessions").as("getSessions");
     cy.get("form").submit();
 
     cy.wait("@postSession");
+    cy.wait("@getSessions");
   });
 
   it("Edit a session", function() {
+    cy.server();
+    cy.route("/api/sessions").as("getSessions");
+
+    // get card to edit
     cy.get("div.description")
       .contains("Enric")
       .closest(".session")
@@ -39,7 +45,7 @@ describe("OPEN-SPACE e2e", function() {
       .as("edit");
     cy.get("@edit").click();
 
-    // assert after clicking edit button, form shows present values
+    // check correct card is being edited
     cy.get("label")
       .contains("Title")
       .next("input")
@@ -57,7 +63,20 @@ describe("OPEN-SPACE e2e", function() {
       .next("input")
       .should("have.value", "15:00");
 
-    // return cy.get('form').submit();
+    // edit card
+    cy.get("label")
+      .contains("Time")
+      .next("input")
+      .type("16:00");
+
+    cy.get("form").submit();
+
+    cy.wait("@getSessions");
+
+    // check card was edited
+    cy.get("@sessionDiv")
+      .children(".extra")
+      .should("have.html", "Location 3 @ 16:00");
   });
 
   it("Delete submitted session", function() {
