@@ -1,4 +1,4 @@
-import { fetch } from "whatwg-fetch";
+import "whatwg-fetch"; // work as a fallback to polyfill in old browser, but mostly for using xhr in cypress
 
 export interface IHttpResponse<T> extends Response {
   parsedBody?: T;
