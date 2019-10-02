@@ -25,7 +25,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: "jdbc:postgresql://open-space.czxuatmdut7q.eu-west-2.rds.amazonaws.com:5432/"
     username: postgres
-    password: craftatheart
+    password: ${PROD_DB_PASSWD}
     initialization-mode: never
   jpa:
     show-sql: true

@@ -14,6 +14,7 @@ services:
   spring:
     environment:
       - SPRING_ENV=dev
+      - PROD_DB_PASSWD=craftatheart
     build: build/docker/.
     ports:
       - 8080:8080
