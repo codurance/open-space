@@ -71,7 +71,7 @@ jobs:
           command: terraform init
       - run:
           name: Deploy
-          command: env TF_VAR_app_image=codurance/open-space:${CIRCLE_SHA1} TF_VAR_app_backend_image=codurance/open-space-backend:${CIRCLE_SHA1} terraform apply -auto-approve
+          command: env TF_VAR_PROD_DB_URI=${PROD_DB_URI} TF_VAR_PROD_DB_USER=${PROD_DB_USER} TF_VAR_PROD_DB_PASSWD=${PROD_DB_PASSWD} TF_VAR_app_image=codurance/open-space:${CIRCLE_SHA1} TF_VAR_app_backend_image=codurance/open-space-backend:${CIRCLE_SHA1} terraform apply -auto-approve
 
 workflows:
   version: 2

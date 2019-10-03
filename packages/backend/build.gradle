@@ -30,7 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'org.postgresql:postgresql:42.2.8'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
@@ -57,6 +57,6 @@ docker {
         maintainer = '@oystr'
         ports = [8080]
         tag = 'open-space-backend:0.0.1'
-        jvmArgs = ['-Xmx2048m']
+        jvmArgs = ['-Xmx2048m', '-Dspring.profiles.active=${SPRING_ENV}']
     }
 }
