@@ -48,7 +48,7 @@ const SessionEditForm: FC<SessionEditFormProps> = ({
 
   return (
     <>
-      <Header>Submit A Session</Header>
+      <Header inverted>Submit A Session</Header>
       <Form inverted onSubmit={event => postSession(event)}>
         <Form.Field>
           <label>Title</label>
@@ -84,7 +84,7 @@ const SessionEditForm: FC<SessionEditFormProps> = ({
           />
         </Form.Field>
         <Button type="submit">Edit</Button>
-        <button onClick={() => setIsEditing(false)}>Cancel</button>
+        <Button onClick={() => setIsEditing(false)}>Cancel</Button>
       </Form>
     </>
   );
