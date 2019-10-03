@@ -1,8 +1,7 @@
 import { ISession } from "../SessionContainer";
-import { put, post } from "../../common/http";
+import { put, post, get, IHttpResponse } from "../../common/http";
 
 export const editSession = async (session: ISession) => {
-  console.log("edit session");
   const response: Response = await put(`/api/sessions/${session.id}`, {
     headers: {
       "Content-Type": "application/json"
@@ -19,7 +18,6 @@ export const editSession = async (session: ISession) => {
 };
 
 export const postSession = async (session: ISession) => {
-  console.log("post session");
   const response: Response = await post(`/api/sessions`, {
     headers: {
       "Content-Type": "application/json"
@@ -33,4 +31,12 @@ export const postSession = async (session: ISession) => {
   });
 
   return response;
+};
+
+export const getSessions = async () => {
+  const getSessionResponse = await get<IHttpResponse<ISession[]>>(
+    `/api/sessions`
+  );
+  const sessions = getSessionResponse.parsedBody;
+  return sessions;
 };

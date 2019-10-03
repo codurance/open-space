@@ -1,16 +1,16 @@
-import React, { useState, FC } from "react";
+import React, { useState } from "react";
 
 import { ISession } from "../SessionContainer";
 import { Button, Form, Header } from "semantic-ui-react";
-import * as sessionAPI from "./sessionAPI";
+import * as sessionAPI from "../api/sessionAPI";
 
-interface SessionEditFormProps {
+interface SessionFormProps {
   getSessions: any;
   sessionToEdit: ISession;
   setIsEditing: (isEditing: boolean) => void;
 }
 
-const SessionEditForm: FC<SessionEditFormProps> = ({
+const SessionForm: React.FC<SessionFormProps> = ({
   getSessions,
   sessionToEdit,
   setIsEditing
@@ -30,7 +30,7 @@ const SessionEditForm: FC<SessionEditFormProps> = ({
     sessionToEdit.location = sessionLocation;
     sessionToEdit.time = sessionTime;
     sessionToEdit.presenter = sessionPresenter;
-    console.log(sessionToEdit);
+
     let response: any;
 
     if (!sessionToEdit.id)
@@ -82,11 +82,11 @@ const SessionEditForm: FC<SessionEditFormProps> = ({
             onChange={e => setSessionTime(e.target.value)}
           />
         </Form.Field>
-        <Button type="submit">Edit</Button>
+        <Button type="submit">{!sessionToEdit.id ? "Add" : "Edit"}</Button>
         <Button onClick={() => setIsEditing(false)}>Cancel</Button>
       </Form>
     </>
   );
 };
 
-export default SessionEditForm;
+export default SessionForm;

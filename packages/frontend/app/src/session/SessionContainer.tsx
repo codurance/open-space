@@ -1,10 +1,10 @@
-import React, { useEffect, useState, FC } from "react";
-import { get, IHttpResponse } from "../common/http";
+import React, { useEffect, useState } from "react";
 import { Modal, Button } from "semantic-ui-react";
 
 import Sessions from "./Sessions";
-import SessionEditForm from "./sessionForm/SessionEditForm";
+import SessionForm from "./sessionForm/SessionForm";
 import CSS from "csstype";
+import * as sessionAPI from "./api/sessionAPI";
 
 export interface ISession {
   id: number;
@@ -14,16 +14,14 @@ export interface ISession {
   presenter: string;
 }
 
-const SessionContainer: FC = () => {
+const SessionContainer: React.FC = () => {
   const [sessions, setSessions] = useState();
-  const [isEditing, setIsEditing] = useState(false);
-  const [sessionToEdit, setSessionToEdit] = useState();
+  const [isModalSessionOn, setModalSessionOn] = useState(false);
+  const [sessionData, setSessionData] = useState();
+  const [filterByInterest, toggleFilterByInterest] = useState(false);
 
   const getSessionResponse = async () => {
-    const getSessionResponse = await get<IHttpResponse<ISession[]>>(
-      `/api/sessions`
-    );
-    const sessions = getSessionResponse.parsedBody;
+    const sessions = await sessionAPI.getSessions();
     setSessions(sessions);
   };
 
@@ -31,24 +29,8 @@ const SessionContainer: FC = () => {
     getSessionResponse();
   }, []);
 
-  let currentForm;
-  if (isEditing) {
-    currentForm = (
-      <SessionEditForm
-        getSessions={getSessionResponse}
-        sessionToEdit={sessionToEdit}
-        setIsEditing={setIsEditing}
-      />
-    );
-  }
-
-  const modalStyle: CSS.Properties = {
-    backgroundColor: "#FF9900"
-  };
-
   const onAddSession = () => {
-    console.log("is editing to true");
-    setIsEditing(true);
+    setModalSessionOn(true);
     const session = {
       title: "",
       location: "",
@@ -56,22 +38,38 @@ const SessionContainer: FC = () => {
       presenter: ""
     };
 
-    setSessionToEdit(session);
+    setSessionData(session);
+  };
+
+  const modalStyle: CSS.Properties = {
+    background: "#666666"
   };
 
   return (
     <>
-      <Button onClick={() => onAddSession()}>Add session</Button>
-      <Modal style={modalStyle} open={isEditing}>
+      <div className="buttons">
+        <Button onClick={() => onAddSession()}>Add session</Button>
+        <Button onClick={() => toggleFilterByInterest(!filterByInterest)}>
+          See Favourites
+        </Button>
+      </div>
+      <Modal open={isModalSessionOn}>
         <Modal.Header>Session</Modal.Header>
-        <Modal.Content>{currentForm}</Modal.Content>
+        <Modal.Content style={modalStyle}>
+          <SessionForm
+            getSessions={getSessionResponse}
+            sessionToEdit={sessionData}
+            setIsEditing={setModalSessionOn}
+          />
+        </Modal.Content>
       </Modal>
       <Sessions
         sessions={sessions}
-        setIsEditing={setIsEditing}
-        isEditing={isEditing}
-        setSessionToEdit={setSessionToEdit}
+        setIsEditing={setModalSessionOn}
+        isEditing={isModalSessionOn}
+        setSessionToEdit={setSessionData}
         getSessions={getSessionResponse}
+        isFilteringByInterest={filterByInterest}
       />
     </>
   );
