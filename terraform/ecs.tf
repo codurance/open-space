@@ -59,6 +59,9 @@ data "template_file" "cb_app_backend" {
     fargate_cpu    = var.fargate_cpu
     fargate_memory = var.fargate_memory
     aws_region     = var.aws_region
+    PROD_DB_PASSWD = var.PROD_DB_PASSWD
+    PROD_DB_USER   = var.PROD_DB_USER
+    PROD_DB_URI    = var.PROD_DB_URI
   }
 }
 
