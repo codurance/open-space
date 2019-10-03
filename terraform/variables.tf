@@ -65,3 +65,16 @@ variable "fargate_memory" {
   description = "Fargate instance memory to provision (in MiB)"
   default     = "2048"
 }
+
+variable "PROD_DB_PASSWD" {
+  
+}
+
+variable "PROD_DB_USER" {
+  
+}
+
+variable "PROD_DB_URI" {
+  
+}
+
