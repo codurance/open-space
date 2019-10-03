@@ -55,11 +55,8 @@ export const Session = ({
         {location} @ {time}
       </Card.Content>
       <Card.Content>
-        <Button icon>
-          <Icon
-            name={interest ? "heart" : "heart outline"}
-            onClick={() => toggleInterest()}
-          />
+        <Button icon onClick={() => toggleInterest()}>
+          <Icon name={interest ? "heart" : "heart outline"} />
         </Button>
         <Button
           className="delete-session"

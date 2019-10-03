@@ -1,7 +1,6 @@
-import React, { FC, useState } from "react";
+import React from "react";
 import { Session } from "./Session";
 import { ISession } from "./SessionContainer";
-import { Button } from "semantic-ui-react";
 import * as sessionStorage from "../common/sessionsLocalStorage";
 
 interface SessionsProps {
@@ -10,11 +9,10 @@ interface SessionsProps {
   setIsEditing: (isEditing: boolean) => void;
   setSessionToEdit: (session: ISession) => void;
   getSessions: Function;
+  isFilteringByInterest: boolean;
 }
 
-const Sessions: FC<SessionsProps> = props => {
-  const [filterByInterest, toggleFilterByInterest] = useState(false);
-
+const Sessions: React.FC<SessionsProps> = props => {
   const editClicked = (id: number) => {
     const session: ISession = props.sessions.find(s => s.id === id)!;
     props.setSessionToEdit(session);
@@ -28,14 +26,13 @@ const Sessions: FC<SessionsProps> = props => {
   };
 
   const byInterest = function(session: ISession) {
-    return !filterByInterest || sessionStorage.checkInterest(session.id);
+    return (
+      !props.isFilteringByInterest || sessionStorage.checkInterest(session.id)
+    );
   };
 
   return (
     <React.Fragment>
-      <Button onClick={() => toggleFilterByInterest(!filterByInterest)}>
-        Filter by Interest
-      </Button>
       {props.sessions &&
         props.sessions
           .filter(byInterest)

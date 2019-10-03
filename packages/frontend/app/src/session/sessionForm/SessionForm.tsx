@@ -1,15 +1,16 @@
-import React, { useState, FC } from "react";
-import { put } from "../common/http";
-import { ISession } from "./SessionContainer";
-import { Button, Form, Header } from "semantic-ui-react";
+import React, { useState } from "react";
 
-interface SessionEditFormProps {
-  getSessions: any;
+import { ISession } from "../SessionContainer";
+import { Button, Form, Header } from "semantic-ui-react";
+import * as sessionAPI from "../api/sessionAPI";
+
+interface SessionFormProps {
+  getSessions: Function;
   sessionToEdit: ISession;
   setIsEditing: (isEditing: boolean) => void;
 }
 
-const SessionEditForm: FC<SessionEditFormProps> = ({
+const SessionForm: React.FC<SessionFormProps> = ({
   getSessions,
   sessionToEdit,
   setIsEditing
@@ -23,20 +24,18 @@ const SessionEditForm: FC<SessionEditFormProps> = ({
     sessionToEdit.presenter
   );
 
-  const postSession = async (event: React.FormEvent) => {
+  const submitForm = async (event: React.FormEvent) => {
     event.preventDefault();
+    sessionToEdit.title = sessionTitle;
+    sessionToEdit.location = sessionLocation;
+    sessionToEdit.time = sessionTime;
+    sessionToEdit.presenter = sessionPresenter;
 
-    const response = await put(`/api/sessions/${sessionToEdit.id}`, {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        title: sessionTitle,
-        location: sessionLocation,
-        time: sessionTime,
-        presenter: sessionPresenter
-      })
-    });
+    let response: any;
+
+    if (!sessionToEdit.id)
+      response = await sessionAPI.postSession(sessionToEdit);
+    else response = await sessionAPI.editSession(sessionToEdit);
 
     if (response.ok) {
       getSessions();
@@ -48,8 +47,8 @@ const SessionEditForm: FC<SessionEditFormProps> = ({
 
   return (
     <>
-      <Header inverted>Submit A Session</Header>
-      <Form inverted onSubmit={event => postSession(event)}>
+      <Header>Submit A Session</Header>
+      <Form inverted onSubmit={event => submitForm(event)}>
         <Form.Field>
           <label>Title</label>
           <input
@@ -83,11 +82,11 @@ const SessionEditForm: FC<SessionEditFormProps> = ({
             onChange={e => setSessionTime(e.target.value)}
           />
         </Form.Field>
-        <Button type="submit">Edit</Button>
+        <Button type="submit">{!sessionToEdit.id ? "Add" : "Edit"}</Button>
         <Button onClick={() => setIsEditing(false)}>Cancel</Button>
       </Form>
     </>
   );
 };
 
-export default SessionEditForm;
+export default SessionForm;
