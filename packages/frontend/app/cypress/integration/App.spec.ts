@@ -38,8 +38,7 @@ describe("OPEN-SPACE e2e", function() {
     // get card to edit
     cy.get("div")
       .contains("Enric")
-      .parent()
-      .parent()
+      .closest(".session")
       .as("sessionDiv");
 
     // get Edit button
@@ -88,8 +87,7 @@ describe("OPEN-SPACE e2e", function() {
     // get card to edit
     cy.get("div")
       .contains("Enric")
-      .parent()
-      .parent()
+      .closest(".session")
       .as("sessionDiv");
 
     // get Delete button

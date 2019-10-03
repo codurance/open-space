@@ -12,13 +12,13 @@ interface SessionsProps {
   getSessions: Function;
 }
 
-const Sessions: FC<SessionsProps> = args => {
-  const [filterByInterest, setFilterByInterest] = useState(false);
+const Sessions: FC<SessionsProps> = props => {
+  const [filterByInterest, toggleFilterByInterest] = useState(false);
 
   const editClicked = (id: number) => {
-    const session: ISession = args.sessions.find(s => s.id === id)!;
-    args.setSessionToEdit(session);
-    args.setIsEditing(true);
+    const session: ISession = props.sessions.find(s => s.id === id)!;
+    props.setSessionToEdit(session);
+    props.setIsEditing(true);
   };
 
   const bySessionTime = function(a: ISession, b: ISession) {
@@ -33,20 +33,20 @@ const Sessions: FC<SessionsProps> = args => {
 
   return (
     <React.Fragment>
-      <Button onClick={() => setFilterByInterest(!filterByInterest)}>
+      <Button onClick={() => toggleFilterByInterest(!filterByInterest)}>
         Filter by Interest
       </Button>
-      {args.sessions &&
-        args.sessions
+      {props.sessions &&
+        props.sessions
           .filter(byInterest)
           .sort(bySessionTime)
           .map((session: ISession) => (
             <React.Fragment key={session.id}>
               <Session
                 {...session}
-                getSessions={args.getSessions}
+                getSessions={props.getSessions}
                 onEditClicked={editClicked}
-                isEditing={args.isEditing}
+                isEditing={props.isEditing}
               />
             </React.Fragment>
           ))}
