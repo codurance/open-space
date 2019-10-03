@@ -1,9 +1,10 @@
-import React, { useEffect, useState, FC } from "react";
-import { get, IHttpResponse } from "../common/http";
+import React, { useEffect, useState } from "react";
+import { Modal, Button, Icon } from "semantic-ui-react";
 
 import Sessions from "./Sessions";
-import SessionForm from "./SessionForm";
-import SessionEditForm from "./SessionEditForm";
+import SessionForm from "./sessionForm/SessionForm";
+import CSS from "csstype";
+import * as sessionAPI from "./api/sessionAPI";
 
 export interface ISession {
   id: number;
@@ -13,16 +14,14 @@ export interface ISession {
   presenter: string;
 }
 
-const SessionContainer: FC = () => {
+const SessionContainer: React.FC = () => {
   const [sessions, setSessions] = useState();
-  const [isEditing, setIsEditing] = useState(false);
-  const [sessionToEdit, setSessionToEdit] = useState();
+  const [isModalSessionOn, setModalSessionOn] = useState(false);
+  const [sessionData, setSessionData] = useState();
+  const [filterByInterest, toggleFilterByInterest] = useState(false);
 
   const getSessionResponse = async () => {
-    const getSessionResponse = await get<IHttpResponse<ISession[]>>(
-      `/api/sessions`
-    );
-    const sessions = getSessionResponse.parsedBody;
+    const sessions = await sessionAPI.getSessions();
     setSessions(sessions);
   };
 
@@ -30,29 +29,49 @@ const SessionContainer: FC = () => {
     getSessionResponse();
   }, []);
 
-  let currentForm;
-  if (isEditing) {
-    currentForm = (
-      <SessionEditForm
-        getSessions={getSessionResponse}
-        sessionToEdit={sessionToEdit}
-        setIsEditing={setIsEditing}
-      />
-    );
-  } else {
-    currentForm = <SessionForm getSessions={getSessionResponse} />;
-  }
+  const onAddSession = () => {
+    setModalSessionOn(true);
+    const session = {
+      title: "",
+      location: "",
+      time: "",
+      presenter: ""
+    };
+
+    setSessionData(session);
+  };
+
+  const modalStyle: CSS.Properties = {
+    background: "#666666"
+  };
 
   return (
     <>
+      <div className="session-buttons">
+        <Button onClick={() => onAddSession()}>Add session</Button>
+        <Button icon onClick={() => toggleFilterByInterest(!filterByInterest)}>
+          <Icon name="heart" />
+          Filter by Interest
+        </Button>
+      </div>
+      <Modal open={isModalSessionOn}>
+        <Modal.Header>Session</Modal.Header>
+        <Modal.Content style={modalStyle}>
+          <SessionForm
+            getSessions={getSessionResponse}
+            sessionToEdit={sessionData}
+            setIsEditing={setModalSessionOn}
+          />
+        </Modal.Content>
+      </Modal>
       <Sessions
         sessions={sessions}
-        setIsEditing={setIsEditing}
-        isEditing={isEditing}
-        setSessionToEdit={setSessionToEdit}
+        setIsEditing={setModalSessionOn}
+        isEditing={isModalSessionOn}
+        setSessionToEdit={setSessionData}
         getSessions={getSessionResponse}
+        isFilteringByInterest={filterByInterest}
       />
-      {currentForm}
     </>
   );
 };
