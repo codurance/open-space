@@ -1,8 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Session } from "./Session";
 import { ISession } from "./SessionContainer";
-
-import "./sessions.css"
+import { Button } from "semantic-ui-react";
+import * as sessionStorage from "../common/sessionsLocalStorage";
 
 interface SessionsProps {
   sessions: ISession[];
@@ -12,10 +12,13 @@ interface SessionsProps {
   getSessions: Function;
 }
 
-const Sessions: FC<SessionsProps> = args => {
-  const editClicked = (session: ISession) => {
-    args.setSessionToEdit(session);
-    args.setIsEditing(true);
+const Sessions: FC<SessionsProps> = props => {
+  const [filterByInterest, toggleFilterByInterest] = useState(false);
+
+  const editClicked = (id: number) => {
+    const session: ISession = props.sessions.find(s => s.id === id)!;
+    props.setSessionToEdit(session);
+    props.setIsEditing(true);
   };
 
   const bySessionTime = function(a: ISession, b: ISession) {
@@ -24,17 +27,29 @@ const Sessions: FC<SessionsProps> = args => {
     return 0;
   };
 
+  const byInterest = function(session: ISession) {
+    return !filterByInterest || sessionStorage.checkInterest(session.id);
+  };
+
   return (
     <React.Fragment>
-      {args.sessions &&
-        args.sessions.sort(bySessionTime).map((session: ISession) => (
-          <React.Fragment key={session.id}>
-            <Session {...session} getSessions={args.getSessions} />
-            {!args.isEditing && (
-              <div className="edit-session" onClick={() => editClicked(session)}>Edit</div>
-            )}
-          </React.Fragment>
-        ))}
+      <Button onClick={() => toggleFilterByInterest(!filterByInterest)}>
+        Filter by Interest
+      </Button>
+      {props.sessions &&
+        props.sessions
+          .filter(byInterest)
+          .sort(bySessionTime)
+          .map((session: ISession) => (
+            <React.Fragment key={session.id}>
+              <Session
+                {...session}
+                getSessions={props.getSessions}
+                onEditClicked={editClicked}
+                isEditing={props.isEditing}
+              />
+            </React.Fragment>
+          ))}
     </React.Fragment>
   );
 };

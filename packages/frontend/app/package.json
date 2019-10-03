@@ -5,25 +5,30 @@
   "dependencies": {
     "@types/enzyme": "^3.10.3",
     "@types/jest": "^24.0.18",
-    "@types/node": "12.7.5",
+    "@types/node": "^12.7.9",
     "@types/react": "16.9.2",
     "@types/react-dom": "16.9.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.3.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.2",
     "semantic-ui-react": "^0.88.1",
-    "typescript": "3.6.3"
+    "typescript": "3.6.3",
+    "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:ci": "CI=true react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress-run": "cypress run"
   },
   "proxy": "http://localhost:8080",
+  "cypress": "cypress open",
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -40,8 +45,19 @@
     ]
   },
   "devDependencies": {
+    "@cypress/webpack-preprocessor": "^4.1.0",
     "@types/enzyme-adapter-react-16": "^1.0.5",
+    "cypress": "^3.4.1",
+    "husky": "^3.0.7",
     "jest": "^24.9.0",
-    "ts-jest": "^24.1.0"
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
+    "ts-jest": "^24.1.0",
+    "ts-loader": "^6.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }

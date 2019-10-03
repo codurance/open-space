@@ -3,7 +3,6 @@
 *.iml
 *.ipr
 *.iws
-.editorconfig
 out
 build
 db-data
