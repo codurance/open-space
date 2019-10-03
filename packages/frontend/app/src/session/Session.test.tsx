@@ -2,7 +2,7 @@ import React from "react";
 import { Session } from "./Session";
 import enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import { Card, Button } from "semantic-ui-react";
+import { Button } from "semantic-ui-react"
 enzyme.configure({ adapter: new Adapter() });
 
 const id = 0;
@@ -24,10 +24,18 @@ it("Displays session", () => {
     />
   );
   const sessionElement = wrapper.find({ className: "session" });
-  expect(sessionElement.find({ className: "session-title"}).html()).toContain(title);
-  expect(sessionElement.find({ className: "session-presenter"}).html()).toContain(presenter);
-  expect(sessionElement.find({ className: "session-extra-details"}).html()).toContain(location);
-  expect(sessionElement.find({ className: "session-extra-details"}).html()).toContain(time);
+  expect(sessionElement.find({ className: "session-title" }).html()).toContain(
+    title
+  );
+  expect(
+    sessionElement.find({ className: "session-presenter" }).html()
+  ).toContain(presenter);
+  expect(
+    sessionElement.find({ className: "session-extra-details" }).html()
+  ).toContain(location);
+  expect(
+    sessionElement.find({ className: "session-extra-details" }).html()
+  ).toContain(time);
 });
 
 it("Displays delete button", () => {
