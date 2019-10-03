@@ -1,7 +1,8 @@
 import React, { useState, FC } from "react";
-import { put } from "../common/http";
-import { ISession } from "./SessionContainer";
+
+import { ISession } from "../SessionContainer";
 import { Button, Form, Header } from "semantic-ui-react";
+import * as sessionAPI from "./sessionAPI";
 
 interface SessionEditFormProps {
   getSessions: any;
@@ -23,20 +24,18 @@ const SessionEditForm: FC<SessionEditFormProps> = ({
     sessionToEdit.presenter
   );
 
-  const postSession = async (event: React.FormEvent) => {
+  const submitForm = async (event: React.FormEvent) => {
     event.preventDefault();
+    sessionToEdit.title = sessionTitle;
+    sessionToEdit.location = sessionLocation;
+    sessionToEdit.time = sessionTime;
+    sessionToEdit.presenter = sessionPresenter;
+    console.log(sessionToEdit);
+    let response: any;
 
-    const response = await put(`/api/sessions/${sessionToEdit.id}`, {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        title: sessionTitle,
-        location: sessionLocation,
-        time: sessionTime,
-        presenter: sessionPresenter
-      })
-    });
+    if (!sessionToEdit.id)
+      response = await sessionAPI.postSession(sessionToEdit);
+    else response = await sessionAPI.editSession(sessionToEdit);
 
     if (response.ok) {
       getSessions();
@@ -48,8 +47,8 @@ const SessionEditForm: FC<SessionEditFormProps> = ({
 
   return (
     <>
-      <Header inverted>Submit A Session</Header>
-      <Form inverted onSubmit={event => postSession(event)}>
+      <Header>Submit A Session</Header>
+      <Form inverted onSubmit={event => submitForm(event)}>
         <Form.Field>
           <label>Title</label>
           <input

@@ -1,9 +1,10 @@
 import React, { useEffect, useState, FC } from "react";
 import { get, IHttpResponse } from "../common/http";
+import { Modal, Button } from "semantic-ui-react";
 
 import Sessions from "./Sessions";
-import SessionForm from "./SessionForm";
-import SessionEditForm from "./SessionEditForm";
+import SessionEditForm from "./sessionForm/SessionEditForm";
+import CSS from "csstype";
 
 export interface ISession {
   id: number;
@@ -39,12 +40,32 @@ const SessionContainer: FC = () => {
         setIsEditing={setIsEditing}
       />
     );
-  } else {
-    currentForm = <SessionForm getSessions={getSessionResponse} />;
   }
+
+  const modalStyle: CSS.Properties = {
+    backgroundColor: "#FF9900"
+  };
+
+  const onAddSession = () => {
+    console.log("is editing to true");
+    setIsEditing(true);
+    const session = {
+      title: "",
+      location: "",
+      time: "",
+      presenter: ""
+    };
+
+    setSessionToEdit(session);
+  };
 
   return (
     <>
+      <Button onClick={() => onAddSession()}>Add session</Button>
+      <Modal style={modalStyle} open={isEditing}>
+        <Modal.Header>Session</Modal.Header>
+        <Modal.Content>{currentForm}</Modal.Content>
+      </Modal>
       <Sessions
         sessions={sessions}
         setIsEditing={setIsEditing}
@@ -52,7 +73,6 @@ const SessionContainer: FC = () => {
         setSessionToEdit={setSessionToEdit}
         getSessions={getSessionResponse}
       />
-      {currentForm}
     </>
   );
 };
