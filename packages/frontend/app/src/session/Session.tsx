@@ -61,11 +61,12 @@ export const Session = ({
             onClick={() => toggleInterest()}
           />
         </Button>
-        <Button className="delete-session" icon>
-          <Icon
-            name="trash"
-            onClick={() => deleteSessionById(id, getSessions)}
-          />
+        <Button
+          className="delete-session"
+          icon
+          onClick={() => deleteSessionById(id, getSessions)}
+        >
+          <Icon name="trash" />
         </Button>
         {!isEditing && (
           <Button className="edit-session" onClick={() => onEditClicked(id)}>
