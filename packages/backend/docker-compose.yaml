@@ -13,7 +13,7 @@ services:
 
   spring:
     environment:
-      - SPRING_ENV=dev
+      - SPRING_ENV=dev-container
     build: build/docker/.
     ports:
       - 8080:8080
