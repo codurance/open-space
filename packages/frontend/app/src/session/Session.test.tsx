@@ -2,7 +2,7 @@ import React from "react";
 import { Session } from "./Session";
 import enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import { Button } from "semantic-ui-react"
+import { Button } from "semantic-ui-react";
 enzyme.configure({ adapter: new Adapter() });
 
 const id = 0;
@@ -46,9 +46,11 @@ it("Displays delete button", () => {
       presenter={presenter}
       location={location}
       time={time}
+      onEditClicked={jest.fn()}
+      isEditing={false}
     />
   );
   const sessionElement = wrapper.find(".delete-session");
-  // FIXME: can't find a way to fix it for now
-  // expect(sessionElement).toBe(<Button />);
+
+  expect(sessionElement.type()).toBe(Button);
 });
