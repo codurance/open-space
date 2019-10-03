@@ -45,13 +45,13 @@ export const Session = ({
   return (
     <Card className="session" fluid>
       <Card.Content>
-        <Card.Header>{title}</Card.Header>
-        <Card.Description>
+        <Card.Header className="session-title">{title}</Card.Header>
+        <Card.Description className="session-presenter">
           <Icon name="user" />
           {presenter}
         </Card.Description>
       </Card.Content>
-      <Card.Content extra>
+      <Card.Content extra className="session-extra-details">
         {location} @ {time}
       </Card.Content>
       <Card.Content>

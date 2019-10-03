@@ -19,11 +19,15 @@ it("Displays session", () => {
       presenter={presenter}
       location={location}
       time={time}
+      onEditClicked={jest.fn()}
+      isEditing={false}
     />
   );
   const sessionElement = wrapper.find({ className: "session" });
-  // FIXME: can't find a way to fix it for now
-  // expect(sessionElement).toBe(<Card />);
+  expect(sessionElement.find({ className: "session-title"}).html()).toContain(title);
+  expect(sessionElement.find({ className: "session-presenter"}).html()).toContain(presenter);
+  expect(sessionElement.find({ className: "session-extra-details"}).html()).toContain(location);
+  expect(sessionElement.find({ className: "session-extra-details"}).html()).toContain(time);
 });
 
 it("Displays delete button", () => {
