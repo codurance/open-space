@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button } from "semantic-ui-react";
+import { Modal, Button, Icon } from "semantic-ui-react";
 
 import Sessions from "./Sessions";
 import SessionForm from "./sessionForm/SessionForm";
@@ -49,8 +49,9 @@ const SessionContainer: React.FC = () => {
     <>
       <div className="buttons">
         <Button onClick={() => onAddSession()}>Add session</Button>
-        <Button onClick={() => toggleFilterByInterest(!filterByInterest)}>
-          See Favourites
+        <Button icon onClick={() => toggleFilterByInterest(!filterByInterest)}>
+          <Icon name="heart" />
+          Filter by Interest
         </Button>
       </div>
       <Modal open={isModalSessionOn}>
