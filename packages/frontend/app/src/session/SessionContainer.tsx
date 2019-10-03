@@ -47,7 +47,7 @@ const SessionContainer: React.FC = () => {
 
   return (
     <>
-      <div className="buttons">
+      <div className="session-buttons">
         <Button onClick={() => onAddSession()}>Add session</Button>
         <Button icon onClick={() => toggleFilterByInterest(!filterByInterest)}>
           <Icon name="heart" />

@@ -5,7 +5,7 @@ import { Button, Form, Header } from "semantic-ui-react";
 import * as sessionAPI from "../api/sessionAPI";
 
 interface SessionFormProps {
-  getSessions: any;
+  getSessions: Function;
   sessionToEdit: ISession;
   setIsEditing: (isEditing: boolean) => void;
 }
