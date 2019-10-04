@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, Icon } from "semantic-ui-react";
 
 import Sessions from "./Sessions/Sessions";
-import SessionForm from "./SessionForm/SessionForm";
+import SessionForm from "./sessionForm/SessionForm";
 import "./SessionsContainer.css";
 import * as sessionAPI from "./sessionService/sessionAPI";
 
