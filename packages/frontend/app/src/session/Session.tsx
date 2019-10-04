@@ -12,6 +12,7 @@ export type SessionProps = {
   getSessions?: Function;
   onEditClicked: Function;
   isEditing: boolean;
+  forceUpdate: Function;
 };
 
 const deleteSessionById = async (
@@ -32,7 +33,8 @@ export const Session = ({
   presenter,
   getSessions,
   isEditing,
-  onEditClicked
+  onEditClicked,
+  forceUpdate
 }: SessionProps) => {
   const [interest, setInterest] = useState(
     sessionsLocalStorage.checkInterest(id)
@@ -41,6 +43,8 @@ export const Session = ({
   const toggleInterest = () => {
     setInterest(!interest);
     sessionsLocalStorage.setInterest(id, !interest);
+    forceUpdate();
+    //console.log("force update");
   };
 
   return (

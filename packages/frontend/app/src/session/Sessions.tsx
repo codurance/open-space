@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Session } from "./Session";
 import { ISession } from "./SessionContainer";
 import * as sessionStorage from "../common/sessionsLocalStorage";
@@ -13,6 +13,8 @@ interface SessionsProps {
 }
 
 const Sessions: React.FC<SessionsProps> = props => {
+  const [forceUpdate, setForceUpdate] = useState(true);
+
   const editClicked = (id: number) => {
     const session: ISession = props.sessions.find(s => s.id === id)!;
     props.setSessionToEdit(session);
@@ -31,8 +33,13 @@ const Sessions: React.FC<SessionsProps> = props => {
     );
   };
 
+  const useForceUpdate = () => {
+    setForceUpdate(!forceUpdate);
+  };
+
   return (
     <React.Fragment>
+      {forceUpdate}
       {props.sessions &&
         props.sessions
           .filter(byInterest)
@@ -44,6 +51,7 @@ const Sessions: React.FC<SessionsProps> = props => {
                 getSessions={props.getSessions}
                 onEditClicked={editClicked}
                 isEditing={props.isEditing}
+                forceUpdate={useForceUpdate}
               />
             </React.Fragment>
           ))}
