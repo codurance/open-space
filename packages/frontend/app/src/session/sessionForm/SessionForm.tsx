@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { ISession } from "../SessionContainer";
 import { Button, Form, Header } from "semantic-ui-react";
-import * as sessionAPI from "../api/sessionAPI";
+import * as sessionAPI from "../sessionService/sessionAPI";
 
 interface SessionFormProps {
   getSessions: Function;

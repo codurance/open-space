@@ -22,6 +22,7 @@ beforeEach(() => {
       time={time}
       onEditClicked={jest.fn()}
       isEditing={false}
+      forceUpdate={jest.fn()}
     />
   );
 });

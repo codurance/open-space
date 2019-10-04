@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Card, Icon } from "semantic-ui-react";
-import * as sessionsLocalStorage from "../common/sessionsLocalStorage";
-import * as sessionAPI from "./api/sessionAPI";
+import * as sessionsLocalStorage from "../../../common/sessionsLocalStorage";
+import * as sessionAPI from "../../sessionService/sessionAPI";
 
 export type SessionProps = {
   id: number;

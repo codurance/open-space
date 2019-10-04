@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Icon } from "semantic-ui-react";
 
-import Sessions from "./Sessions";
-import SessionForm from "./sessionForm/SessionForm";
+import Sessions from "./Sessions/Sessions";
+import SessionForm from "./SessionForm/SessionForm";
 import "./SessionsContainer.css";
-import * as sessionAPI from "./api/sessionAPI";
+import * as sessionAPI from "./sessionService/sessionAPI";
 
 export interface ISession {
   id: number;

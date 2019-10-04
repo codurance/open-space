@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Session } from "./Session";
-import { ISession } from "./SessionContainer";
-import * as sessionStorage from "../common/sessionsLocalStorage";
+import { Session } from "./sessionCard/Session";
+import { ISession } from "../SessionContainer";
+import * as sessionStorage from "../../common/sessionsLocalStorage";
 
 interface SessionsProps {
   sessions: ISession[];

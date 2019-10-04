@@ -1,6 +1,6 @@
 import React from "react";
 import Sessions from "./Sessions";
-import { Session } from "./Session";
+import { Session } from "./sessionCard/Session";
 import enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { any } from "prop-types";
@@ -14,6 +14,7 @@ it("Renders sessions when sessions exist", () => {
       setIsEditing={jest.fn()}
       setSessionToEdit={jest.fn()}
       getSessions={jest.fn()}
+      isFilteringByInterest={false}
     />
   );
 
@@ -38,6 +39,7 @@ it("Renders sessions when sessions exist", () => {
       setIsEditing={jest.fn()}
       setSessionToEdit={jest.fn()}
       getSessions={jest.fn()}
+      isFilteringByInterest={false}
     />
   );
 
