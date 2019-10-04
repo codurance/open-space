@@ -2,7 +2,9 @@ describe("OPEN-SPACE e2e", function() {
   it("Submit a session", function() {
     cy.server();
     cy.route("POST", "/api/sessions").as("postSession");
+
     cy.visit("/");
+    cy.get(".add-session-button").click();
     cy.get("label")
       .contains("Title")
       .next("input")
