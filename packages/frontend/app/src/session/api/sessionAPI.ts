@@ -1,8 +1,15 @@
 import { ISession } from "../SessionContainer";
-import { put, post, get, IHttpResponse } from "../../common/http";
+import {
+  put,
+  post,
+  get,
+  IHttpResponse,
+  deleteRequest
+} from "../../common/http";
+import "whatwg-fetch";
 
 export const editSession = async (session: ISession) => {
-  const response: Response = await put(`/api/sessions/${session.id}`, {
+  let response: IHttpResponse<any> = await put(`/api/sessions/${session.id}`, {
     headers: {
       "Content-Type": "application/json"
     },
@@ -18,7 +25,7 @@ export const editSession = async (session: ISession) => {
 };
 
 export const postSession = async (session: ISession) => {
-  const response: Response = await post(`/api/sessions`, {
+  const response: IHttpResponse<any> = await post(`/api/sessions`, {
     headers: {
       "Content-Type": "application/json"
     },
@@ -39,4 +46,9 @@ export const getSessions = async () => {
   );
   const sessions = getSessionResponse.parsedBody;
   return sessions;
+};
+
+export const deleteSession = async (id: number) => {
+  const response = await deleteRequest(`/api/sessions/` + id);
+  return response;
 };

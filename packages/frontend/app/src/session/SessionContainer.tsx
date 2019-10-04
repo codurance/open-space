@@ -3,7 +3,7 @@ import { Modal, Button, Icon } from "semantic-ui-react";
 
 import Sessions from "./Sessions";
 import SessionForm from "./sessionForm/SessionForm";
-import CSS from "csstype";
+import "./SessionsContainer.css";
 import * as sessionAPI from "./api/sessionAPI";
 
 export interface ISession {
@@ -41,10 +41,6 @@ const SessionContainer: React.FC = () => {
     setSessionData(session);
   };
 
-  const modalStyle: CSS.Properties = {
-    background: "#666666"
-  };
-
   return (
     <>
       <div className="session-buttons">
@@ -56,11 +52,11 @@ const SessionContainer: React.FC = () => {
       </div>
       <Modal open={isModalSessionOn}>
         <Modal.Header>Session</Modal.Header>
-        <Modal.Content style={modalStyle}>
+        <Modal.Content>
           <SessionForm
             getSessions={getSessionResponse}
             sessionToEdit={sessionData}
-            setIsEditing={setModalSessionOn}
+            setModalSessionOn={setModalSessionOn}
           />
         </Modal.Content>
       </Modal>

@@ -13,7 +13,7 @@ export const http = <T>(
     fetch(url, args)
       .then((res: IHttpResponse<T>) => {
         response = res;
-        if (response.status === 204) resolve();
+        if (response.status === 204) resolve(response);
         return res.json();
       })
       .then((body: T | undefined) => {
@@ -49,7 +49,7 @@ export const post = async <T>(
   return await http<T>(path, args);
 };
 
-export const deleteSession = async <T>(
+export const deleteRequest = async <T>(
   path: string,
   args: RequestInit = {
     method: "DELETE"

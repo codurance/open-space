@@ -7,13 +7,13 @@ import * as sessionAPI from "../api/sessionAPI";
 interface SessionFormProps {
   getSessions: Function;
   sessionToEdit: ISession;
-  setIsEditing: (isEditing: boolean) => void;
+  setModalSessionOn: (isModalOn: boolean) => void;
 }
 
 const SessionForm: React.FC<SessionFormProps> = ({
   getSessions,
   sessionToEdit,
-  setIsEditing
+  setModalSessionOn
 }) => {
   const [sessionTitle, setSessionTitle] = useState(sessionToEdit.title);
   const [sessionLocation, setSessionLocation] = useState(
@@ -33,13 +33,15 @@ const SessionForm: React.FC<SessionFormProps> = ({
 
     let response: any;
 
-    if (!sessionToEdit.id)
+    if (!sessionToEdit.id) {
       response = await sessionAPI.postSession(sessionToEdit);
-    else response = await sessionAPI.editSession(sessionToEdit);
+    } else {
+      response = await sessionAPI.editSession(sessionToEdit);
+    }
 
     if (response.ok) {
       getSessions();
-      setIsEditing(false);
+      setModalSessionOn(false);
     } else {
       //setError;
     }
@@ -83,7 +85,7 @@ const SessionForm: React.FC<SessionFormProps> = ({
           />
         </Form.Field>
         <Button type="submit">{!sessionToEdit.id ? "Add" : "Edit"}</Button>
-        <Button onClick={() => setIsEditing(false)}>Cancel</Button>
+        <Button onClick={() => setModalSessionOn(false)}>Cancel</Button>
       </Form>
     </>
   );

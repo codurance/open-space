@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { deleteSession } from "../common/http";
 import { Button, Card, Icon } from "semantic-ui-react";
 import * as sessionsLocalStorage from "../common/sessionsLocalStorage";
+import * as sessionAPI from "./api/sessionAPI";
 
 export type SessionProps = {
   id: number;
@@ -15,12 +15,13 @@ export type SessionProps = {
 };
 
 const deleteSessionById = async (
-  id: Number,
+  id: number,
   getSessions: Function | undefined
 ) => {
-  await deleteSession(`/api/sessions/` + id).then(() => {
-    if (getSessions !== undefined) getSessions();
-  });
+  const response = await sessionAPI.deleteSession(id);
+  if (response.ok && getSessions) {
+    getSessions();
+  }
 };
 
 export const Session = ({
