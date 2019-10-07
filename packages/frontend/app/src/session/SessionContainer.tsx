@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Modal, Button, Icon } from "semantic-ui-react";
 
 import Sessions from "./Sessions";
@@ -14,8 +14,14 @@ export interface ISession {
   presenter: string;
 }
 
+const SessionsContext = React.createContext({
+  sessions: []
+});
+
 const SessionContainer: React.FC = () => {
-  const [sessions, setSessions] = useState();
+  const [sessions2, setSessions] = useContext(SessionsContext);
+
+  //const [sessions, setSessions] = useState();
   const [isModalSessionOn, setModalSessionOn] = useState(false);
   const [sessionData, setSessionData] = useState();
   const [filterByInterest, toggleFilterByInterest] = useState(false);
