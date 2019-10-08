@@ -1,5 +1,6 @@
 package com.codurance.open_space;
 
+import com.codurance.open_space.helloworld.HelloWorldController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,10 +20,10 @@ class HelloWorldControllerShould {
     @Test
     void returnHelloWorld() throws Exception {
         mockMvc.perform(get("/api")
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content()
-                .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("text", is("Hello, world!")));
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("text", is("Hello, world!")));
     }
 }

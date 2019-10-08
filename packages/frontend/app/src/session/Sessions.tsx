@@ -1,23 +1,18 @@
 import React from "react";
 import { Session } from "./Session";
-import { ISession } from "./SessionContainer";
+import SessionsContext, {
+  ISession,
+  useSessionsContext
+} from "./sessionsContext";
 import * as sessionStorage from "../common/sessionsLocalStorage";
 
 interface SessionsProps {
-  sessions: ISession[];
-  isEditing: boolean;
-  setIsEditing: (isEditing: boolean) => void;
-  setSessionToEdit: (session: ISession) => void;
-  getSessions: Function;
   isFilteringByInterest: boolean;
 }
 
 const Sessions: React.FC<SessionsProps> = props => {
-  const editClicked = (id: number) => {
-    const session: ISession = props.sessions.find(s => s.id === id)!;
-    props.setSessionToEdit(session);
-    props.setIsEditing(true);
-  };
+  // const { sessions } = useContext(SessionsContext);
+  const { sessions } = useSessionsContext();
 
   const bySessionTime = function(a: ISession, b: ISession) {
     if (a.time < b.time) return -1;
@@ -33,18 +28,13 @@ const Sessions: React.FC<SessionsProps> = props => {
 
   return (
     <React.Fragment>
-      {props.sessions &&
-        props.sessions
+      {sessions &&
+        sessions
           .filter(byInterest)
           .sort(bySessionTime)
           .map((session: ISession) => (
             <React.Fragment key={session.id}>
-              <Session
-                {...session}
-                getSessions={props.getSessions}
-                onEditClicked={editClicked}
-                isEditing={props.isEditing}
-              />
+              <Session {...session} />
             </React.Fragment>
           ))}
     </React.Fragment>

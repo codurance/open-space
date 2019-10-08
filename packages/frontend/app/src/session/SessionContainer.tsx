@@ -1,29 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Icon } from "semantic-ui-react";
-
+import { Button, Icon } from "semantic-ui-react";
 import Sessions from "./Sessions";
 import SessionForm from "./sessionForm/SessionForm";
-import CSS from "csstype";
 import * as sessionAPI from "./api/sessionAPI";
 import "./SessionContainer.css";
-
-export interface ISession {
-  id: number;
-  title: string;
-  location: string;
-  time: string;
-  presenter: string;
-}
+import SessionsContext from "./sessionsContext";
 
 const SessionContainer: React.FC = () => {
   const [sessions, setSessions] = useState();
-  const [isModalSessionOn, setModalSessionOn] = useState(false);
-  const [sessionData, setSessionData] = useState();
+  const [currentSession, setCurrentSession] = useState();
   const [filterByInterest, toggleFilterByInterest] = useState(false);
 
   const getSessionResponse = async () => {
-    const sessions = await sessionAPI.getSessions();
-    setSessions(sessions);
+    const sessionsResult = await sessionAPI.getSessions();
+    setSessions(sessionsResult);
   };
 
   useEffect(() => {
@@ -31,7 +21,6 @@ const SessionContainer: React.FC = () => {
   }, []);
 
   const onAddSession = () => {
-    setModalSessionOn(true);
     const session = {
       title: "",
       location: "",
@@ -39,15 +28,13 @@ const SessionContainer: React.FC = () => {
       presenter: ""
     };
 
-    setSessionData(session);
-  };
-
-  const modalStyle: CSS.Properties = {
-    background: "#666666"
+    setCurrentSession(session);
   };
 
   return (
-    <>
+    <SessionsContext.Provider
+      value={{ sessions, setSessions, currentSession, setCurrentSession }}
+    >
       <div className="session-buttons">
         <Button className="add-session-button" onClick={() => onAddSession()}>
           Add session
@@ -57,25 +44,10 @@ const SessionContainer: React.FC = () => {
           Filter by Interest
         </Button>
       </div>
-      <Modal open={isModalSessionOn}>
-        <Modal.Header>Session</Modal.Header>
-        <Modal.Content style={modalStyle}>
-          <SessionForm
-            getSessions={getSessionResponse}
-            sessionToEdit={sessionData}
-            setIsEditing={setModalSessionOn}
-          />
-        </Modal.Content>
-      </Modal>
-      <Sessions
-        sessions={sessions}
-        setIsEditing={setModalSessionOn}
-        isEditing={isModalSessionOn}
-        setSessionToEdit={setSessionData}
-        getSessions={getSessionResponse}
-        isFilteringByInterest={filterByInterest}
-      />
-    </>
+
+      {currentSession !== undefined && <SessionForm />}
+      <Sessions isFilteringByInterest={filterByInterest} />
+    </SessionsContext.Provider>
   );
 };
 
