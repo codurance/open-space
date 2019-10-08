@@ -1,4 +1,4 @@
-import { ISession } from "../SessionContainer";
+import { ISession } from "../sessionsContext";
 import { put, post, get, IHttpResponse } from "../../common/http";
 
 export const editSession = async (session: ISession) => {
