@@ -1,5 +1,8 @@
 package com.codurance.open_space;
 
+import com.codurance.open_space.controller.OpenSpaceSessionController;
+import com.codurance.open_space.domain.OpenSpaceSession;
+import com.codurance.open_space.repository.OpenSpaceSessionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,5 +1,7 @@
-package com.codurance.open_space;
+package com.codurance.open_space.controller;
 
+import com.codurance.open_space.domain.OpenSpaceSession;
+import com.codurance.open_space.repository.OpenSpaceSessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.codurance.open_space;
+package com.codurance.open_space.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
