@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "sessions")
-public class OpenSpaceSession {
+public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

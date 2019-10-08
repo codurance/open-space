@@ -1,8 +1,8 @@
 package com.codurance.open_space;
 
-import com.codurance.open_space.controller.OpenSpaceSessionController;
-import com.codurance.open_space.domain.OpenSpaceSession;
-import com.codurance.open_space.repository.OpenSpaceSessionRepository;
+import com.codurance.open_space.controller.SessionController;
+import com.codurance.open_space.domain.Session;
+import com.codurance.open_space.repository.SessionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +20,22 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(OpenSpaceSessionController.class)
-public class OpenSpaceSessionControllerShould {
+@WebMvcTest(SessionController.class)
+public class SessionControllerShould {
     private static final String API_PATH = "/api/sessions";
     private static final String API_SESSION_1_PATH = "/api/sessions/1";
 
-    private OpenSpaceSession openSpaceSession;
+    private Session session;
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private OpenSpaceSessionRepository repository;
+    private SessionRepository repository;
 
     @BeforeEach
     void setUp() {
-        openSpaceSession = new OpenSpaceSession(1, "Session 1", "Location 1", "11:00", "David");
+        session = new Session(1, "Session 1", "Location 1", "11:00", "David");
     }
 
     @Test
@@ -43,7 +43,7 @@ public class OpenSpaceSessionControllerShould {
         final String expectedJson = "[{\"id\":1,\"title\":\"Session 1\",\"location\":\"Location 1\",\"time\":\"11:00\",\"presenter\":\"David\"}]";
 
         when(repository.findAll())
-                .thenReturn(List.of(openSpaceSession));
+                .thenReturn(List.of(session));
 
         mockMvc.perform(get(API_PATH)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -55,11 +55,11 @@ public class OpenSpaceSessionControllerShould {
 
     @Test
     void post_open_space_session() throws Exception {
-        when(repository.save(openSpaceSession))
-                .thenReturn(openSpaceSession);
+        when(repository.save(session))
+                .thenReturn(session);
 
         mockMvc.perform(post(API_PATH)
-                .content(asJsonString(openSpaceSession))
+                .content(asJsonString(session))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -73,21 +73,21 @@ public class OpenSpaceSessionControllerShould {
     @Test
     void update_open_space_session() throws Exception {
         when(repository.findById(1))
-                .thenReturn(Optional.of(openSpaceSession));
+                .thenReturn(Optional.of(session));
 
-        OpenSpaceSession openSpaceSessionUpdated = new OpenSpaceSession(
-                openSpaceSession.getId(),
-                openSpaceSession.getTitle(),
-                openSpaceSession.getLocation(),
-                openSpaceSession.getTime(),
-                openSpaceSession.getPresenter());
-        openSpaceSessionUpdated.setLocation("Location 2");
+        Session sessionUpdated = new Session(
+                session.getId(),
+                session.getTitle(),
+                session.getLocation(),
+                session.getTime(),
+                session.getPresenter());
+        sessionUpdated.setLocation("Location 2");
 
-        when(repository.save(openSpaceSessionUpdated))
-                .thenReturn(openSpaceSessionUpdated);
+        when(repository.save(sessionUpdated))
+                .thenReturn(sessionUpdated);
 
         mockMvc.perform(put(API_SESSION_1_PATH)
-                .content(asJsonString(openSpaceSessionUpdated))
+                .content(asJsonString(sessionUpdated))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -98,7 +98,7 @@ public class OpenSpaceSessionControllerShould {
                 .andExpect(jsonPath("$.presenter").value("David"));
 
         verify(repository).findById(1);
-        verify(repository).save(openSpaceSessionUpdated);
+        verify(repository).save(sessionUpdated);
     }
 
     @Test
@@ -106,16 +106,16 @@ public class OpenSpaceSessionControllerShould {
 
         when(repository.findById(20)).thenReturn(null);
 
-        OpenSpaceSession openSpaceSessionUpdated = new OpenSpaceSession(
-                openSpaceSession.getId(),
-                openSpaceSession.getTitle(),
-                openSpaceSession.getLocation(),
-                openSpaceSession.getTime(),
-                openSpaceSession.getPresenter());
-        openSpaceSessionUpdated.setLocation("Location 2");
+        Session sessionUpdated = new Session(
+                session.getId(),
+                session.getTitle(),
+                session.getLocation(),
+                session.getTime(),
+                session.getPresenter());
+        sessionUpdated.setLocation("Location 2");
 
         mockMvc.perform(put(API_SESSION_1_PATH)
-                .content(asJsonString(openSpaceSessionUpdated))
+                .content(asJsonString(sessionUpdated))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
