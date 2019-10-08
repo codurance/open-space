@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Icon } from "semantic-ui-react";
 
+import Header from "../home/Home";
 import Sessions from "./Sessions";
 import SessionForm from "./sessionForm/SessionForm";
 import CSS from "csstype";
