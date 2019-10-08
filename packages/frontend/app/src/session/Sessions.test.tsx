@@ -22,7 +22,6 @@ it("Renders sessions when sessions exist", () => {
       title: "title",
       location: "location",
       time: "12:00",
-
       presenter: "presenter"
     }
   ];
@@ -46,4 +45,34 @@ it("Renders sessions when sessions exist", () => {
     />
   );
   expect(doesContainSession).toBe(true);
+});
+
+it("Renders sessions after filtering by sessiontype", () => {
+  const sessions: SessionsContext.ISession[] = [
+    {
+      id: 0,
+      title: "title",
+      location: "Keep Me Please",
+      time: "12:00",
+      presenter: "presenter"
+    },
+    {
+      id: 1,
+      title: "title",
+      location: "I should not be here",
+      time: "12:00",
+      presenter: "presenter"
+    }
+  ];
+
+  jest.spyOn(SessionsContext, "useSessionsContext").mockImplementation(() => ({
+    sessions: sessions,
+    setSessions: jest.fn(),
+    currentSession: undefined,
+    setCurrentSession: jest.fn(),
+    sessionTypesToFilter: ["Keep Me Please"]
+  }));
+
+  const wrapper = enzyme.shallow(<Sessions isFilteringByInterest={false} />);
+  expect(wrapper.find(Session).length).toEqual(1);
 });
