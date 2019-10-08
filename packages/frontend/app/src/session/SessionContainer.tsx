@@ -3,6 +3,7 @@ import { Button, Icon } from "semantic-ui-react";
 import Sessions from "./Sessions";
 import SessionForm from "./sessionForm/SessionForm";
 import * as sessionAPI from "./api/sessionAPI";
+import "./SessionContainer.css";
 import SessionsContext from "./sessionsContext";
 
 const SessionContainer: React.FC = () => {
