@@ -5,6 +5,7 @@ import com.codurance.open_space.repository.SpaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -26,6 +27,15 @@ public class SpaceController {
     @PostMapping
     public Space create(@RequestBody Space space) {
         return spaceRepository.save(space);
+    }
+
+    @PutMapping("/{id}")
+    public void update(@PathVariable Long id, @RequestBody Space space) {
+        Space spaceEntity = spaceRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+
+        spaceEntity.setFacilities(space.getFacilities());
+        spaceRepository.save(spaceEntity);
     }
 
 }
