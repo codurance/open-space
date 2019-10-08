@@ -3,7 +3,6 @@ package com.codurance.open_space;
 import com.codurance.open_space.controller.OpenSpaceSessionController;
 import com.codurance.open_space.domain.OpenSpaceSession;
 import com.codurance.open_space.repository.OpenSpaceSessionRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.Optional;
 
+import static com.codurance.helpers.TestUtils.asJsonString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -68,14 +68,6 @@ public class OpenSpaceSessionControllerShould {
                 .andExpect(jsonPath("$.location").value("Location 1"))
                 .andExpect(jsonPath("$.time").value("11:00"))
                 .andExpect(jsonPath("$.presenter").value("David"));
-    }
-
-    private static String asJsonString(final Object object) {
-        try {
-            return new ObjectMapper().writeValueAsString(object);
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
     }
 
     @Test
