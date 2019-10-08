@@ -1,34 +1,20 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Icon } from "semantic-ui-react";
 
 import Sessions from "./Sessions";
 import SessionForm from "./sessionForm/SessionForm";
-import CSS from "csstype";
+
 import * as sessionAPI from "./api/sessionAPI";
-
-export interface ISession {
-  id: number;
-  title: string;
-  location: string;
-  time: string;
-  presenter: string;
-}
-
-const SessionsContext = React.createContext({
-  sessions: []
-});
+import SessionsContext from "./sessionsContext";
 
 const SessionContainer: React.FC = () => {
-  const [sessions2, setSessions] = useContext(SessionsContext);
-
-  //const [sessions, setSessions] = useState();
-  const [isModalSessionOn, setModalSessionOn] = useState(false);
-  const [sessionData, setSessionData] = useState();
+  const [sessions, setSessions] = useState();
+  const [currentSession, setCurrentSession] = useState();
   const [filterByInterest, toggleFilterByInterest] = useState(false);
 
   const getSessionResponse = async () => {
-    const sessions = await sessionAPI.getSessions();
-    setSessions(sessions);
+    const sessionsResult = await sessionAPI.getSessions();
+    setSessions(sessionsResult);
   };
 
   useEffect(() => {
@@ -36,7 +22,6 @@ const SessionContainer: React.FC = () => {
   }, []);
 
   const onAddSession = () => {
-    setModalSessionOn(true);
     const session = {
       title: "",
       location: "",
@@ -44,15 +29,13 @@ const SessionContainer: React.FC = () => {
       presenter: ""
     };
 
-    setSessionData(session);
-  };
-
-  const modalStyle: CSS.Properties = {
-    background: "#666666"
+    setCurrentSession(session);
   };
 
   return (
-    <>
+    <SessionsContext.Provider
+      value={{ sessions, setSessions, currentSession, setCurrentSession }}
+    >
       <div className="session-buttons">
         <Button className="add-session-button" onClick={() => onAddSession()}>
           Add session
@@ -62,25 +45,14 @@ const SessionContainer: React.FC = () => {
           Filter by Interest
         </Button>
       </div>
-      <Modal open={isModalSessionOn}>
+      <Modal open={currentSession !== undefined}>
         <Modal.Header>Session</Modal.Header>
-        <Modal.Content style={modalStyle}>
-          <SessionForm
-            getSessions={getSessionResponse}
-            sessionToEdit={sessionData}
-            setIsEditing={setModalSessionOn}
-          />
+        <Modal.Content>
+          <SessionForm />
         </Modal.Content>
       </Modal>
-      <Sessions
-        sessions={sessions}
-        setIsEditing={setModalSessionOn}
-        isEditing={isModalSessionOn}
-        setSessionToEdit={setSessionData}
-        getSessions={getSessionResponse}
-        isFilteringByInterest={filterByInterest}
-      />
-    </>
+      <Sessions isFilteringByInterest={filterByInterest} />
+    </SessionsContext.Provider>
   );
 };
 

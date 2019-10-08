@@ -1,26 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { deleteSession } from "../common/http";
 import { Button, Card, Icon } from "semantic-ui-react";
 import * as sessionsLocalStorage from "../common/sessionsLocalStorage";
-
+import SessionsContext, { ISession } from "./sessionsContext";
+import * as sessionAPI from "./api/sessionAPI";
 export type SessionProps = {
   id: number;
   title: string;
   location: string;
   time: string;
   presenter: string;
-  getSessions?: Function;
-  onEditClicked: Function;
-  isEditing: boolean;
-};
-
-const deleteSessionById = async (
-  id: Number,
-  getSessions: Function | undefined
-) => {
-  await deleteSession(`/api/sessions/` + id).then(() => {
-    if (getSessions !== undefined) getSessions();
-  });
 };
 
 export const Session = ({
@@ -28,14 +17,26 @@ export const Session = ({
   title,
   location,
   time,
-  presenter,
-  getSessions,
-  isEditing,
-  onEditClicked
+  presenter
 }: SessionProps) => {
+  const { setSessions, setCurrentSession, sessions } = useContext(
+    SessionsContext
+  );
+
   const [interest, setInterest] = useState(
     sessionsLocalStorage.checkInterest(id)
   );
+
+  const onEditClicked = (id: number) => {
+    const session: ISession = sessions.find(s => s.id === id)!;
+    setCurrentSession(session);
+  };
+
+  const deleteSessionById = async (id: Number) => {
+    await deleteSession(`/api/sessions/` + id);
+    const updatedSessions = await sessionAPI.getSessions();
+    if (updatedSessions) setSessions(updatedSessions);
+  };
 
   const toggleInterest = () => {
     setInterest(!interest);
@@ -61,15 +62,13 @@ export const Session = ({
         <Button
           className="delete-session"
           icon
-          onClick={() => deleteSessionById(id, getSessions)}
+          onClick={() => deleteSessionById(id)}
         >
           <Icon name="trash" />
         </Button>
-        {!isEditing && (
-          <Button className="edit-session" onClick={() => onEditClicked(id)}>
-            Edit
-          </Button>
-        )}
+        <Button className="edit-session" onClick={() => onEditClicked(id)}>
+          Edit
+        </Button>
       </Card.Content>
     </Card>
   );
