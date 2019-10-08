@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(SpaceController.class)
 public class SpaceControllerShould {
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -27,7 +28,7 @@ public class SpaceControllerShould {
 
     @Test
     void return_list_of_spaces() throws Exception {
-        Space space = new Space(1L,"Space1","Biggest Room", "rooftop");
+        Space space = new Space(1L, "Space1", "Biggest Room", "rooftop");
         when(spaceRepository.findAll()).thenReturn(List.of(space));
 
         String expectedJson = "[{\"id\":1,\"name\":\"Space1\",\"description\":\"Biggest Room\",\"location\":\"rooftop\"}]";
