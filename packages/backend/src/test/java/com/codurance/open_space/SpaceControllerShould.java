@@ -13,10 +13,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(SpaceController.class)
@@ -60,5 +61,31 @@ public class SpaceControllerShould {
                 .andExpect(jsonPath("$.description").value("Biggest Room"))
                 .andExpect(jsonPath("$.location").value("rooftop"))
                 .andExpect(jsonPath("$.facilities").value("tv, projector"));
+    }
+
+    @Test
+    void update_facilities() throws Exception {
+        final Optional<Space> space = Optional.of(this.space);
+        when(spaceRepository.findById(1L))
+                .thenReturn(space);
+
+        Space spaceToUpdate = space.get();
+
+        System.out.println(spaceToUpdate);
+        System.out.println(this.space);
+
+        spaceToUpdate.setFacilities("TV, Bedroom");
+
+        when(spaceRepository.save(spaceToUpdate))
+                .thenReturn(spaceToUpdate);
+
+        mockMvc.perform(put("/api/spaces/1/facilities")
+                .content(TestUtils.asJsonString(spaceToUpdate))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(spaceRepository).findById(1L);
+        verify(spaceRepository).save(spaceToUpdate);
     }
 }
