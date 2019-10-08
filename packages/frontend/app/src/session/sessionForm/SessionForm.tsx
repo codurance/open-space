@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Modal, Button, Form, Header } from "semantic-ui-react";
+import { Modal, Button, Form } from "semantic-ui-react";
 import * as sessionAPI from "../api/sessionAPI";
 import SessionsContext from "../sessionsContext";
 
@@ -37,11 +37,17 @@ const SessionForm: React.FC = () => {
     }
   };
 
+  const onExitForm = (event: React.FormEvent) => {
+    event.preventDefault();
+    setCurrentSession(undefined);
+  };
+
   return (
-    <Modal open={true}>
-      <Modal.Header>Session</Modal.Header>
+    <Modal open={currentSession !== undefined}>
+      <Modal.Header>
+        {!currentSession!.id ? "Submit" : "Edit"} A Session
+      </Modal.Header>
       <Modal.Content>
-        <Header>Submit A Session</Header>
         <Form inverted onSubmit={event => submitForm(event)}>
           <Form.Field>
             <label>Title</label>
@@ -77,7 +83,7 @@ const SessionForm: React.FC = () => {
             />
           </Form.Field>
           <Button type="submit">{!currentSession!.id ? "Add" : "Edit"}</Button>
-          <Button onClick={() => setCurrentSession(undefined)}>Cancel</Button>
+          <Button onClick={event => onExitForm(event)}>Cancel</Button>
         </Form>
       </Modal.Content>
     </Modal>
