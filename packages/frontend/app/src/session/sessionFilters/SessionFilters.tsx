@@ -1,43 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import { Dropdown } from "semantic-ui-react";
+import { useSessionsContext } from "../sessionsContext";
 import "./SessionFilters.css";
 
 const SessionsFilters: React.FC = () => {
-  const [value, setValue] = useState([]);
+  const { setSessionTypesToFilter } = useSessionsContext();
 
   const options = [
-    { key: "angular", text: "Angular", value: "angular" },
-    { key: "css", text: "CSS", value: "css" },
-    { key: "design", text: "Graphic Design", value: "design" },
-    { key: "ember", text: "Ember", value: "ember" },
-    { key: "html", text: "HTML", value: "html" },
-    { key: "ia", text: "Information Architecture", value: "ia" },
-    { key: "javascript", text: "Javascript", value: "javascript" },
-    { key: "mech", text: "Mechanical Engineering", value: "mech" },
-    { key: "meteor", text: "Meteor", value: "meteor" },
-    { key: "node", text: "NodeJS", value: "node" },
-    { key: "plumbing", text: "Plumbing", value: "plumbing" },
-    { key: "python", text: "Python", value: "python" },
-    { key: "rails", text: "Rails", value: "rails" },
-    { key: "react", text: "React", value: "react" },
-    { key: "repair", text: "Kitchen Repair", value: "repair" },
-    { key: "ruby", text: "Ruby", value: "ruby" },
-    { key: "ui", text: "UI Design", value: "ui" },
-    { key: "ux", text: "User Experience", value: "ux" }
+    { key: "1", text: "Location 1", value: "Location 1" },
+    { key: "2", text: "Location 2", value: "Location 2" },
+    { key: "3", text: "Location 3", value: "Location 3" },
+    { key: "4", text: "Location 4", value: "Location 4" }
   ];
 
   return (
     <>
       <Dropdown
         className="dropdown"
-        placeholder="Skills"
+        placeholder="Location(Temporary)"
         multiple
         selection
         options={options}
-        onChange={(event, data) => {
-          console.log(event);
-          console.log((event as any).target.values);
-          console.log(data);
+        onChange={(_event, data) => {
+          setSessionTypesToFilter!(data.value);
         }}
       />
     </>

@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Button, Icon } from "semantic-ui-react";
-import Sessions from "./Sessions";
-import SessionForm from "./sessionForm/SessionForm";
+import { Button, Icon } from "semantic-ui-react";
 import * as sessionAPI from "./api/sessionAPI";
-import SessionsContext from "./sessionsContext";
 import SessionsFilters from "./sessionFilters/SessionFilters";
+import SessionForm from "./sessionForm/SessionForm";
+import Sessions from "./Sessions";
+import SessionsContext from "./sessionsContext";
+import "./SessionContainer.css";
 
 const SessionContainer: React.FC = () => {
   const [sessions, setSessions] = useState();
   const [currentSession, setCurrentSession] = useState();
   const [filterByInterest, toggleFilterByInterest] = useState(false);
+  const [sessionTypesToFilter, setSessionTypesToFilter] = useState([]);
 
   const getSessionResponse = async () => {
     const sessionsResult = await sessionAPI.getSessions();
@@ -33,33 +35,28 @@ const SessionContainer: React.FC = () => {
 
   return (
     <SessionsContext.Provider
-      value={{ sessions, setSessions, currentSession, setCurrentSession }}
+      value={{
+        sessions,
+        setSessions,
+        currentSession,
+        setCurrentSession,
+        sessionTypesToFilter,
+        setSessionTypesToFilter
+      }}
     >
-      <Grid className="session-buttons" columns="equal">
-        <Grid.Row>
-          <Grid.Column width={16}>
-            <Button
-              className="add-session-button"
-              onClick={() => onAddSession()}
-            >
-              Add session
-            </Button>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={16}>
-            <Button
-              icon
-              onClick={() => toggleFilterByInterest(!filterByInterest)}
-            >
-              <Icon name="heart" />
-              Filter by Interest
-            </Button>
-            <SessionsFilters />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <div className="session-buttons">
+        <Button className="add-session-button" onClick={() => onAddSession()}>
+          Add session
+        </Button>
+      </div>
+      <div>
+        <Button icon onClick={() => toggleFilterByInterest(!filterByInterest)}>
+          <Icon name="heart" />
+          Filter by Interest
+        </Button>
 
+        <SessionsFilters />
+      </div>
       {currentSession !== undefined && <SessionForm />}
       <Sessions isFilteringByInterest={filterByInterest} />
     </SessionsContext.Provider>

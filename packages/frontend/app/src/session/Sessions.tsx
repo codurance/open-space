@@ -1,18 +1,14 @@
 import React from "react";
-import { Session } from "./Session";
-import SessionsContext, {
-  ISession,
-  useSessionsContext
-} from "./sessionsContext";
 import * as sessionStorage from "../common/sessionsLocalStorage";
+import { Session } from "./Session";
+import { ISession, useSessionsContext } from "./sessionsContext";
 
 interface SessionsProps {
   isFilteringByInterest: boolean;
 }
 
 const Sessions: React.FC<SessionsProps> = props => {
-  // const { sessions } = useContext(SessionsContext);
-  const { sessions } = useSessionsContext();
+  const { sessions, sessionTypesToFilter } = useSessionsContext();
 
   const bySessionTime = function(a: ISession, b: ISession) {
     if (a.time < b.time) return -1;
@@ -26,8 +22,17 @@ const Sessions: React.FC<SessionsProps> = props => {
     );
   };
 
-  const byType = () => {
-    return true;
+  const byType = (session: ISession) => {
+    if (
+      sessionTypesToFilter === undefined ||
+      sessionTypesToFilter.length === 0
+    ) {
+      return true;
+    }
+    if (sessionTypesToFilter!.indexOf(session.location) >= 0) {
+      return true;
+    }
+    return false;
   };
 
   return (
