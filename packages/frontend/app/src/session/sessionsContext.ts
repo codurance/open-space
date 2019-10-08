@@ -13,6 +13,8 @@ export interface ISessionsContext {
   setSessions: Function;
   currentSession: ISession | undefined;
   setCurrentSession: Function;
+  sessionTypesToFilter?: string[];
+  setSessionTypesToFilter?: Function;
 }
 
 const SessionsContext = React.createContext<ISessionsContext>({

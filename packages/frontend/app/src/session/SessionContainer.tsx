@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Button, Icon } from "semantic-ui-react";
-import Sessions from "./Sessions";
-import SessionForm from "./sessionForm/SessionForm";
 import * as sessionAPI from "./api/sessionAPI";
-import "./SessionContainer.css";
+import SessionsFilters from "./sessionFilters/SessionFilters";
+import SessionForm from "./sessionForm/SessionForm";
+import Sessions from "./Sessions";
 import SessionsContext from "./sessionsContext";
+import "./SessionContainer.css";
 
 const SessionContainer: React.FC = () => {
   const [sessions, setSessions] = useState();
   const [currentSession, setCurrentSession] = useState();
   const [filterByInterest, toggleFilterByInterest] = useState(false);
+  const [sessionTypesToFilter, setSessionTypesToFilter] = useState([]);
 
   const getSessionResponse = async () => {
     const sessionsResult = await sessionAPI.getSessions();
@@ -33,18 +35,28 @@ const SessionContainer: React.FC = () => {
 
   return (
     <SessionsContext.Provider
-      value={{ sessions, setSessions, currentSession, setCurrentSession }}
+      value={{
+        sessions,
+        setSessions,
+        currentSession,
+        setCurrentSession,
+        sessionTypesToFilter,
+        setSessionTypesToFilter
+      }}
     >
       <div className="session-buttons">
         <Button className="add-session-button" onClick={() => onAddSession()}>
           Add session
         </Button>
+      </div>
+      <div>
         <Button icon onClick={() => toggleFilterByInterest(!filterByInterest)}>
           <Icon name="heart" />
           Filter by Interest
         </Button>
-      </div>
 
+        <SessionsFilters />
+      </div>
       {currentSession !== undefined && <SessionForm />}
       <Sessions isFilteringByInterest={filterByInterest} />
     </SessionsContext.Provider>

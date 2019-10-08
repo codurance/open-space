@@ -1,18 +1,14 @@
 import React from "react";
-import { Session } from "./Session";
-import SessionsContext, {
-  ISession,
-  useSessionsContext
-} from "./sessionsContext";
 import * as sessionStorage from "../common/sessionsLocalStorage";
+import { Session } from "./Session";
+import { ISession, useSessionsContext } from "./sessionsContext";
 
 interface SessionsProps {
   isFilteringByInterest: boolean;
 }
 
 const Sessions: React.FC<SessionsProps> = props => {
-  // const { sessions } = useContext(SessionsContext);
-  const { sessions } = useSessionsContext();
+  const { sessions, sessionTypesToFilter } = useSessionsContext();
 
   const bySessionTime = function(a: ISession, b: ISession) {
     if (a.time < b.time) return -1;
@@ -20,10 +16,23 @@ const Sessions: React.FC<SessionsProps> = props => {
     return 0;
   };
 
-  const byInterest = function(session: ISession) {
+  const byInterest = (session: ISession) => {
     return (
       !props.isFilteringByInterest || sessionStorage.checkInterest(session.id)
     );
+  };
+
+  const byType = (session: ISession) => {
+    if (
+      sessionTypesToFilter === undefined ||
+      sessionTypesToFilter.length === 0
+    ) {
+      return true;
+    }
+    if (sessionTypesToFilter!.indexOf(session.location) >= 0) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -31,6 +40,7 @@ const Sessions: React.FC<SessionsProps> = props => {
       {sessions &&
         sessions
           .filter(byInterest)
+          .filter(byType)
           .sort(bySessionTime)
           .map((session: ISession) => (
             <React.Fragment key={session.id}>
