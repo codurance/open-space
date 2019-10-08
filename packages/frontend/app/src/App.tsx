@@ -6,12 +6,19 @@ import "./App.css";
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <Switch>
-        <Route path="/admin" component={Admin} />
-        <Route path="/" component={Home} />
-      </Switch>
-    </Router>
+    <>
+      <div className="App">
+        <header className="App-header">
+          <h1 className="OpenSpace">OpenSpace</h1>
+        </header>
+      </div>
+      <Router>
+        <Switch>
+          <Route path="/admin" component={Admin} />
+          <Route path="/" component={Home} />
+        </Switch>
+      </Router>
+    </>
   );
 };
 
