@@ -20,10 +20,14 @@ const Sessions: React.FC<SessionsProps> = props => {
     return 0;
   };
 
-  const byInterest = function(session: ISession) {
+  const byInterest = (session: ISession) => {
     return (
       !props.isFilteringByInterest || sessionStorage.checkInterest(session.id)
     );
+  };
+
+  const byType = () => {
+    return true;
   };
 
   return (
@@ -31,6 +35,7 @@ const Sessions: React.FC<SessionsProps> = props => {
       {sessions &&
         sessions
           .filter(byInterest)
+          .filter(byType)
           .sort(bySessionTime)
           .map((session: ISession) => (
             <React.Fragment key={session.id}>

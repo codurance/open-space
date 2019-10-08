@@ -22,6 +22,7 @@ it("Renders sessions when sessions exist", () => {
       title: "title",
       location: "location",
       time: "12:00",
+
       presenter: "presenter"
     }
   ];
