@@ -4,6 +4,7 @@ import com.codurance.helpers.TestUtils;
 import com.codurance.open_space.controller.SpaceController;
 import com.codurance.open_space.domain.Space;
 import com.codurance.open_space.repository.SpaceRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(SpaceController.class)
 public class SpaceControllerShould {
+    private Space space;
 
     @Autowired
     private MockMvc mockMvc;
@@ -27,9 +29,13 @@ public class SpaceControllerShould {
     @MockBean
     private SpaceRepository spaceRepository;
 
+    @BeforeEach
+    void setUp() {
+        space = new Space(1L, "Space1", "Biggest Room", "rooftop", "tv, projector");
+    }
+
     @Test
     void return_list_of_spaces() throws Exception {
-        Space space = new Space(1L, "Space1", "Biggest Room", "rooftop", "tv, projector");
         when(spaceRepository.findAll()).thenReturn(List.of(space));
 
         String expectedJson = "[{\"id\":1,\"name\":\"Space1\",\"description\":\"Biggest Room\",\"location\":\"rooftop\",\"facilities\":\"tv, projector\"}]";
@@ -42,7 +48,6 @@ public class SpaceControllerShould {
 
     @Test
     void post_space() throws Exception {
-        Space space = new Space(1L, "Space1", "Biggest Room", "rooftop", "tv, projector");
         when(spaceRepository.save(space)).thenReturn(space);
 
         mockMvc.perform(post("/api/spaces")
@@ -55,6 +60,5 @@ public class SpaceControllerShould {
                 .andExpect(jsonPath("$.description").value("Biggest Room"))
                 .andExpect(jsonPath("$.location").value("rooftop"))
                 .andExpect(jsonPath("$.facilities").value("tv, projector"));
-
     }
 }
