@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Icon } from "semantic-ui-react";
-
+import { Button, Icon } from "semantic-ui-react";
 import Sessions from "./Sessions";
 import SessionForm from "./sessionForm/SessionForm";
-
 import * as sessionAPI from "./api/sessionAPI";
 import SessionsContext from "./sessionsContext";
 
@@ -45,12 +43,8 @@ const SessionContainer: React.FC = () => {
           Filter by Interest
         </Button>
       </div>
-      <Modal open={currentSession !== undefined}>
-        <Modal.Header>Session</Modal.Header>
-        <Modal.Content>
-          <SessionForm />
-        </Modal.Content>
-      </Modal>
+
+      {currentSession !== undefined && <SessionForm />}
       <Sessions isFilteringByInterest={filterByInterest} />
     </SessionsContext.Provider>
   );

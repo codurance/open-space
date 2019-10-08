@@ -4,6 +4,7 @@ import { Button, Card, Icon } from "semantic-ui-react";
 import * as sessionsLocalStorage from "../common/sessionsLocalStorage";
 import SessionsContext, { ISession } from "./sessionsContext";
 import * as sessionAPI from "./api/sessionAPI";
+
 export type SessionProps = {
   id: number;
   title: string;
