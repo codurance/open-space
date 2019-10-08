@@ -1,3 +1,9 @@
+.buttons {
+  display: "inline-block";
+}
+
 .session-buttons {
+  background-color: #282c34;
+  text-align: center;
   margin-bottom: 0.8rem;
 }
