@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 export interface ISession {
   id: number;
@@ -22,4 +22,5 @@ const SessionsContext = React.createContext<ISessionsContext>({
   setCurrentSession: () => {}
 });
 
+export const useSessionsContext = () => useContext(SessionsContext);
 export default SessionsContext;

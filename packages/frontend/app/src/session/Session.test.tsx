@@ -20,8 +20,6 @@ beforeEach(() => {
       presenter={presenter}
       location={location}
       time={time}
-      onEditClicked={jest.fn()}
-      isEditing={false}
     />
   );
 });

@@ -1,21 +1,14 @@
 import React from "react";
 import Sessions from "./Sessions";
-import { Session } from "./Session";
 import enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { any } from "prop-types";
+import * as SessionsContext from "./sessionsContext";
+import { Session } from "./Session";
 enzyme.configure({ adapter: new Adapter() });
 
 it("Renders sessions when sessions exist", () => {
-  const wrapper = enzyme.shallow(
-    <Sessions
-      sessions={[]}
-      isEditing={false}
-      setIsEditing={jest.fn()}
-      setSessionToEdit={jest.fn()}
-      getSessions={jest.fn()}
-    />
-  );
+  const wrapper = enzyme.shallow(<Sessions isFilteringByInterest={false} />);
 
   const sessionElementChildren = wrapper.find(any);
 
@@ -23,23 +16,24 @@ it("Renders sessions when sessions exist", () => {
 });
 
 it("Renders sessions when sessions exist", () => {
-  const wrapper = enzyme.shallow(
-    <Sessions
-      sessions={[
-        {
-          id: 0,
-          title: "title",
-          location: "location",
-          time: "12:00",
-          presenter: "presenter"
-        }
-      ]}
-      isEditing={false}
-      setIsEditing={jest.fn()}
-      setSessionToEdit={jest.fn()}
-      getSessions={jest.fn()}
-    />
-  );
+  const sessions: SessionsContext.ISession[] = [
+    {
+      id: 0,
+      title: "title",
+      location: "location",
+      time: "12:00",
+      presenter: "presenter"
+    }
+  ];
+
+  jest.spyOn(SessionsContext, "useSessionsContext").mockImplementation(() => ({
+    sessions: sessions,
+    setSessions: jest.fn(),
+    currentSession: undefined,
+    setCurrentSession: jest.fn()
+  }));
+
+  const wrapper = enzyme.shallow(<Sessions isFilteringByInterest={false} />);
 
   const doesContainSession = wrapper.contains(
     <Session
@@ -50,6 +44,5 @@ it("Renders sessions when sessions exist", () => {
       time="12:00"
     />
   );
-  // FIXME: can't find a way to fix it for now
-  // expect(doesContainSession).toBe(true);
+  expect(doesContainSession).toBe(true);
 });
