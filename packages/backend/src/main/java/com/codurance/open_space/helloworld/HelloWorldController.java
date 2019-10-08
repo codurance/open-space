@@ -1,4 +1,4 @@
-package com.codurance.open_space;
+package com.codurance.open_space.helloworld;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

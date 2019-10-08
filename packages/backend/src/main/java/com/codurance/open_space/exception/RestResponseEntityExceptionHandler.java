@@ -1,4 +1,4 @@
-package com.codurance.open_space;
+package com.codurance.open_space.exception;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;

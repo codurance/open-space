@@ -1,5 +1,7 @@
-package com.codurance.open_space;
+package com.codurance.open_space.controller;
 
+import com.codurance.open_space.domain.Session;
+import com.codurance.open_space.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,25 +14,25 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/sessions")
-public class OpenSpaceSessionController {
+public class SessionController {
 
-    private final OpenSpaceSessionRepository repository;
+    private final SessionRepository repository;
 
     @GetMapping
-    public List<OpenSpaceSession> getAllOpenSpaceSessions() {
+    public List<Session> getAllOpenSpaceSessions() {
         return repository.findAll();
     }
 
     @ResponseStatus(CREATED)
     @CrossOrigin
     @PostMapping
-    public OpenSpaceSession create(@RequestBody OpenSpaceSession openSpaceSession) {
-        return repository.save(openSpaceSession);
+    public Session create(@RequestBody Session session) {
+        return repository.save(session);
     }
 
     @PutMapping("/{id}")
-    public OpenSpaceSession update(@PathVariable int id, @RequestBody OpenSpaceSession openSpaceSession) {
-        OpenSpaceSession session = repository.findById(id)
+    public Session update(@PathVariable int id, @RequestBody Session openSpaceSession) {
+        Session session = repository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
         session.setLocation(openSpaceSession.getLocation());
