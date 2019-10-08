@@ -1,6 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Session } from "./Session";
-import SessionsContext, { ISession } from "./sessionsContext";
+import SessionsContext, {
+  ISession,
+  useSessionsContext
+} from "./sessionsContext";
 import * as sessionStorage from "../common/sessionsLocalStorage";
 
 interface SessionsProps {
@@ -8,7 +11,8 @@ interface SessionsProps {
 }
 
 const Sessions: React.FC<SessionsProps> = props => {
-  const { sessions } = useContext(SessionsContext);
+  // const { sessions } = useContext(SessionsContext);
+  const { sessions } = useSessionsContext();
 
   const bySessionTime = function(a: ISession, b: ISession) {
     if (a.time < b.time) return -1;
