@@ -34,7 +34,7 @@ spring:
     profiles: prod
     datasource:
         driver-class-name: org.postgresql.Driver
-        url: "jdbc:postgresql://${PROD_DB_URI}:5432/"
+        url: "jdbc:postgresql://${PROD_DB_URI}:5432/open-space-prod"
         username: ${PROD_DB_USER}
         password: ${PROD_DB_PASSWD}
         initialization-mode: never
