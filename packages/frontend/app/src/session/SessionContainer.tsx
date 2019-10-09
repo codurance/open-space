@@ -50,7 +50,11 @@ const SessionContainer: React.FC = () => {
         </Button>
       </div>
       <div>
-        <Button icon onClick={() => toggleFilterByInterest(!filterByInterest)}>
+        <Button
+          positive={filterByInterest}
+          icon
+          onClick={() => toggleFilterByInterest(!filterByInterest)}
+        >
           <Icon name="heart" />
           Filter by Interest
         </Button>
