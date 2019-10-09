@@ -1,6 +1,6 @@
 import React from "react";
 import Home from "./home/Home";
-import AdminContainer from "./admin/AdminContainer";
+import AdminContainer from "./space/SpaceContainer";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 
