@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -21,4 +22,7 @@ public class Session {
     private Space location;
     private String time;
     private String presenter;
+    @NotNull
+    private String type;
+
 }
