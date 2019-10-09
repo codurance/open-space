@@ -15,9 +15,10 @@ public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String title;
-    private String location;
+    @ManyToOne
+    private Space location;
     private String time;
     private String presenter;
 }
