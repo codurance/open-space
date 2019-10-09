@@ -22,7 +22,7 @@ public class Session {
     private Space location;
     private String time;
     private String presenter;
-    @NotNull
+    @Column(columnDefinition = "varchar(255) default 'OTHER'", nullable = false)
     private String type;
 
 }
