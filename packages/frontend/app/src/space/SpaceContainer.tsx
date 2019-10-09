@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "semantic-ui-react";
 import SpaceForm from "./spaceForm/SpaceForm";
-import * as spaceAPI from "./api/spaceAPI";
 import SpaceCard from "./spaceCard/SpaceCard";
 
 export interface ISpace {
@@ -12,18 +11,12 @@ export interface ISpace {
   facilities: string;
 }
 
-const SpaceContainer: React.FC = () => {
-  const [spaces, setSpaces] = useState();
+export interface ISpaceContainerProps {
+  spaces: ISpace[];
+}
+
+const SpaceContainer: React.FC<ISpaceContainerProps> = props => {
   const [isModalSpaceOn, setModalSpaceOn] = useState(false);
-
-  const getSpaces = async () => {
-    const spacesResult = await spaceAPI.getSpaces();
-    setSpaces(spacesResult);
-  };
-
-  useEffect(() => {
-    getSpaces();
-  }, []);
 
   const onAddSpace = () => {
     setModalSpaceOn(true);
@@ -42,8 +35,8 @@ const SpaceContainer: React.FC = () => {
         isModalSpaceOn={isModalSpaceOn}
       />
       <React.Fragment>
-        {spaces &&
-          spaces.map((space: ISpace) => (
+        {props.spaces &&
+          props.spaces.map((space: ISpace) => (
             <React.Fragment key={space.id}>
               <SpaceCard {...space} />
             </React.Fragment>
