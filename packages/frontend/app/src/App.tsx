@@ -1,6 +1,6 @@
 import React from "react";
 import Home from "./home/Home";
-import AdminContainer from "./space/SpaceContainer";
+import SpaceContainer from "./space/SpaceContainer";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 
@@ -14,7 +14,7 @@ const App: React.FC = () => {
       </div>
       <Router>
         <Switch>
-          <Route path="/admin" component={AdminContainer} />
+          <Route path="/admin" component={SpaceContainer} />
           <Route path="/" component={Home} />
         </Switch>
       </Router>
