@@ -28,14 +28,14 @@ public class SessionController {
     public ResponseEntity<?> create(@RequestBody Session session) {
         try {
             return new ResponseEntity<>(repository.save(session), CREATED);
-        }catch(DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
 
             return new ResponseEntity<>(new ErrorResponse("Session type is required"), BAD_REQUEST);
         }
     }
 
     @PutMapping("/{id}")
-    public Session update(@PathVariable int id, @RequestBody Session openSpaceSession) {
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Session openSpaceSession) {
         Session session = repository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -43,12 +43,17 @@ public class SessionController {
         session.setPresenter(openSpaceSession.getPresenter());
         session.setTime(openSpaceSession.getTime());
         session.setTitle(openSpaceSession.getTitle());
-        return repository.save(session);
+        session.setType(openSpaceSession.getType());
+        try {
+            return new ResponseEntity<>(repository.save(session), OK);
+        } catch (DataIntegrityViolationException e) {
+            return new ResponseEntity<>(new ErrorResponse("Session type is required"), BAD_REQUEST);
+        }
     }
 
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable int id){
+    public void deleteById(@PathVariable int id) {
         repository.deleteById(id);
     }
 }

@@ -158,15 +158,6 @@ public class SessionControllerShould {
         verify(repository).deleteById(1);
     }
 
-    /*
-    {
-        status: 400,
-        httpMessage: Bad Request,
-        apiStatusCode: 215,
-        message: Zip code format is not valid, it must be a 5 digit number,
-        description: Could not process the request.
-}
-     */
     @Test
     void give_error_message_when_session_type_is_missing() throws Exception{
 
@@ -176,6 +167,32 @@ public class SessionControllerShould {
         try {
             mockMvc.perform(post("/api/sessions")
                     .content(asJsonString(session))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("Session type is required"));
+        }catch (Exception e) {
+            Assertions.fail("controller should not throw exception");
+        }
+    }
+
+    @Test
+    void give_error_message_when_session_type_is_missing_when_update_session() throws Exception{
+
+        when(repository.findById(1)).thenReturn(Optional.of(session));
+        Session sessionWithNullType = new Session();
+        sessionWithNullType.setId(session.getId());
+        sessionWithNullType.setTitle(session.getTitle());
+        sessionWithNullType.setLocation(session.getLocation());
+        sessionWithNullType.setTime(session.getTime());
+        sessionWithNullType.setPresenter(session.getPresenter());
+        sessionWithNullType.setType(null);
+
+        when(repository.save(sessionWithNullType)).thenThrow(new DataIntegrityViolationException("session type is not-null"));
+
+        try {
+            mockMvc.perform(put("/api/sessions/1")
+                    .content(asJsonString(sessionWithNullType))
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
