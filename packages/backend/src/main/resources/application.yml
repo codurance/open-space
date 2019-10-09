@@ -1,49 +1,44 @@
 spring:
-  profiles:
-    active: dev
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
-    properties:
-      hibernate:
-        format_sql: true
-        temp:
-          use_jdbc_metadata_defaults: false
+    profiles:
+        active: dev
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: create
+        database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+        properties:
+            hibernate:
+                format_sql: true
+                temp:
+                    use_jdbc_metadata_defaults: false
 ---
-
 spring:
-  profiles: dev-container
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://postgres:5432/open-space"
-    username: postgres
-    password: example
-    initialization-mode: always
-
+    profiles: dev-container
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        url: "jdbc:postgresql://postgres:5432/open-space"
+        username: postgres
+        password: example
+        initialization-mode: always
 ---
-
 spring:
-  profiles: dev
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://localhost:5432/open-space"
-    username: postgres
-    password: example
-    initialization-mode: always
-
+    profiles: dev
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        url: "jdbc:postgresql://localhost:5432/open-space"
+        username: postgres
+        password: example
+        initialization-mode: always
 ---
-
 spring:
-  profiles: prod
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://${PROD_DB_URI}:5432/"
-    username: ${PROD_DB_USER}
-    password: ${PROD_DB_PASSWD}
-    initialization-mode: always
-  jpa:
-    show-sql: false
-    hibernate:
-      ddl-auto: validate
+    profiles: prod
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        url: "jdbc:postgresql://${PROD_DB_URI}:5432/"
+        username: ${PROD_DB_USER}
+        password: ${PROD_DB_PASSWD}
+        initialization-mode: never
+    jpa:
+        show-sql: false
+        hibernate:
+            ddl-auto: update
