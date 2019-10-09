@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ISpace, postSpace } from "./api/spaceAPI";
 
 import { Button, Form, Header } from "semantic-ui-react";
 
@@ -12,10 +13,21 @@ const SpaceForm: React.FC<SpaceFormProps> = ({ setIsEditing }) => {
   const [spaceLocation, setSpaceLocation] = useState();
   const [spaceFacilities, setSpaceFacilities] = useState();
 
+  const submitForm = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const spaceToStore: ISpace = {
+      name: spaceName,
+      description: spaceDescription,
+      location: spaceLocation,
+      facilities: spaceFacilities
+    };
+    postSpace(spaceToStore);
+  };
+
   return (
     <>
       <Header>Create a Space</Header>
-      <Form inverted onSubmit={event => alert("hello world")}>
+      <Form inverted onSubmit={event => submitForm(event)}>
         <Form.Field>
           <label>Name</label>
           <input
