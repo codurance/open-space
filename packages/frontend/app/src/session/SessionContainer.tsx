@@ -5,11 +5,11 @@ import "./SessionContainer.css";
 import SessionsFilters from "./sessionFilters/SessionFilters";
 import SessionForm from "./sessionForm/SessionForm";
 import Sessions from "./Sessions";
-import SessionsContext from "./sessionsContext";
+import SessionsContext, { ISessionsContext } from "./sessionsContext";
 import sessionsReducer from "./sessionsReducer";
 
 const SessionContainer: React.FC = () => {
-  const initialState = useContext(SessionsContext);
+  const initialState: ISessionsContext = useContext(SessionsContext);
   const [state, dispatch] = useReducer(sessionsReducer, initialState);
 
   const [sessions, setSessions] = useState();
@@ -38,16 +38,7 @@ const SessionContainer: React.FC = () => {
   };
 
   return (
-    <SessionsContext.Provider
-      value={{
-        sessions,
-        setSessions,
-        currentSession,
-        setCurrentSession,
-        sessionTypesToFilter,
-        setSessionTypesToFilter
-      }}
-    >
+    <SessionsContext.Provider>
       <div className="session-buttons">
         <Button className="add-session-button" onClick={() => onAddSession()}>
           Add session

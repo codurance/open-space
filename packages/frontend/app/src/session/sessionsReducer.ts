@@ -1,10 +1,23 @@
-import { ISessionsContext } from "./sessionsContext";
+import { ISessionsContext, ISession } from "./sessionsContext";
 
-const reducer = (state: ISessionsContext, action) => {
-  switch (type) {
+export const ADD_SESSION: string = "addSession";
+
+type Action =
+  | { type: string; payload: ISession }
+  | { type: "addSession"; payload: ISession[] }
+  | { type: string };
+
+const reducer = (state: ISessionsContext, action: Action): ISessionsContext => {
+  switch (action.type) {
+    case ADD_SESSION:
+      return {
+        ...state,
+        sessions: action.payload
+      };
+
     default:
       return {
-        state
+        ...state
       };
   }
 };
