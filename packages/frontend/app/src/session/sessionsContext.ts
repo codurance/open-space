@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
+import { ISpace } from "../space/ISpace";
 
 export interface ISession {
   id: number;
   title: string;
-  location: string;
+  location: ISpace;
   time: string;
   presenter: string;
 }
