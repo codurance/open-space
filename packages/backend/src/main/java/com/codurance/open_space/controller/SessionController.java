@@ -49,15 +49,18 @@ public class SessionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Session openSpaceSession) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody SessionRequestBody sessionRequestBody) {
         Session session = repository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
-        session.setLocation(openSpaceSession.getLocation());
-        session.setPresenter(openSpaceSession.getPresenter());
-        session.setTime(openSpaceSession.getTime());
-        session.setTitle(openSpaceSession.getTitle());
-        session.setType(openSpaceSession.getType());
+        Space space = spaceRepository.findById(sessionRequestBody.getSpaceId()).get();
+        session.setLocation(space);
+
+        session.setPresenter(sessionRequestBody.getPresenter());
+        session.setTime(sessionRequestBody.getTime());
+        session.setTitle(sessionRequestBody.getTitle());
+        session.setType(sessionRequestBody.getType());
+
         try {
             return new ResponseEntity<>(repository.save(session), OK);
         } catch (DataIntegrityViolationException e) {
