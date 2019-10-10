@@ -91,7 +91,7 @@ public class SessionControllerShould {
 
     @Test
     void update_open_space_session() throws Exception {
-        when(repository.findById(1))
+        when(repository.findById(1L))
                 .thenReturn(Optional.of(session));
 
         Space differentSpace = new Space();
@@ -115,14 +115,14 @@ public class SessionControllerShould {
                 .andExpect(jsonPath("$.time").value("11:00"))
                 .andExpect(jsonPath("$.presenter").value("David"));
 
-        verify(repository).findById(1);
+        verify(repository).findById(1L);
         verify(repository).save(session);
     }
 
     @Test
     void update_method_returns_404_status_if_id_not_found() throws Exception {
 
-        when(repository.findById(20)).thenReturn(null);
+        when(repository.findById(20L)).thenReturn(null);
 
         Space differentSpace = new Space();
         differentSpace.setId(2L);
@@ -134,13 +134,13 @@ public class SessionControllerShould {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 
-        verify(repository).findById(1);
+        verify(repository).findById(1L);
     }
 
 
     @Test
     void delete_method_returns_404_status_if_id_not_found() throws Exception {
-        final int id = 30;
+        final long id = 30;
 
         doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(id);
 
@@ -155,7 +155,7 @@ public class SessionControllerShould {
         mockMvc.perform(delete("/api/sessions/1"))
                 .andExpect(status().isNoContent());
 
-        verify(repository).deleteById(1);
+        verify(repository).deleteById(1L);
     }
 
     @Test
@@ -179,7 +179,7 @@ public class SessionControllerShould {
     @Test
     void give_error_message_when_session_type_is_missing_when_update_session() throws Exception{
 
-        when(repository.findById(1)).thenReturn(Optional.of(session));
+        when(repository.findById(1L)).thenReturn(Optional.of(session));
         Session sessionWithNullType = new Session();
         sessionWithNullType.setId(session.getId());
         sessionWithNullType.setTitle(session.getTitle());

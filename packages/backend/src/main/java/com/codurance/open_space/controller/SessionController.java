@@ -35,7 +35,7 @@ public class SessionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Session openSpaceSession) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Session openSpaceSession) {
         Session session = repository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -53,7 +53,7 @@ public class SessionController {
 
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable int id) {
+    public void deleteById(@PathVariable Long id) {
         repository.deleteById(id);
     }
 }
