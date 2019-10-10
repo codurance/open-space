@@ -4,7 +4,7 @@ import enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { any } from "prop-types";
 import * as SessionsContext from "./sessionsContext";
-import { Session } from "./Session";
+import { Session } from "./sessionCard/Session";
 enzyme.configure({ adapter: new Adapter() });
 
 it("Renders sessions when sessions exist", () => {

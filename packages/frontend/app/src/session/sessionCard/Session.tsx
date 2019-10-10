@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import { deleteSession } from "../common/http";
+import { deleteSession } from "../../common/http";
 import { Button, Card, Icon, Modal } from "semantic-ui-react";
-import * as sessionsLocalStorage from "../common/sessionsLocalStorage";
-import SessionsContext, { ISession } from "./sessionsContext";
-import * as sessionAPI from "./api/sessionAPI";
+import * as sessionsLocalStorage from "../../common/sessionsLocalStorage";
+import SessionsContext, { ISession } from "../sessionsContext";
+import * as sessionAPI from "../api/sessionAPI";
 
 export type SessionProps = {
   id: number;

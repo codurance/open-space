@@ -1,6 +1,6 @@
 import React from "react";
 import * as sessionStorage from "../common/sessionsLocalStorage";
-import { Session, SessionProps } from "./Session";
+import { Session, SessionProps } from "./sessionCard/Session";
 import { ISession, useSessionsContext } from "./sessionsContext";
 
 interface SessionsProps {
