@@ -13,7 +13,7 @@ export const postSpace = async (space: ISpace) => {
 };
 
 export const getSpaces = async () => {
-  const getSpacesResponse = await get<IHttpResponse<ISpace[]>>(`/api/spaces`);
+  const getSpacesResponse = await get<ISpace[]>(`/api/spaces`);
   const spaces = getSpacesResponse.parsedBody;
-  return spaces;
+  return spaces!;
 };

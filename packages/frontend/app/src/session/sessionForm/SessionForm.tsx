@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Modal } from "semantic-ui-react";
+import SpaceDropdown from "../../space/spaceDropdown/SpaceDropdown";
 import * as sessionAPI from "../api/sessionAPI";
 import { useSessionsContext } from "../sessionsContext";
 
@@ -67,18 +68,11 @@ const SessionForm: React.FC = () => {
               onChange={e => setSessionTitle(e.target.value)}
             />
           </Form.Field>
-          {
-            <Form.Field>
-              <label>Location</label>
-              <input
-                placeholder="location"
-                value={sessionSpaceId}
-                onChange={e =>
-                  setSessionSpaceId(Number.parseInt(e.target.value))
-                }
-              />
-            </Form.Field>
-          }
+          <SpaceDropdown
+            value={sessionSpaceId}
+            onChange={(_event, data) => setSessionSpaceId(data.value as number)}
+          />
+
           <Form.Field>
             <label>Presenter</label>
             <input
