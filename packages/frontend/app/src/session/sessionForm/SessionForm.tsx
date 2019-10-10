@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Modal, Button, Form } from "semantic-ui-react";
+import { Modal, Button, Form, Dropdown } from "semantic-ui-react";
 import * as sessionAPI from "../api/sessionAPI";
 import SessionsContext from "../sessionsContext";
 
@@ -42,6 +42,12 @@ const SessionForm: React.FC = () => {
     setCurrentSession(undefined);
   };
 
+  const options = [
+    { key: "1", text: "demo", value: "demo" },
+    { key: "2", text: "practical", value: "practical" },
+    { key: "3", text: "presentation", value: "presentation" }
+  ];
+
   return (
     <Modal open={currentSession !== undefined}>
       <Modal.Header>
@@ -71,6 +77,18 @@ const SessionForm: React.FC = () => {
               placeholder="presenter"
               value={sessionPresenter}
               onChange={e => setSessionPresenter(e.target.value)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Session Type</label>
+            <Dropdown
+              className="form-dropdown"
+              placeholder="Select session type"
+              selection
+              options={options}
+              // onChange={(_event, data) => {
+              //   setSessionTypesToFilter!(data.value);
+              // }}
             />
           </Form.Field>
           <Form.Field>
