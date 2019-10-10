@@ -7,6 +7,7 @@ export interface ISession {
   location: ISpace;
   time: string;
   presenter: string;
+  type: string;
 }
 
 export interface ISessionsContext {

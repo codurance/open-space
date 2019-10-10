@@ -1,6 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, SyntheticEvent } from "react";
 import { Modal, Button, Form, Dropdown } from "semantic-ui-react";
 import * as sessionAPI from "../api/sessionAPI";
+import { useSessionsContext } from "../sessionsContext";
 import SessionsContext from "../sessionsContext";
 
 const SessionForm: React.FC = () => {
@@ -8,6 +9,7 @@ const SessionForm: React.FC = () => {
     SessionsContext
   );
 
+  const [sessionType, setSessionType] = useState(currentSession!.type);
   const [sessionTitle, setSessionTitle] = useState(currentSession!.title);
   const [sessionLocation, setSessionLocation] = useState(
     currentSession!.location
@@ -23,6 +25,7 @@ const SessionForm: React.FC = () => {
     currentSession!.location = sessionLocation;
     currentSession!.time = sessionTime;
     currentSession!.presenter = sessionPresenter;
+    currentSession!.type = sessionType;
 
     let response: any;
 
@@ -86,9 +89,7 @@ const SessionForm: React.FC = () => {
               placeholder="Select session type"
               selection
               options={options}
-              // onChange={(_event, data) => {
-              //   setSessionTypesToFilter!(data.value);
-              // }}
+              onChange={(_event, data) => console.log(data)}
             />
           </Form.Field>
           <Form.Field>
