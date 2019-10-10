@@ -1,6 +1,6 @@
 import React from "react";
 import * as sessionStorage from "../common/sessionsLocalStorage";
-import { Session } from "./Session";
+import { Session, SessionProps } from "./Session";
 import { ISession, useSessionsContext } from "./sessionsContext";
 
 interface SessionsProps {
@@ -29,10 +29,16 @@ const Sessions: React.FC<SessionsProps> = props => {
     ) {
       return true;
     }
-    if (sessionTypesToFilter!.indexOf(session.location) >= 0) {
+    if (sessionTypesToFilter!.indexOf(session.location.name) >= 0) {
       return true;
     }
     return false;
+  };
+
+  const copySessionToProps = (session: ISession): SessionProps => {
+    const copyOfSession: any = { ...session };
+    copyOfSession.location = session.location.name;
+    return copyOfSession;
   };
 
   return (
@@ -44,7 +50,7 @@ const Sessions: React.FC<SessionsProps> = props => {
           .sort(bySessionTime)
           .map((session: ISession) => (
             <React.Fragment key={session.id}>
-              <Session {...session} />
+              <Session {...copySessionToProps(session)} />
             </React.Fragment>
           ))}
     </React.Fragment>
