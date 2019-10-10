@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Button, Icon } from "semantic-ui-react";
 import * as sessionAPI from "./api/sessionAPI";
+import "./SessionContainer.css";
 import SessionsFilters from "./sessionFilters/SessionFilters";
 import SessionForm from "./sessionForm/SessionForm";
 import Sessions from "./Sessions";
 import SessionsContext from "./sessionsContext";
-import "./SessionContainer.css";
+import sessionsReducer from "./sessionsReducer";
 
 const SessionContainer: React.FC = () => {
+  const initialState = useContext(SessionsContext);
+  const [state, dispatch] = useReducer(sessionsReducer, initialState);
+
   const [sessions, setSessions] = useState();
   const [currentSession, setCurrentSession] = useState();
   const [filterByInterest, toggleFilterByInterest] = useState(false);
