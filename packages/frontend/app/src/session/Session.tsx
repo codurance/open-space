@@ -34,7 +34,7 @@ export const Session = ({
   };
 
   const deleteSessionById = async (id: Number) => {
-    await deleteSession(`/api/sessions/` + id);
+    await deleteSession(`/api/sessions/${id}`);
     const updatedSessions = await sessionAPI.getSessions();
     if (updatedSessions) setSessions(updatedSessions);
   };
