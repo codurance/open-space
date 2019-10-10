@@ -1,5 +1,5 @@
 import { post, get, IHttpResponse } from "../../common/http";
-import { ISpace } from "../SpaceContainer";
+import { ISpace } from "./ISpace";
 
 export const postSpace = async (space: ISpace) => {
   const response: Response = await post(`/api/spaces`, {

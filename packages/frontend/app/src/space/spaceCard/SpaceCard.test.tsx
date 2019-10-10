@@ -1,8 +1,8 @@
 import React from "react";
 import SpaceCard from "./SpaceCard";
-import { ISpace } from "../SpaceContainer";
 import enzyme, { ShallowWrapper } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import { ISpace } from "../api/ISpace";
 enzyme.configure({ adapter: new Adapter() });
 
 let spaceDataToTest: ISpace = {
