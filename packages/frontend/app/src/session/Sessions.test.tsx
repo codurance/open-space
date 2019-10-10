@@ -20,7 +20,12 @@ it("Renders sessions when sessions exist", () => {
     {
       id: 0,
       title: "title",
-      location: "location",
+      location: {
+        name: "location",
+        description: "",
+        facilities: "",
+        location: ""
+      },
       time: "12:00",
       presenter: "presenter"
     }
@@ -52,14 +57,24 @@ it("Renders sessions after filtering by sessiontype", () => {
     {
       id: 0,
       title: "title",
-      location: "Keep Me Please",
+      location: {
+        name: "Keep Me Please",
+        description: "",
+        facilities: "",
+        location: ""
+      },
       time: "12:00",
       presenter: "presenter"
     },
     {
       id: 1,
       title: "title",
-      location: "I should not be here",
+      location: {
+        name: "I should not be here",
+        description: "",
+        facilities: "",
+        location: ""
+      },
       time: "12:00",
       presenter: "presenter"
     }
