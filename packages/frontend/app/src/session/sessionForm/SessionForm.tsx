@@ -57,14 +57,14 @@ const SessionForm: React.FC = () => {
               onChange={e => setSessionTitle(e.target.value)}
             />
           </Form.Field>
-          <Form.Field>
+          {/* <Form.Field>
             <label>Location</label>
             <input
               placeholder="location"
               value={sessionLocation}
               onChange={e => setSessionLocation(e.target.value)}
             />
-          </Form.Field>
+          </Form.Field> */}
           <Form.Field>
             <label>Presenter</label>
             <input
