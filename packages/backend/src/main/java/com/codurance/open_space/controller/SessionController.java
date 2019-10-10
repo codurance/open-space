@@ -1,14 +1,20 @@
 package com.codurance.open_space.controller;
 
+import com.codurance.open_space.controller.rest.SessionRequestBody;
 import com.codurance.open_space.domain.Session;
+import com.codurance.open_space.domain.Space;
 import com.codurance.open_space.repository.SessionRepository;
+import com.codurance.open_space.repository.SpaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Column;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.ManyToOne;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -18,6 +24,7 @@ import static org.springframework.http.HttpStatus.*;
 public class SessionController {
 
     private final SessionRepository repository;
+    private final SpaceRepository spaceRepository;
 
     @GetMapping
     public List<Session> getAllOpenSpaceSessions() {
@@ -25,7 +32,14 @@ public class SessionController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Session session) {
+    public ResponseEntity<?> create(@RequestBody SessionRequestBody sessionRequestBody) {
+        Space space = spaceRepository.findById(sessionRequestBody.getSpaceId()).get();
+        Session session = new Session();
+        session.setTitle(sessionRequestBody.getTitle());
+        session.setLocation(space);
+        session.setPresenter(sessionRequestBody.getPresenter());
+        session.setTime(sessionRequestBody.getTime());
+        session.setType(sessionRequestBody.getType());
         try {
             return new ResponseEntity<>(repository.save(session), CREATED);
         } catch (DataIntegrityViolationException e) {

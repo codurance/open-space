@@ -1,9 +1,11 @@
 package com.codurance.open_space;
 
 import com.codurance.open_space.controller.SessionController;
+import com.codurance.open_space.controller.rest.SessionRequestBody;
 import com.codurance.open_space.domain.Session;
 import com.codurance.open_space.domain.Space;
 import com.codurance.open_space.repository.SessionRepository;
+import com.codurance.open_space.repository.SpaceRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,12 +31,16 @@ public class SessionControllerShould {
 
     private Session session;
     private Space space;
+    private SessionRequestBody sessionRequestBody;
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private SessionRepository repository;
+
+    @MockBean
+    private SpaceRepository spaceRepository;
 
     @BeforeEach
     void setUp() {
@@ -49,6 +55,13 @@ public class SessionControllerShould {
         session.setTime("11:00");
         session.setPresenter("David");
         session.setType(SESSION_TYPE);
+
+        sessionRequestBody = new SessionRequestBody();
+        sessionRequestBody.setTitle(session.getTitle());
+        sessionRequestBody.setSpaceId(session.getLocation().getId());
+        sessionRequestBody.setTime(session.getTime());
+        sessionRequestBody.setPresenter(session.getPresenter());
+        sessionRequestBody.setType(session.getType());
     }
 
     @Test
@@ -73,8 +86,11 @@ public class SessionControllerShould {
         when(repository.save(session))
                 .thenReturn(session);
 
+        when(spaceRepository.findById(any()))
+                .thenReturn(Optional.of(space));
+
         mockMvc.perform(post("/api/sessions")
-                .content(asJsonString(session))
+                .content(asJsonString(sessionRequestBody))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -103,8 +119,15 @@ public class SessionControllerShould {
         when(repository.save(session))
                 .thenReturn(session);
 
+        SessionRequestBody sessionRequestBody = new SessionRequestBody();
+        sessionRequestBody.setTitle(session.getTitle());
+        sessionRequestBody.setSpaceId(session.getLocation().getId());
+        sessionRequestBody.setTime(session.getTime());
+        sessionRequestBody.setPresenter(session.getPresenter());
+        sessionRequestBody.setType(session.getType());
+
         mockMvc.perform(put("/api/sessions/1")
-                .content(asJsonString(session))
+                .content(asJsonString(sessionRequestBody))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
