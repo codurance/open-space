@@ -6,6 +6,7 @@ export interface SessionRequestBody {
   spaceId: number;
   time: string;
   presenter: string;
+  type: string;
 }
 
 export const editSession = async (id: number, session: SessionRequestBody) => {
