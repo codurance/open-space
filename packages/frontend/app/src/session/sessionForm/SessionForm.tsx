@@ -4,15 +4,6 @@ import SpaceDropdown from "../../space/spaceDropdown/SpaceDropdown";
 import * as sessionAPI from "../api/sessionAPI";
 import { useSessionsContext } from "../sessionsContext";
 
-enum SessionType {
-  Demo = "Demo",
-  Practical = "Practical",
-  Workshop = "Workshop",
-  Presentation = "Presentation",
-  RoundTable = "RoundTable",
-  Other = "Other"
-}
-
 const SessionForm: React.FC = () => {
   const {
     setSessions,
@@ -56,6 +47,13 @@ const SessionForm: React.FC = () => {
 
     return valid;
   };
+
+  const options = [
+    { key: "1", text: "Demo", value: "Demo" },
+    { key: "2", text: "Practical", value: "Practical" },
+    { key: "3", text: "Workshop", value: "Workshop" },
+    { key: "4", text: "Round Table", value: "Round Table" }
+  ];
 
   const submitForm = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -140,6 +138,18 @@ const SessionForm: React.FC = () => {
                 Please enter presenter's name!
               </Label>
             )}
+          </Form.Field>
+          <Form.Field>
+            <label>Session Type</label>
+            <Dropdown
+              className="dropdown"
+              placeholder="Session Type"
+              selection
+              options={options}
+              // onChange={(_event, data) => {
+              //   setSessionTypesToFilter!(data.value);
+              // }}
+            />
           </Form.Field>
           <Form.Field>
             <label>Time</label>

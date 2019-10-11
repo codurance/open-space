@@ -1,5 +1,5 @@
 import * as SpaceApi from "../api/spaceAPI";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown, DropdownItemProps, DropdownProps } from "semantic-ui-react";
 
 const SpaceDropdown: React.FC<DropdownProps> = props => {
@@ -25,9 +25,7 @@ const SpaceDropdown: React.FC<DropdownProps> = props => {
     selection: true,
     options: spaceOptions
   };
-  const dropdown = <Dropdown {...finalProps} />;
-
-  return dropdown;
+  return <Dropdown {...finalProps} />;
 };
 
 export default SpaceDropdown;
