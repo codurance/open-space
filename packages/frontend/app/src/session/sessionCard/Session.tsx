@@ -12,6 +12,7 @@ export type SessionProps = {
   location: string;
   time: string;
   presenter: string;
+  type: string;
 };
 
 export const Session = ({
@@ -19,7 +20,8 @@ export const Session = ({
   title,
   location,
   time,
-  presenter
+  presenter,
+  type
 }: SessionProps) => {
   const { setSessions, setCurrentSession, sessions } = useContext(
     SessionsContext
@@ -65,6 +67,9 @@ export const Session = ({
         </Card.Content>
         <Card.Content extra className="session-extra-details">
           {location} @ {time}
+        </Card.Content>
+        <Card.Content extra className="session-type">
+          A {type} session
         </Card.Content>
         <Card.Content>
           <Button icon onClick={() => toggleInterest()}>
