@@ -1,6 +1,11 @@
 import * as SpaceApi from "../api/spaceAPI";
 import React, { useState, useEffect } from "react";
-import { Dropdown, DropdownItemProps, DropdownProps } from "semantic-ui-react";
+import {
+  Dropdown,
+  DropdownItemProps,
+  DropdownProps,
+  Header
+} from "semantic-ui-react";
 
 const SpaceDropdown: React.FC<DropdownProps> = props => {
   const [spaceOptions, setSpaceOptions] = useState<DropdownItemProps[]>([]);
@@ -9,7 +14,8 @@ const SpaceDropdown: React.FC<DropdownProps> = props => {
     const options = spaces.map<DropdownItemProps>(value => ({
       key: value.id,
       value: value.id,
-      text: value.name
+      text: value.name,
+      content: <Header content={value.name} subheader={value.facilities} />
     }));
     setSpaceOptions(options);
   };
