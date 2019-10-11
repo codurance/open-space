@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Modal } from "semantic-ui-react";
+import { Button, Form, Label, Modal } from "semantic-ui-react";
 import SpaceDropdown from "../../space/spaceDropdown/SpaceDropdown";
 import * as sessionAPI from "../api/sessionAPI";
 import { useSessionsContext } from "../sessionsContext";
@@ -12,6 +12,12 @@ const SessionForm: React.FC = () => {
   } = useSessionsContext();
   const editingSession = currentSession!;
 
+  const [spaceErrorMessageFlag, setSpaceErrorMessageFlag] = useState(false);
+  const [titleErrorMessageFlag, setTitleErrorMessageFlag] = useState(false);
+  const [presenterErrorMessageFlag, setPresenterErrorMessageFlag] = useState(
+    false
+  );
+
   const [sessionTitle, setSessionTitle] = useState(editingSession.title);
   const [sessionSpaceId, setSessionSpaceId] = useState(
     editingSession.location.id!
@@ -20,6 +26,27 @@ const SessionForm: React.FC = () => {
   const [sessionPresenter, setSessionPresenter] = useState(
     editingSession.presenter
   );
+
+  const fieldsAreValid = () => {
+    let valid = true;
+
+    if (!sessionTitle) {
+      setTitleErrorMessageFlag(true);
+      valid = false;
+    }
+
+    if (!sessionSpaceId) {
+      setSpaceErrorMessageFlag(true);
+      valid = false;
+    }
+
+    if (!sessionPresenter) {
+      setPresenterErrorMessageFlag(true);
+      valid = false;
+    }
+
+    return valid;
+  };
 
   const submitForm = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -30,6 +57,10 @@ const SessionForm: React.FC = () => {
       title: sessionTitle,
       type: "Demo"
     };
+
+    if (!fieldsAreValid()) {
+      return;
+    }
 
     let response: any;
 
@@ -61,26 +92,45 @@ const SessionForm: React.FC = () => {
       </Modal.Header>
       <Modal.Content>
         <Form inverted onSubmit={event => submitForm(event)}>
-          <Form.Field>
+          <Form.Field inline>
             <label>Title</label>
             <input
               placeholder="title"
               value={sessionTitle}
               onChange={e => setSessionTitle(e.target.value)}
             />
+            {titleErrorMessageFlag && (
+              <Label basic color="red" pointing="left">
+                Please enter title for this session!
+              </Label>
+            )}
           </Form.Field>
-          <SpaceDropdown
-            value={sessionSpaceId}
-            onChange={(_event, data) => setSessionSpaceId(data.value as number)}
-          />
+          <Form.Field inline>
+            <SpaceDropdown
+              value={sessionSpaceId}
+              onChange={(_event, data) =>
+                setSessionSpaceId(data.value as number)
+              }
+            />
+            {spaceErrorMessageFlag && (
+              <Label basic color="red" pointing="left">
+                Please select space name!
+              </Label>
+            )}
+          </Form.Field>
 
-          <Form.Field>
+          <Form.Field inline>
             <label>Presenter</label>
             <input
               placeholder="presenter"
               value={sessionPresenter}
               onChange={e => setSessionPresenter(e.target.value)}
             />
+            {presenterErrorMessageFlag && (
+              <Label basic color="red" pointing="left">
+                Please enter presenter's name!
+              </Label>
+            )}
           </Form.Field>
           <Form.Field>
             <label>Time</label>
