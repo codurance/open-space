@@ -4,6 +4,15 @@ import SpaceDropdown from "../../space/spaceDropdown/SpaceDropdown";
 import * as sessionAPI from "../api/sessionAPI";
 import { useSessionsContext } from "../sessionsContext";
 
+enum SessionType {
+  Demo = "Demo",
+  Practical = "Practical",
+  Workshop = "Workshop",
+  Presentation = "Presentation",
+  RoundTable = "RoundTable",
+  Other = "Other"
+}
+
 const SessionForm: React.FC = () => {
   const {
     setSessions,
