@@ -5,12 +5,11 @@ import * as sessionsLocalStorage from "../../common/sessionsLocalStorage";
 import SessionsContext, { ISession } from "../sessionsContext";
 import * as sessionAPI from "../api/sessionAPI";
 import SessionDeleteConfirmation from "./SessionDeleteConfirmation";
-import { ISpace } from "../../space/api/ISpace";
 
 export type SessionProps = {
   id: number;
   title: string;
-  location: ISpace;
+  location: string;
   time: string;
   presenter: string;
 };

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Button, Form, Label, Modal } from "semantic-ui-react";
+import { Button, Dropdown, Form, Label, Modal } from "semantic-ui-react";
 import SpaceDropdown from "../../space/spaceDropdown/SpaceDropdown";
 import * as sessionAPI from "../api/sessionAPI";
 import { useSessionsContext } from "../sessionsContext";
+import { editSession } from "../api/sessionAPI";
 
 const SessionForm: React.FC = () => {
   const {
     setSessions,
     setCurrentSession,
-    currentSession
+    currentSession,
+    setSessionTypesToFilter
   } = useSessionsContext();
   const editingSession = currentSession!;
 
@@ -146,9 +148,10 @@ const SessionForm: React.FC = () => {
               placeholder="Session Type"
               selection
               options={options}
-              // onChange={(_event, data) => {
-              //   setSessionTypesToFilter!(data.value);
-              // }}
+              onChange={(_event, data) => {
+                // setSessionTypesToFilter!(data.value);
+                console.log(data.value);
+              }}
             />
           </Form.Field>
           <Form.Field>

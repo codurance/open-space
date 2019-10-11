@@ -41,7 +41,7 @@ const Sessions: React.FC<SessionsProps> = props => {
           .sort(bySessionTime)
           .map((session: ISession) => (
             <React.Fragment key={session.id}>
-              <Session {...session} />
+              <Session {...{ ...session, location: session.location.name }} />
             </React.Fragment>
           ))}
     </React.Fragment>
