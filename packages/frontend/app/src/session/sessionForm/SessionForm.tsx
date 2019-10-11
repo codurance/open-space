@@ -29,6 +29,8 @@ const SessionForm: React.FC = () => {
     editingSession.presenter
   );
 
+  const [sessionType, setSessionType] = useState();
+
   const fieldsAreValid = () => {
     let valid = true;
 
@@ -64,7 +66,7 @@ const SessionForm: React.FC = () => {
       spaceId: sessionSpaceId,
       time: sessionTime,
       title: sessionTitle,
-      type: "Demo"
+      type: sessionType
     };
 
     if (!fieldsAreValid()) {
@@ -149,8 +151,7 @@ const SessionForm: React.FC = () => {
               selection
               options={options}
               onChange={(_event, data) => {
-                // setSessionTypesToFilter!(data.value);
-                console.log(data.value);
+                setSessionType(data.value);
               }}
             />
           </Form.Field>
