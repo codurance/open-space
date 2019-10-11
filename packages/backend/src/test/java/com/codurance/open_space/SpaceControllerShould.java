@@ -79,7 +79,7 @@ public class SpaceControllerShould {
         when(spaceRepository.save(spaceToUpdate))
                 .thenReturn(spaceToUpdate);
 
-        mockMvc.perform(put("/api/spaces/1/facilities")
+        mockMvc.perform(put("/api/spaces/1")
                 .content(TestUtils.asJsonString(spaceToUpdate))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
