@@ -3,6 +3,7 @@ import { Button, Form, Label, Modal } from "semantic-ui-react";
 import SpaceDropdown from "../../space/spaceDropdown/SpaceDropdown";
 import * as sessionAPI from "../api/sessionAPI";
 import { useSessionsContext } from "../sessionsContext";
+import CSS from "csstype";
 
 const SessionForm: React.FC = () => {
   const {
@@ -84,15 +85,17 @@ const SessionForm: React.FC = () => {
     event.preventDefault();
     setCurrentSession(undefined);
   };
-
+  const modalStyle: CSS.Properties = {
+    background: "#666666"
+  };
   return (
     <Modal open={currentSession !== undefined}>
       <Modal.Header>
         {!editingSession.id ? "Submit" : "Edit"} A Session
       </Modal.Header>
-      <Modal.Content>
+      <Modal.Content style={modalStyle}>
         <Form inverted onSubmit={event => submitForm(event)}>
-          <Form.Field inline>
+          <Form.Field>
             <label>Title</label>
             <input
               placeholder="title"
@@ -100,12 +103,13 @@ const SessionForm: React.FC = () => {
               onChange={e => setSessionTitle(e.target.value)}
             />
             {titleErrorMessageFlag && (
-              <Label basic color="red" pointing="left">
-                Please enter title for this session!
+              <Label basic color="red" pointing="above">
+                Please enter title!
               </Label>
             )}
           </Form.Field>
-          <Form.Field inline>
+          <Form.Field>
+            <label>Location</label>
             <SpaceDropdown
               value={sessionSpaceId}
               onChange={(_event, data) =>
@@ -113,13 +117,13 @@ const SessionForm: React.FC = () => {
               }
             />
             {spaceErrorMessageFlag && (
-              <Label basic color="red" pointing="left">
-                Please select space name!
+              <Label basic color="red" pointing="above">
+                Please select a space!
               </Label>
             )}
           </Form.Field>
 
-          <Form.Field inline>
+          <Form.Field>
             <label>Presenter</label>
             <input
               placeholder="presenter"
@@ -127,7 +131,7 @@ const SessionForm: React.FC = () => {
               onChange={e => setSessionPresenter(e.target.value)}
             />
             {presenterErrorMessageFlag && (
-              <Label basic color="red" pointing="left">
+              <Label basic color="red" pointing="above">
                 Please enter presenter's name!
               </Label>
             )}
