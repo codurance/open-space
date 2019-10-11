@@ -1,6 +1,5 @@
 package com.codurance.open_space.controller;
 
-import com.codurance.open_space.controller.rest.Facilities;
 import com.codurance.open_space.domain.Space;
 import com.codurance.open_space.repository.SpaceRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +29,15 @@ public class SpaceController {
         return spaceRepository.save(space);
     }
 
-    @PutMapping("/{id}/facilities")
-    public void update(@PathVariable Long id, @RequestBody Facilities facilities) {
+    @PutMapping("/{id}")
+    public void update(@PathVariable Long id, @RequestBody Space space) {
         Space spaceEntity = spaceRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
-        spaceEntity.setFacilities(facilities.getFacilities());
+        spaceEntity.setName(space.getName());
+        spaceEntity.setDescription(space.getDescription());
+        spaceEntity.setLocation(space.getLocation());
+        spaceEntity.setFacilities(space.getFacilities());
         spaceRepository.save(spaceEntity);
     }
 
