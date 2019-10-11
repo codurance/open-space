@@ -27,7 +27,8 @@ const SessionForm: React.FC = () => {
       presenter: sessionPresenter,
       spaceId: sessionSpaceId,
       time: sessionTime,
-      title: sessionTitle
+      title: sessionTitle,
+      type: "Demo"
     };
 
     let response: any;
