@@ -1,34 +1,45 @@
-import React, { useState, useContext } from "react";
-import { Modal, Button, Form } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Button, Form, Modal } from "semantic-ui-react";
+import SpaceDropdown from "../../space/spaceDropdown/SpaceDropdown";
 import * as sessionAPI from "../api/sessionAPI";
-import SessionsContext from "../sessionsContext";
+import { useSessionsContext } from "../sessionsContext";
 
 const SessionForm: React.FC = () => {
-  const { setSessions, setCurrentSession, currentSession } = useContext(
-    SessionsContext
-  );
+  const {
+    setSessions,
+    setCurrentSession,
+    currentSession
+  } = useSessionsContext();
+  const editingSession = currentSession!;
 
-  const [sessionTitle, setSessionTitle] = useState(currentSession!.title);
-  const [sessionLocation, setSessionLocation] = useState(
-    currentSession!.location
+  const [sessionTitle, setSessionTitle] = useState(editingSession.title);
+  const [sessionSpaceId, setSessionSpaceId] = useState(
+    editingSession.location.id!
   );
-  const [sessionTime, setSessionTime] = useState(currentSession!.time);
+  const [sessionTime, setSessionTime] = useState(editingSession.time);
   const [sessionPresenter, setSessionPresenter] = useState(
-    currentSession!.presenter
+    editingSession.presenter
   );
 
   const submitForm = async (event: React.FormEvent) => {
     event.preventDefault();
-    currentSession!.title = sessionTitle;
-    currentSession!.location = sessionLocation;
-    currentSession!.time = sessionTime;
-    currentSession!.presenter = sessionPresenter;
+    const sessionToSubmit: sessionAPI.SessionRequestBody = {
+      presenter: sessionPresenter,
+      spaceId: sessionSpaceId,
+      time: sessionTime,
+      title: sessionTitle
+    };
 
     let response: any;
 
-    if (!currentSession!.id)
-      response = await sessionAPI.postSession(currentSession!);
-    else response = await sessionAPI.editSession(currentSession!);
+    if (editingSession.id) {
+      response = await sessionAPI.editSession(
+        editingSession.id,
+        sessionToSubmit!
+      );
+    } else {
+      response = await sessionAPI.postSession(sessionToSubmit);
+    }
 
     if (response.ok) {
       const updatedSessions = await sessionAPI.getSessions();
@@ -45,7 +56,7 @@ const SessionForm: React.FC = () => {
   return (
     <Modal open={currentSession !== undefined}>
       <Modal.Header>
-        {!currentSession!.id ? "Submit" : "Edit"} A Session
+        {!editingSession.id ? "Submit" : "Edit"} A Session
       </Modal.Header>
       <Modal.Content>
         <Form inverted onSubmit={event => submitForm(event)}>
@@ -57,14 +68,11 @@ const SessionForm: React.FC = () => {
               onChange={e => setSessionTitle(e.target.value)}
             />
           </Form.Field>
-          {/* <Form.Field>
-            <label>Location</label>
-            <input
-              placeholder="location"
-              value={sessionLocation}
-              onChange={e => setSessionLocation(e.target.value)}
-            />
-          </Form.Field> */}
+          <SpaceDropdown
+            value={sessionSpaceId}
+            onChange={(_event, data) => setSessionSpaceId(data.value as number)}
+          />
+
           <Form.Field>
             <label>Presenter</label>
             <input
@@ -82,7 +90,7 @@ const SessionForm: React.FC = () => {
               onChange={e => setSessionTime(e.target.value)}
             />
           </Form.Field>
-          <Button type="submit">{!currentSession!.id ? "Add" : "Edit"}</Button>
+          <Button type="submit">{!editingSession.id ? "Add" : "Edit"}</Button>
           <Button onClick={event => onExitForm(event)}>Cancel</Button>
         </Form>
       </Modal.Content>

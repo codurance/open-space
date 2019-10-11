@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { postSpace } from "../api/spaceAPI";
-import { ISpace } from "../SpaceContainer";
 import { Button, Form, Header, Modal } from "semantic-ui-react";
 import CSS from "csstype";
+import { ISpace } from "../api/ISpace";
 
 interface SpaceFormProps {
   setModalSpaceStatus: Function;

@@ -1,6 +1,6 @@
 import React from "react";
-import { ISpace } from "../SpaceContainer";
 import { Card } from "semantic-ui-react";
+import { ISpace } from "../api/ISpace";
 
 const SpaceCard: React.FC<ISpace> = (props: ISpace) => {
   return (

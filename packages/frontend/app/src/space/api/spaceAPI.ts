@@ -1,5 +1,5 @@
 import { post, get, IHttpResponse } from "../../common/http";
-import { ISpace } from "../SpaceContainer";
+import { ISpace } from "./ISpace";
 
 export const postSpace = async (space: ISpace) => {
   const response: Response = await post(`/api/spaces`, {
@@ -13,7 +13,7 @@ export const postSpace = async (space: ISpace) => {
 };
 
 export const getSpaces = async () => {
-  const getSpacesResponse = await get<IHttpResponse<ISpace[]>>(`/api/spaces`);
+  const getSpacesResponse = await get<ISpace[]>(`/api/spaces`);
   const spaces = getSpacesResponse.parsedBody;
-  return spaces;
+  return spaces!;
 };

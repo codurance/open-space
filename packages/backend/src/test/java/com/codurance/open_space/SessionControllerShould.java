@@ -1,9 +1,11 @@
 package com.codurance.open_space;
 
 import com.codurance.open_space.controller.SessionController;
+import com.codurance.open_space.controller.rest.SessionRequestBody;
 import com.codurance.open_space.domain.Session;
 import com.codurance.open_space.domain.Space;
 import com.codurance.open_space.repository.SessionRepository;
+import com.codurance.open_space.repository.SpaceRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,12 +31,17 @@ public class SessionControllerShould {
 
     private Session session;
     private Space space;
+    private Space differentSpace;
+    private SessionRequestBody sessionRequestBody;
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private SessionRepository repository;
+
+    @MockBean
+    private SpaceRepository spaceRepository;
 
     @BeforeEach
     void setUp() {
@@ -49,6 +56,21 @@ public class SessionControllerShould {
         session.setTime("11:00");
         session.setPresenter("David");
         session.setType(SESSION_TYPE);
+
+        sessionRequestBody = new SessionRequestBody();
+        sessionRequestBody.setTitle(session.getTitle());
+        sessionRequestBody.setSpaceId(session.getLocation().getId());
+        sessionRequestBody.setTime(session.getTime());
+        sessionRequestBody.setPresenter(session.getPresenter());
+        sessionRequestBody.setType(session.getType());
+
+        differentSpace = new Space();
+        differentSpace.setId(2L);
+        differentSpace.setName("Another space");
+        when(spaceRepository.findById(1L))
+                .thenReturn(Optional.of(space));
+        when(spaceRepository.findById(2L))
+                .thenReturn(Optional.of(differentSpace));
     }
 
     @Test
@@ -70,11 +92,15 @@ public class SessionControllerShould {
 
     @Test
     void post_open_space_session() throws Exception {
-        when(repository.save(session))
-                .thenReturn(session);
+        when(repository.save(any()))
+                .thenAnswer(arguments -> {
+                    Session returnedSession = arguments.getArgument(0, Session.class);
+                    returnedSession.setId(1L);
+                    return returnedSession;
+                });
 
         mockMvc.perform(post("/api/sessions")
-                .content(asJsonString(session))
+                .content(asJsonString(sessionRequestBody))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -94,17 +120,21 @@ public class SessionControllerShould {
         when(repository.findById(1L))
                 .thenReturn(Optional.of(session));
 
-        Space differentSpace = new Space();
-        differentSpace.setId(2L);
-        differentSpace.setName("Another space");
+
 
         session.setLocation(differentSpace);
-
-        when(repository.save(session))
+        when(repository.save(any()))
                 .thenReturn(session);
 
+        SessionRequestBody sessionRequestBody = new SessionRequestBody();
+        sessionRequestBody.setTitle(session.getTitle());
+        sessionRequestBody.setSpaceId(2L);
+        sessionRequestBody.setTime(session.getTime());
+        sessionRequestBody.setPresenter(session.getPresenter());
+        sessionRequestBody.setType(session.getType());
+
         mockMvc.perform(put("/api/sessions/1")
-                .content(asJsonString(session))
+                .content(asJsonString(sessionRequestBody))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -116,6 +146,7 @@ public class SessionControllerShould {
                 .andExpect(jsonPath("$.presenter").value("David"));
 
         verify(repository).findById(1L);
+        verify(spaceRepository).findById(2L);
         verify(repository).save(session);
     }
 
@@ -160,19 +191,21 @@ public class SessionControllerShould {
 
     @Test
     void give_error_message_when_session_type_is_missing() throws Exception{
-
         session.setType(null);
+        session.setId(null);
         when(repository.save(session)).thenThrow(new DataIntegrityViolationException("session type is not-null"));
+
+        sessionRequestBody.setType(null);
 
         try {
             mockMvc.perform(post("/api/sessions")
-                    .content(asJsonString(session))
+                    .content(asJsonString(sessionRequestBody))
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.message").value("Session type is required"));
         }catch (Exception e) {
-            Assertions.fail("controller should not throw exception");
+            Assertions.fail("controller should not throw exception: " + e);
         }
     }
 
@@ -180,25 +213,19 @@ public class SessionControllerShould {
     void give_error_message_when_session_type_is_missing_when_update_session() throws Exception{
 
         when(repository.findById(1L)).thenReturn(Optional.of(session));
-        Session sessionWithNullType = new Session();
-        sessionWithNullType.setId(session.getId());
-        sessionWithNullType.setTitle(session.getTitle());
-        sessionWithNullType.setLocation(session.getLocation());
-        sessionWithNullType.setTime(session.getTime());
-        sessionWithNullType.setPresenter(session.getPresenter());
-        sessionWithNullType.setType(null);
+        when(repository.save(any())).thenThrow(new DataIntegrityViolationException("session type is not-null"));
 
-        when(repository.save(sessionWithNullType)).thenThrow(new DataIntegrityViolationException("session type is not-null"));
+        sessionRequestBody.setType(null);
 
         try {
             mockMvc.perform(put("/api/sessions/1")
-                    .content(asJsonString(sessionWithNullType))
+                    .content(asJsonString(sessionRequestBody))
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.message").value("Session type is required"));
         }catch (Exception e) {
-            Assertions.fail("controller should not throw exception");
+            Assertions.fail("controller should not throw exception: ", e);
         }
     }
 }

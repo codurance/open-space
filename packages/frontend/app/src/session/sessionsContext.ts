@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ISpace } from "../space/ISpace";
+import { ISpace } from "../space/api/ISpace";
 
 export interface ISession {
   id: number;
