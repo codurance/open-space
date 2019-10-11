@@ -75,8 +75,12 @@ export const Session = ({
           <Button className="delete-session" icon onClick={() => setOpen(true)}>
             <Icon name="trash" />
           </Button>
-          <Button className="edit-session" onClick={() => onEditClicked(id)}>
-            Edit
+          <Button
+            className="edit-session"
+            icon
+            onClick={() => onEditClicked(id)}
+          >
+            <Icon name="pencil" />
           </Button>
         </Card.Content>
       </Card>
