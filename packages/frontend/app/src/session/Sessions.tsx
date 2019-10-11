@@ -35,12 +35,6 @@ const Sessions: React.FC<SessionsProps> = props => {
     return false;
   };
 
-  const copySessionToProps = (session: ISession): SessionProps => {
-    const copyOfSession: any = { ...session };
-    copyOfSession.location = session.location.name;
-    return copyOfSession;
-  };
-
   return (
     <React.Fragment>
       {sessions &&
@@ -50,7 +44,7 @@ const Sessions: React.FC<SessionsProps> = props => {
           .sort(bySessionTime)
           .map((session: ISession) => (
             <React.Fragment key={session.id}>
-              <Session {...copySessionToProps(session)} />
+              <Session {...{ ...session, location: session.location.name }} />
             </React.Fragment>
           ))}
     </React.Fragment>

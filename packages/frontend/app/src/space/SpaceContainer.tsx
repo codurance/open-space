@@ -3,14 +3,7 @@ import { Button } from "semantic-ui-react";
 import SpaceForm from "./spaceForm/SpaceForm";
 import SpaceCard from "./spaceCard/SpaceCard";
 import * as spaceAPI from "./api/spaceAPI";
-
-export interface ISpace {
-  id?: number;
-  name: string;
-  description: string;
-  location: string;
-  facilities: string;
-}
+import { ISpace } from "./api/ISpace";
 
 const SpaceContainer: React.FC = () => {
   const [isModalSpaceOn, setModalSpaceOn] = useState(false);
