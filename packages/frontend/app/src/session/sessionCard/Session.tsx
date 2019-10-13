@@ -47,6 +47,8 @@ export const Session = ({
   const toggleInterest = () => {
     setInterest(!interest);
     sessionsLocalStorage.setInterest(id, !interest);
+    // refresh sessions
+    setSessions([...sessions]);
   };
 
   return (
