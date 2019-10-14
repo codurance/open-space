@@ -1,4 +1,4 @@
-import { post, get, IHttpResponse } from "../../common/http";
+import { post, get } from "../../common/http";
 import { ISpace } from "./ISpace";
 
 export const postSpace = async (space: ISpace) => {

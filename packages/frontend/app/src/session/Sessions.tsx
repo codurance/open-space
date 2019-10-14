@@ -1,6 +1,6 @@
 import React from "react";
 import * as sessionStorage from "../common/sessionsLocalStorage";
-import { Session, SessionProps } from "./sessionCard/Session";
+import { Session } from "./sessionCard/Session";
 import { ISession, useSessionsContext } from "./sessionsContext";
 
 interface SessionsProps {
@@ -29,7 +29,7 @@ const Sessions: React.FC<SessionsProps> = props => {
     ) {
       return true;
     }
-    return sessionTypesToFilter!.indexOf(session.location.name) >= 0;
+    return sessionTypesToFilter!.indexOf(session.type) >= 0;
   };
 
   return (

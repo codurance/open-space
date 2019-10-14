@@ -62,27 +62,27 @@ it("Renders sessions after filtering by sessiontype", () => {
       id: 0,
       title: "title",
       location: {
-        name: "Keep Me Please",
+        name: "room 1",
         description: "",
         facilities: "",
         location: ""
       },
       time: "12:00",
       presenter: "presenter",
-      type: "Demo"
+      type: "Keep Me Please"
     },
     {
       id: 1,
       title: "title",
       location: {
-        name: "I should not be here",
+        name: "room 2",
         description: "",
         facilities: "",
         location: ""
       },
       time: "12:00",
       presenter: "presenter",
-      type: "demo"
+      type: "I should not be here"
     }
   ];
 

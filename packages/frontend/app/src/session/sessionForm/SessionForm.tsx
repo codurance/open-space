@@ -3,14 +3,13 @@ import { Button, Dropdown, Form, Label, Modal } from "semantic-ui-react";
 import SpaceDropdown from "../../space/spaceDropdown/SpaceDropdown";
 import * as sessionAPI from "../api/sessionAPI";
 import { useSessionsContext } from "../sessionsContext";
-import { editSession } from "../api/sessionAPI";
+import { SESSION_TYPES } from "../sessionTypes";
 
 const SessionForm: React.FC = () => {
   const {
     setSessions,
     setCurrentSession,
-    currentSession,
-    setSessionTypesToFilter
+    currentSession
   } = useSessionsContext();
   const editingSession = currentSession!;
 
@@ -51,13 +50,6 @@ const SessionForm: React.FC = () => {
 
     return valid;
   };
-
-  const options = [
-    { key: "1", text: "Demo", value: "Demo" },
-    { key: "2", text: "Practical", value: "Practical" },
-    { key: "3", text: "Workshop", value: "Workshop" },
-    { key: "4", text: "Round Table", value: "Round Table" }
-  ];
 
   const submitForm = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -149,7 +141,7 @@ const SessionForm: React.FC = () => {
               className="dropdown"
               placeholder="Session Type"
               selection
-              options={options}
+              options={SESSION_TYPES}
               onChange={(_event, data) => {
                 setSessionType(data.value);
               }}
