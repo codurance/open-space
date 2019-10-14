@@ -27,7 +27,8 @@ it("Renders sessions when sessions exist", () => {
         location: ""
       },
       time: "12:00",
-      presenter: "presenter"
+      presenter: "presenter",
+      type: "Demo"
     }
   ];
 
@@ -39,6 +40,7 @@ it("Renders sessions when sessions exist", () => {
   }));
 
   const wrapper = enzyme.shallow(<Sessions isFilteringByInterest={false} />);
+  console.log(wrapper.debug());
 
   const doesContainSession = wrapper.contains(
     <Session
@@ -47,8 +49,10 @@ it("Renders sessions when sessions exist", () => {
       presenter="presenter"
       location="location"
       time="12:00"
+      type="Demo"
     />
   );
+  console.log(doesContainSession);
   expect(doesContainSession).toBe(true);
 });
 
@@ -64,7 +68,8 @@ it("Renders sessions after filtering by sessiontype", () => {
         location: ""
       },
       time: "12:00",
-      presenter: "presenter"
+      presenter: "presenter",
+      type: "Demo"
     },
     {
       id: 1,
@@ -76,7 +81,8 @@ it("Renders sessions after filtering by sessiontype", () => {
         location: ""
       },
       time: "12:00",
-      presenter: "presenter"
+      presenter: "presenter",
+      type: "demo"
     }
   ];
 

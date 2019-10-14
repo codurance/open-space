@@ -29,10 +29,7 @@ const Sessions: React.FC<SessionsProps> = props => {
     ) {
       return true;
     }
-    if (sessionTypesToFilter!.indexOf(session.location.name) >= 0) {
-      return true;
-    }
-    return false;
+    return sessionTypesToFilter!.indexOf(session.location.name) >= 0;
   };
 
   return (

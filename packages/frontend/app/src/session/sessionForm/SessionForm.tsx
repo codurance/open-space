@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Button, Form, Label, Modal } from "semantic-ui-react";
+import { Button, Dropdown, Form, Label, Modal } from "semantic-ui-react";
 import SpaceDropdown from "../../space/spaceDropdown/SpaceDropdown";
 import * as sessionAPI from "../api/sessionAPI";
 import { useSessionsContext } from "../sessionsContext";
+import { editSession } from "../api/sessionAPI";
 
 const SessionForm: React.FC = () => {
   const {
     setSessions,
     setCurrentSession,
-    currentSession
+    currentSession,
+    setSessionTypesToFilter
   } = useSessionsContext();
   const editingSession = currentSession!;
 
@@ -26,6 +28,8 @@ const SessionForm: React.FC = () => {
   const [sessionPresenter, setSessionPresenter] = useState(
     editingSession.presenter
   );
+
+  const [sessionType, setSessionType] = useState();
 
   const fieldsAreValid = () => {
     let valid = true;
@@ -48,6 +52,13 @@ const SessionForm: React.FC = () => {
     return valid;
   };
 
+  const options = [
+    { key: "1", text: "Demo", value: "Demo" },
+    { key: "2", text: "Practical", value: "Practical" },
+    { key: "3", text: "Workshop", value: "Workshop" },
+    { key: "4", text: "Round Table", value: "Round Table" }
+  ];
+
   const submitForm = async (event: React.FormEvent) => {
     event.preventDefault();
     const sessionToSubmit: sessionAPI.SessionRequestBody = {
@@ -55,7 +66,7 @@ const SessionForm: React.FC = () => {
       spaceId: sessionSpaceId,
       time: sessionTime,
       title: sessionTitle,
-      type: "Demo"
+      type: sessionType
     };
 
     if (!fieldsAreValid()) {
@@ -131,6 +142,18 @@ const SessionForm: React.FC = () => {
                 Please enter presenter's name!
               </Label>
             )}
+          </Form.Field>
+          <Form.Field>
+            <label>Session Type</label>
+            <Dropdown
+              className="dropdown"
+              placeholder="Session Type"
+              selection
+              options={options}
+              onChange={(_event, data) => {
+                setSessionType(data.value);
+              }}
+            />
           </Form.Field>
           <Form.Field>
             <label>Time</label>

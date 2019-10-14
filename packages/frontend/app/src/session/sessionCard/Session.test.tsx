@@ -10,6 +10,7 @@ const title = "title";
 const location = "location";
 const presenter = "presenter";
 const time = "12:00";
+const type = "Demo";
 
 let wrapper: ShallowWrapper;
 beforeEach(() => {
@@ -20,6 +21,7 @@ beforeEach(() => {
       presenter={presenter}
       location={location}
       time={time}
+      type={type}
     />
   );
 });
