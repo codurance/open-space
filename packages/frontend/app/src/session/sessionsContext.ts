@@ -8,21 +8,23 @@ export interface ISession {
   presenter: string;
 }
 
-export interface ISessionsContext {
+export interface ISessionsState {
   sessions: ISession[];
-  setSessions: Function;
   currentSession: ISession | undefined;
-  setCurrentSession: Function;
   sessionTypesToFilter?: string[];
-  setSessionTypesToFilter?: Function;
+}
+export interface ISessionsContext {
+  state: ISessionsState;
+  dispatch: Function;
 }
 
 const SessionsContext = React.createContext<ISessionsContext>({
-  sessions: [],
-  setSessions: () => {},
-  currentSession: undefined,
-  setCurrentSession: () => {}
-});
+  state: {
+    sessions: [],
+    currentSession:undefined
+  },
+  dispatch: () => {}
+} as ISessionsContext);
 
 export const useSessionsContext = () => useContext(SessionsContext);
 export default SessionsContext;

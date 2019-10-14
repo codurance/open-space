@@ -5,21 +5,16 @@ import "./SessionContainer.css";
 import SessionsFilters from "./sessionFilters/SessionFilters";
 import SessionForm from "./sessionForm/SessionForm";
 import Sessions from "./Sessions";
-import SessionsContext, { ISessionsContext } from "./sessionsContext";
+import SessionsContext, { ISessionsContext, ISessionsState } from "./sessionsContext";
 import sessionsReducer from "./sessionsReducer";
 
 const SessionContainer: React.FC = () => {
-  const initialState: ISessionsContext = useContext(SessionsContext);
-  const [state, dispatch] = useReducer(sessionsReducer, initialState);
-
-  const [sessions, setSessions] = useState();
-  const [currentSession, setCurrentSession] = useState();
-  const [filterByInterest, toggleFilterByInterest] = useState(false);
-  const [sessionTypesToFilter, setSessionTypesToFilter] = useState([]);
+  const context: ISessionsContext = useContext(SessionsContext);
+  const [state, dispatch] = useReducer(sessionsReducer, context.state);
 
   const getSessionResponse = async () => {
     const sessionsResult = await sessionAPI.getSessions();
-    setSessions(sessionsResult);
+    dispatch({"setSessions", sessionsResult});
   };
 
   useEffect(() => {
@@ -38,7 +33,7 @@ const SessionContainer: React.FC = () => {
   };
 
   return (
-    <SessionsContext.Provider>
+    <SessionsContext.Provider value={{state, dispatch}}>
       <div className="session-buttons">
         <Button className="add-session-button" onClick={() => onAddSession()}>
           Add session

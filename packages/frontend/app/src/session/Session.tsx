@@ -20,9 +20,7 @@ export const Session = ({
   time,
   presenter
 }: SessionProps) => {
-  const { setSessions, setCurrentSession, sessions } = useContext(
-    SessionsContext
-  );
+  const { sessions } = useContext(SessionsContext);
 
   const [interest, setInterest] = useState(
     sessionsLocalStorage.checkInterest(id)
