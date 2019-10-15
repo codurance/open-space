@@ -31,9 +31,7 @@ const SpaceDropdown: React.FC<DropdownProps> = props => {
     selection: true,
     options: spaceOptions
   };
-  const dropdown = <Dropdown {...finalProps} />;
-
-  return dropdown;
+  return <Dropdown {...finalProps} />;
 };
 
 export default SpaceDropdown;

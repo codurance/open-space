@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
-import Home from "./home/Home";
-import SpaceContainer from "./space/SpaceContainer";
+import Home from "./pages/Home";
+import Admin from "./pages/Admin";
 
 const App: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ const App: React.FC = () => {
       </div>
       <Router>
         <Switch>
-          <Route path="/admin" component={SpaceContainer} />
+          <Route path="/admin" component={Admin} />
           <Route path="/" component={Home} />
         </Switch>
       </Router>

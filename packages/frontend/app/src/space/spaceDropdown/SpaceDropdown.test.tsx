@@ -27,7 +27,6 @@ it("Renders sessions when sessions exist", () => {
   jest.spyOn(spaceAPI, "getSpaces").mockImplementation(async () => spaces);
 
   const wrapper = enzyme.shallow(<SpaceDropdown />);
-  console.log(wrapper.html());
   // const doesContainSession = wrapper.contains(
   //   <
   //     id={0}

@@ -5,6 +5,7 @@ import * as sessionsLocalStorage from "../../common/sessionsLocalStorage";
 import SessionsContext, { ISession } from "../sessionsContext";
 import * as sessionAPI from "../api/sessionAPI";
 import SessionDeleteConfirmation from "./SessionDeleteConfirmation";
+import "./Session.css";
 
 export type SessionProps = {
   id: number;
@@ -12,6 +13,7 @@ export type SessionProps = {
   location: string;
   time: string;
   presenter: string;
+  type: string;
 };
 
 export const Session = ({
@@ -19,7 +21,8 @@ export const Session = ({
   title,
   location,
   time,
-  presenter
+  presenter,
+  type
 }: SessionProps) => {
   const { setSessions, setCurrentSession, sessions } = useContext(
     SessionsContext
@@ -67,6 +70,9 @@ export const Session = ({
         </Card.Content>
         <Card.Content extra className="session-extra-details">
           {location} @ {time}
+        </Card.Content>
+        <Card.Content extra className="session-type">
+          A {type} session
         </Card.Content>
         <Card.Content>
           <Button icon onClick={() => toggleInterest()}>

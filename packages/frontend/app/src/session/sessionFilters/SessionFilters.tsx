@@ -2,25 +2,19 @@ import React from "react";
 import { Dropdown } from "semantic-ui-react";
 import { useSessionsContext } from "../sessionsContext";
 import "./SessionFilters.css";
+import { SESSION_TYPES } from "../sessionTypes";
 
 const SessionsFilters: React.FC = () => {
   const { setSessionTypesToFilter } = useSessionsContext();
-
-  const options = [
-    { key: "1", text: "Location 1", value: "Location 1" },
-    { key: "2", text: "Location 2", value: "Location 2" },
-    { key: "3", text: "Location 3", value: "Location 3" },
-    { key: "4", text: "Location 4", value: "Location 4" }
-  ];
 
   return (
     <>
       <Dropdown
         className="dropdown"
-        placeholder="Location(Temporary)"
+        placeholder="Types"
         multiple
         selection
-        options={options}
+        options={SESSION_TYPES}
         onChange={(_event, data) => {
           setSessionTypesToFilter!(data.value);
         }}
