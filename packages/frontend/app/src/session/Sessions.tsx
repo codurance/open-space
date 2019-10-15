@@ -2,6 +2,7 @@ import React from "react";
 import * as sessionStorage from "../common/sessionsLocalStorage";
 import { Session } from "./sessionCard/Session";
 import { ISession, useSessionsContext } from "./sessionsContext";
+import "./Sessions.css";
 
 interface SessionsProps {
   isFilteringByInterest: boolean;
@@ -33,18 +34,20 @@ const Sessions: React.FC<SessionsProps> = props => {
   };
 
   return (
-    <React.Fragment>
-      {sessions &&
-        sessions
-          .filter(byInterest)
-          .filter(byType)
-          .sort(bySessionTime)
-          .map((session: ISession) => (
-            <React.Fragment key={session.id}>
-              <Session {...{ ...session, location: session.location.name }} />
-            </React.Fragment>
-          ))}
-    </React.Fragment>
+    <div className="sessionsContainer">
+      <React.Fragment>
+        {sessions &&
+          sessions
+            .filter(byInterest)
+            .filter(byType)
+            .sort(bySessionTime)
+            .map((session: ISession) => (
+              <React.Fragment key={session.id}>
+                <Session {...{ ...session, location: session.location.name }} />
+              </React.Fragment>
+            ))}
+      </React.Fragment>
+    </div>
   );
 };
 

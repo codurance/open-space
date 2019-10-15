@@ -27,7 +27,7 @@ const SpaceForm: React.FC<SpaceFormProps> = ({
       location: spaceLocation,
       facilities: spaceFacilities
     };
-    const result = await postSpace(spaceToStore);
+    await postSpace(spaceToStore);
     setModalSpaceStatus(false);
   };
 
