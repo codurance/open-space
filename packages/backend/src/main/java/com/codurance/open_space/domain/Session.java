@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -24,5 +25,8 @@ public class Session {
     private String presenter;
     @Column(columnDefinition = "varchar(255) default 'OTHER'", nullable = false)
     private String type;
+
+    @ManyToMany(mappedBy = "likedSessions")
+    Set<User> likes;
 
 }
