@@ -4,7 +4,7 @@ import { useSessionsContext } from "../sessionsContext";
 import "./SessionFilters.css";
 
 const SessionsFilters: React.FC = () => {
-  const { setSessionTypesToFilter } = useSessionsContext();
+  const { dispatch } = useSessionsContext();
 
   const options = [
     { key: "1", text: "Location 1", value: "Location 1" },
@@ -22,7 +22,7 @@ const SessionsFilters: React.FC = () => {
         selection
         options={options}
         onChange={(_event, data) => {
-          setSessionTypesToFilter!(data.value);
+          dispatch({ type: "setFilterTypes", payload: data.value });
         }}
       />
     </>

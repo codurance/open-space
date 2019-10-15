@@ -1,51 +1,51 @@
 import React, { useState, useContext } from "react";
 import { Modal, Button, Form } from "semantic-ui-react";
 import * as sessionAPI from "../api/sessionAPI";
-import SessionsContext from "../sessionsContext";
+import SessionsContext, { ISession } from "../sessionsContext";
 
 const SessionForm: React.FC = () => {
-  const { setSessions, setCurrentSession, currentSession } = useContext(
-    SessionsContext
-  );
+  const { state, dispatch } = useContext(SessionsContext);
 
-  const [sessionTitle, setSessionTitle] = useState(currentSession!.title);
-  const [sessionLocation, setSessionLocation] = useState(
-    currentSession!.location
-  );
-  const [sessionTime, setSessionTime] = useState(currentSession!.time);
+  const [sessionTitle, setSessionTitle] = useState(state.currentSession!.title);
+  const [sessionTime, setSessionTime] = useState(state.currentSession!.time);
   const [sessionPresenter, setSessionPresenter] = useState(
-    currentSession!.presenter
+    state.currentSession!.presenter
   );
 
   const submitForm = async (event: React.FormEvent) => {
     event.preventDefault();
-    currentSession!.title = sessionTitle;
-    currentSession!.location = sessionLocation;
-    currentSession!.time = sessionTime;
-    currentSession!.presenter = sessionPresenter;
+    const submitedSession: ISession = {
+      id: state.currentSession!.id,
+      title: sessionTitle,
+      time: sessionTime,
+      presenter: sessionPresenter
+    };
 
     let response: any;
 
-    if (!currentSession!.id)
-      response = await sessionAPI.postSession(currentSession!);
-    else response = await sessionAPI.editSession(currentSession!);
+    if (!submitedSession.id)
+      response = await sessionAPI.postSession(submitedSession);
+    else response = await sessionAPI.editSession(submitedSession);
 
     if (response.ok) {
-      const updatedSessions = await sessionAPI.getSessions();
-      if (updatedSessions) setSessions(updatedSessions);
-      setCurrentSession(undefined);
+      const updatedSessions: ISession[] = ((await sessionAPI.getSessions()) as unknown) as ISession[];
+      if (updatedSessions)
+        dispatch({ type: "setSessions", payload: updatedSessions });
+
+      dispatch({ type: "setCurrentSession", payload: undefined });
     }
   };
 
   const onExitForm = (event: React.FormEvent) => {
     event.preventDefault();
-    setCurrentSession(undefined);
+    dispatch({ type: "setCurrentSession", payload: undefined });
   };
 
   return (
-    <Modal open={currentSession !== undefined}>
+    <Modal open={state.currentSession !== undefined}>
       <Modal.Header>
-        {!currentSession!.id ? "Submit" : "Edit"} A Session
+        {state.currentSession && state.currentSession.id ? "Submit" : "Edit"} A
+        Session
       </Modal.Header>
       <Modal.Content>
         <Form inverted onSubmit={event => submitForm(event)}>
@@ -57,14 +57,7 @@ const SessionForm: React.FC = () => {
               onChange={e => setSessionTitle(e.target.value)}
             />
           </Form.Field>
-          <Form.Field>
-            <label>Location</label>
-            <input
-              placeholder="location"
-              value={sessionLocation}
-              onChange={e => setSessionLocation(e.target.value)}
-            />
-          </Form.Field>
+
           <Form.Field>
             <label>Presenter</label>
             <input
@@ -82,7 +75,11 @@ const SessionForm: React.FC = () => {
               onChange={e => setSessionTime(e.target.value)}
             />
           </Form.Field>
-          <Button type="submit">{!currentSession!.id ? "Add" : "Edit"}</Button>
+          <Button type="submit">
+            {!(state.currentSession && state.currentSession.id)
+              ? "Add"
+              : "Edit"}
+          </Button>
           <Button onClick={event => onExitForm(event)}>Cancel</Button>
         </Form>
       </Modal.Content>

@@ -3,7 +3,6 @@ import React, { useContext } from "react";
 export interface ISession {
   id: number;
   title: string;
-  location: string;
   time: string;
   presenter: string;
 }
@@ -11,7 +10,8 @@ export interface ISession {
 export interface ISessionsState {
   sessions: ISession[];
   currentSession: ISession | undefined;
-  sessionTypesToFilter?: string[];
+  sessionTypesToFilter: string[];
+  isFormVisible: boolean;
 }
 export interface ISessionsContext {
   state: ISessionsState;
@@ -21,7 +21,9 @@ export interface ISessionsContext {
 const SessionsContext = React.createContext<ISessionsContext>({
   state: {
     sessions: [],
-    currentSession:undefined
+    currentSession: undefined,
+    sessionTypesToFilter: [],
+    isFormVisible: false
   },
   dispatch: () => {}
 } as ISessionsContext);

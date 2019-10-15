@@ -8,7 +8,6 @@ export const editSession = async (session: ISession) => {
     },
     body: JSON.stringify({
       title: session.title,
-      location: session.location,
       time: session.time,
       presenter: session.presenter
     })
@@ -24,7 +23,6 @@ export const postSession = async (session: ISession) => {
     },
     body: JSON.stringify({
       title: session.title,
-      location: session.location,
       time: session.time,
       presenter: session.presenter
     })

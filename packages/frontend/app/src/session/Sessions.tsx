@@ -8,7 +8,7 @@ interface SessionsProps {
 }
 
 const Sessions: React.FC<SessionsProps> = props => {
-  const { sessions, sessionTypesToFilter } = useSessionsContext();
+  const { state } = useSessionsContext();
 
   const bySessionTime = function(a: ISession, b: ISession) {
     if (a.time < b.time) return -1;
@@ -18,27 +18,18 @@ const Sessions: React.FC<SessionsProps> = props => {
 
   const byInterest = (session: ISession) => {
     return (
-      !props.isFilteringByInterest || sessionStorage.checkInterest(session.id)
+      !props.isFilteringByInterest || sessionStorage.checkInterest(session.id!)
     );
   };
 
   const byType = (session: ISession) => {
-    if (
-      sessionTypesToFilter === undefined ||
-      sessionTypesToFilter.length === 0
-    ) {
-      return true;
-    }
-    if (sessionTypesToFilter!.indexOf(session.location) >= 0) {
-      return true;
-    }
-    return false;
+    return true;
   };
 
   return (
     <React.Fragment>
-      {sessions &&
-        sessions
+      {state.sessions &&
+        state.sessions
           .filter(byInterest)
           .filter(byType)
           .sort(bySessionTime)

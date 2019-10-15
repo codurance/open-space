@@ -5,35 +5,38 @@ import "./SessionContainer.css";
 import SessionsFilters from "./sessionFilters/SessionFilters";
 import SessionForm from "./sessionForm/SessionForm";
 import Sessions from "./Sessions";
-import SessionsContext, { ISessionsContext, ISessionsState } from "./sessionsContext";
+import SessionsContext, { ISessionsContext, ISession } from "./sessionsContext";
 import sessionsReducer from "./sessionsReducer";
 
 const SessionContainer: React.FC = () => {
   const context: ISessionsContext = useContext(SessionsContext);
   const [state, dispatch] = useReducer(sessionsReducer, context.state);
 
+  const [filterByInterest, toggleFilterByInterest] = useState(false);
+
   const getSessionResponse = async () => {
-    const sessionsResult = await sessionAPI.getSessions();
-    dispatch({"setSessions", sessionsResult});
+    const updatedSessions: ISession[] = ((await sessionAPI.getSessions()) as unknown) as ISession[];
+    if (updatedSessions) {
+      dispatch({ type: "setSessions", payload: updatedSessions });
+    }
+  };
+
+  const onAddSession = () => {
+    const newSession: ISession = {
+      id: -1,
+      title: "",
+      time: "",
+      presenter: ""
+    };
+    dispatch({ type: "setCurrentSession", payload: newSession! });
   };
 
   useEffect(() => {
     getSessionResponse();
   }, []);
 
-  const onAddSession = () => {
-    const session = {
-      title: "",
-      location: "",
-      time: "",
-      presenter: ""
-    };
-
-    setCurrentSession(session);
-  };
-
   return (
-    <SessionsContext.Provider value={{state, dispatch}}>
+    <SessionsContext.Provider value={{ state, dispatch }}>
       <div className="session-buttons">
         <Button className="add-session-button" onClick={() => onAddSession()}>
           Add session
@@ -51,7 +54,7 @@ const SessionContainer: React.FC = () => {
 
         <SessionsFilters />
       </div>
-      {currentSession !== undefined && <SessionForm />}
+      {state.currentSession !== undefined && <SessionForm />}
       <Sessions isFilteringByInterest={filterByInterest} />
     </SessionsContext.Provider>
   );
