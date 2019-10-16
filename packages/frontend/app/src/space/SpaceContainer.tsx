@@ -24,7 +24,7 @@ const SpaceContainer: React.FC = () => {
 
   return (
     <>
-      <div className="buttons">
+      <div className="buttons button-bar">
         <Button className="add-space-button" onClick={() => onAddSpace()}>
           Add space
         </Button>
