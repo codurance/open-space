@@ -6,6 +6,7 @@ import SessionForm from "./sessionForm/SessionForm";
 import Sessions from "./Sessions";
 import SessionsContext from "./sessionsContext";
 import "./SessionContainer.css";
+import * as localStorageHelper from "../common/localStorageHelper";
 
 const SessionContainer: React.FC = () => {
   const [sessions, setSessions] = useState();
@@ -18,8 +19,17 @@ const SessionContainer: React.FC = () => {
     setSessions(sessionsResult);
   };
 
+  const checkIfLoggedIn: Function = (): Promise<void> => {
+    return new Promise(resolve => {
+      localStorageHelper.isUserLoggedIn().then((answer: Boolean) => {
+        if (!answer) document.location.href = "/login";
+        resolve();
+      });
+    });
+  };
+
   useEffect(() => {
-    getSessionResponse();
+    checkIfLoggedIn().then(() => getSessionResponse());
   }, []);
 
   const onAddSession = () => {

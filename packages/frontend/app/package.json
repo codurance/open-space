@@ -16,6 +16,7 @@
     "eslint-config-prettier": "^6.3.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-google-login": "^5.0.5",
     "react-scripts": "3.1.2",
     "semantic-ui-react": "^0.88.1",
     "typescript": "3.6.3",
@@ -27,7 +28,8 @@
     "test": "tsc && react-scripts test",
     "test:ci": "tsc && CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "cypress-run": "cypress run"
+    "cypress-run": "cypress run",
+    "cypress-gui": "cypress run --browser chrome --no-exit"
   },
   "proxy": "http://localhost:8080",
   "cypress": "cypress open",
