@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  text-align: left;
 }
 
 .App-logo {
@@ -18,6 +18,16 @@
 
 .App-link {
   color: #09d3ac;
+}
+
+.buttons {
+  display: "inline-block";
+}
+
+.button-bar {
+  background-color: #282c34;
+  padding-bottom: 0.8rem;
+  padding-left: 0.5rem;
 }
 
 .userName {

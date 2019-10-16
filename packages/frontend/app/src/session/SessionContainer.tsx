@@ -54,12 +54,10 @@ const SessionContainer: React.FC = () => {
         setSessionTypesToFilter
       }}
     >
-      <div className="session-buttons">
+      <div className="session-buttons button-bar">
         <Button className="add-session-button" onClick={() => onAddSession()}>
           Add session
         </Button>
-      </div>
-      <div>
         <Button
           positive={filterByInterest}
           icon
