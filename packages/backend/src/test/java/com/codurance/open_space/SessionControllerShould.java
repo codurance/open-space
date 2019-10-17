@@ -38,7 +38,7 @@ public class SessionControllerShould {
     private MockMvc mockMvc;
 
     @MockBean
-    private SessionRepository repository;
+    private SessionRepository sessionRepository;
 
     @MockBean
     private SpaceRepository spaceRepository;
@@ -75,7 +75,7 @@ public class SessionControllerShould {
 
     @Test
     void get_all_open_space_sessions_from_the_repository() throws Exception {
-        when(repository.findAll())
+        when(sessionRepository.findAll())
                 .thenReturn(List.of(session));
 
         mockMvc.perform(get("/api/sessions")
@@ -92,7 +92,7 @@ public class SessionControllerShould {
 
     @Test
     void post_open_space_session() throws Exception {
-        when(repository.save(any()))
+        when(sessionRepository.save(any()))
                 .thenAnswer(arguments -> {
                     Session returnedSession = arguments.getArgument(0, Session.class);
                     returnedSession.setId(1L);
@@ -112,18 +112,18 @@ public class SessionControllerShould {
                 .andExpect(jsonPath("$.type").value(SESSION_TYPE))
                 .andExpect(jsonPath("$.presenter").value("David"));
 
-        verify(repository).save(session);
+        verify(sessionRepository).save(session);
     }
 
     @Test
     void update_open_space_session() throws Exception {
-        when(repository.findById(1L))
+        when(sessionRepository.findById(1L))
                 .thenReturn(Optional.of(session));
 
 
 
         session.setLocation(differentSpace);
-        when(repository.save(any()))
+        when(sessionRepository.save(any()))
                 .thenReturn(session);
 
         SessionRequestBody sessionRequestBody = new SessionRequestBody();
@@ -145,15 +145,15 @@ public class SessionControllerShould {
                 .andExpect(jsonPath("$.time").value("11:00"))
                 .andExpect(jsonPath("$.presenter").value("David"));
 
-        verify(repository).findById(1L);
+        verify(sessionRepository).findById(1L);
         verify(spaceRepository).findById(2L);
-        verify(repository).save(session);
+        verify(sessionRepository).save(session);
     }
 
     @Test
     void update_method_returns_404_status_if_id_not_found() throws Exception {
 
-        when(repository.findById(20L)).thenReturn(null);
+        when(sessionRepository.findById(20L)).thenReturn(null);
 
         Space differentSpace = new Space();
         differentSpace.setId(2L);
@@ -165,7 +165,7 @@ public class SessionControllerShould {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 
-        verify(repository).findById(1L);
+        verify(sessionRepository).findById(1L);
     }
 
 
@@ -173,12 +173,12 @@ public class SessionControllerShould {
     void delete_method_returns_404_status_if_id_not_found() throws Exception {
         final long id = 30;
 
-        doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(id);
+        doThrow(EmptyResultDataAccessException.class).when(sessionRepository).deleteById(id);
 
         mockMvc.perform(delete("/api/sessions/" + id))
                 .andExpect(status().isNotFound());
 
-        verify(repository).deleteById(id);
+        verify(sessionRepository).deleteById(id);
     }
 
     @Test
@@ -186,14 +186,14 @@ public class SessionControllerShould {
         mockMvc.perform(delete("/api/sessions/1"))
                 .andExpect(status().isNoContent());
 
-        verify(repository).deleteById(1L);
+        verify(sessionRepository).deleteById(1L);
     }
 
     @Test
     void give_error_message_when_session_type_is_missing() throws Exception{
         session.setType(null);
         session.setId(null);
-        when(repository.save(session)).thenThrow(new DataIntegrityViolationException("session type is not-null"));
+        when(sessionRepository.save(session)).thenThrow(new DataIntegrityViolationException("session type is not-null"));
 
         sessionRequestBody.setType(null);
 
@@ -212,8 +212,8 @@ public class SessionControllerShould {
     @Test
     void give_error_message_when_session_type_is_missing_when_update_session() throws Exception{
 
-        when(repository.findById(1L)).thenReturn(Optional.of(session));
-        when(repository.save(any())).thenThrow(new DataIntegrityViolationException("session type is not-null"));
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+        when(sessionRepository.save(any())).thenThrow(new DataIntegrityViolationException("session type is not-null"));
 
         sessionRequestBody.setType(null);
 
@@ -227,5 +227,29 @@ public class SessionControllerShould {
         }catch (Exception e) {
             Assertions.fail("controller should not throw exception: ", e);
         }
+    }
+
+    @Test
+    void gather_like_for_a_session() throws Exception {
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+
+        mockMvc.perform(post("/api/sessions/1/likes/example@codurance.com")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        session.getLikes().add("example@codurance.com");
+        verify(sessionRepository).save(session);
+    }
+
+    @Test
+    void gather_an_unlike_for_a_session() throws Exception {
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
+
+        mockMvc.perform(post("/api/sessions/1/likes/example@codurance.com")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        session.getLikes().remove("example@codurance.com");
+        verify(sessionRepository).save(session);
     }
 }

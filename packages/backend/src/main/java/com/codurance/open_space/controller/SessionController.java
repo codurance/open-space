@@ -10,11 +10,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Column;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.ManyToOne;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -23,12 +20,12 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("/api/sessions")
 public class SessionController {
 
-    private final SessionRepository repository;
+    private final SessionRepository sessionRepository;
     private final SpaceRepository spaceRepository;
 
     @GetMapping
     public List<Session> getAllOpenSpaceSessions() {
-        return repository.findAll();
+        return sessionRepository.findAll();
     }
 
     @PostMapping
@@ -41,7 +38,7 @@ public class SessionController {
         session.setTime(sessionRequestBody.getTime());
         session.setType(sessionRequestBody.getType());
         try {
-            return new ResponseEntity<>(repository.save(session), CREATED);
+            return new ResponseEntity<>(sessionRepository.save(session), CREATED);
         } catch (DataIntegrityViolationException e) {
 
             return new ResponseEntity<>(new ErrorResponse("Session type is required"), BAD_REQUEST);
@@ -50,7 +47,7 @@ public class SessionController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody SessionRequestBody sessionRequestBody) {
-        Session session = repository.findById(id)
+        Session session = sessionRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
         Space space = spaceRepository.findById(sessionRequestBody.getSpaceId()).get();
@@ -62,15 +59,24 @@ public class SessionController {
         session.setType(sessionRequestBody.getType());
 
         try {
-            return new ResponseEntity<>(repository.save(session), OK);
+            return new ResponseEntity<>(sessionRepository.save(session), OK);
         } catch (DataIntegrityViolationException e) {
             return new ResponseEntity<>(new ErrorResponse("Session type is required"), BAD_REQUEST);
         }
     }
 
+    @PostMapping("/{id}/likes/{email}")
+    public void updateLike(@PathVariable Long id, @PathVariable String email) {
+        Session session = sessionRepository.findById(id).get();
+
+        if (session.getLikes().contains(email)) session.getLikes().remove(email);
+        else session.getLikes().add(email);
+
+        sessionRepository.save(session);
+    }
     @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
-        repository.deleteById(id);
+        sessionRepository.deleteById(id);
     }
 }

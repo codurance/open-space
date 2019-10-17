@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -25,4 +27,8 @@ public class Session {
     @Column(columnDefinition = "varchar(255) default 'OTHER'", nullable = false)
     private String type;
 
+    @ElementCollection
+    @CollectionTable(name = "user_email", joinColumns = @JoinColumn(name = "email"))
+    @Column(name = "likes")
+    private Set<String> likes = new HashSet<>();
 }
