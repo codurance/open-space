@@ -16,6 +16,7 @@ const SessionForm: React.FC = () => {
 
   const [spaceErrorMessageFlag, setSpaceErrorMessageFlag] = useState(false);
   const [titleErrorMessageFlag, setTitleErrorMessageFlag] = useState(false);
+  const [typeErrorMessageFlag, setTypeErrorMessageFlag] = useState(false);
   const [presenterErrorMessageFlag, setPresenterErrorMessageFlag] = useState(
     false
   );
@@ -46,6 +47,11 @@ const SessionForm: React.FC = () => {
 
     if (!sessionPresenter) {
       setPresenterErrorMessageFlag(true);
+      valid = false;
+    }
+
+    if (!sessionType) {
+      setTypeErrorMessageFlag(true);
       valid = false;
     }
 
@@ -140,7 +146,7 @@ const SessionForm: React.FC = () => {
             )}
           </Form.Field>
           <Form.Field>
-            <label>Session Type</label>
+            <label>Session Type: </label>
             <Dropdown
               className="dropdown"
               placeholder="Session Type"
@@ -150,6 +156,11 @@ const SessionForm: React.FC = () => {
                 setSessionType(data.value);
               }}
             />
+            {typeErrorMessageFlag && (
+              <Label basic color="red" pointing="above">
+                Please enter the type!
+              </Label>
+            )}
           </Form.Field>
           <Form.Field>
             <label>Time</label>
