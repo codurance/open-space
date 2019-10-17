@@ -48,6 +48,7 @@ export const Session = ({
   const toggleInterest = () => {
     setInterest(!interest);
     localStorageHelper.setInterest(id, !interest);
+    sessionAPI.updateSessionInterest(id);
     // refresh sessions
     setSessions([...sessions]);
   };
