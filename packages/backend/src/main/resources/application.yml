@@ -11,6 +11,20 @@ spring:
                 format_sql: true
                 temp:
                     use_jdbc_metadata_defaults: false
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: opespaceapp@gmail.com
+        password: ${EMAIL_PASSWORD}
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    connectiontimeout: 5000
+                    timeout: 5000
+                    writetimeout: 5000
+                    starttls:
+                        enable: true
 ---
 spring:
     profiles: dev-container
