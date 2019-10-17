@@ -1,5 +1,5 @@
 import React from "react";
-import * as sessionStorage from "../common/sessionsLocalStorage";
+import * as sessionStorage from "../common/localStorageHelper";
 import { Session } from "./sessionCard/Session";
 import { ISession, useSessionsContext } from "./sessionsContext";
 import "./Sessions.css";

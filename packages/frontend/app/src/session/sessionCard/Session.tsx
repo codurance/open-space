@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { deleteSession } from "../../common/http";
 import { Button, Card, Icon } from "semantic-ui-react";
-import * as sessionsLocalStorage from "../../common/sessionsLocalStorage";
+import * as localStorageHelper from "../../common/localStorageHelper";
 import SessionsContext, { ISession } from "../sessionsContext";
 import * as sessionAPI from "../api/sessionAPI";
 import SessionDeleteConfirmation from "./SessionDeleteConfirmation";
@@ -31,7 +31,7 @@ export const Session = ({
   const [open, setOpen] = useState(false);
 
   const [interest, setInterest] = useState(
-    sessionsLocalStorage.checkInterest(id)
+    localStorageHelper.checkInterest(id)
   );
 
   const onEditClicked = (id: number) => {
@@ -47,7 +47,7 @@ export const Session = ({
 
   const toggleInterest = () => {
     setInterest(!interest);
-    sessionsLocalStorage.setInterest(id, !interest);
+    localStorageHelper.setInterest(id, !interest);
     // refresh sessions
     setSessions([...sessions]);
   };

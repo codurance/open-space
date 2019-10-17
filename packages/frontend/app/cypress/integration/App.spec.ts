@@ -1,5 +1,15 @@
 describe("OPEN-SPACE e2e", function() {
+  it("Should redirect to a login page", () => {
+    cy.server();
+    cy.visit("/");
+    cy.url().should("eq", "http://localhost:3000/login");
+  });
+
   it("Submit a session", function() {
+    window.localStorage.setItem("userId", "123456789");
+    window.localStorage.setItem("userEmail", "test@codurance.com");
+    window.localStorage.setItem("userName", "Test User");
+
     cy.server();
     cy.route("POST", "/api/sessions").as("postSession");
 

@@ -4,6 +4,7 @@ import SpaceForm from "./spaceForm/SpaceForm";
 import SpaceCard from "./spaceCard/SpaceCard";
 import * as spaceAPI from "./api/spaceAPI";
 import { ISpace } from "./api/ISpace";
+import * as localStorageHelper from "../common/localStorageHelper";
 
 const SpaceContainer: React.FC = () => {
   const [isModalSpaceOn, setModalSpaceOn] = useState(false);
@@ -18,8 +19,17 @@ const SpaceContainer: React.FC = () => {
     setModalSpaceOn(true);
   };
 
+  const checkIfLoggedIn: Function = (): Promise<void> => {
+    return new Promise(resolve => {
+      localStorageHelper.isUserLoggedIn().then((answer: Boolean) => {
+        if (!answer) document.location.href = "/login";
+        resolve();
+      });
+    });
+  };
+
   useEffect(() => {
-    getSpaces();
+    checkIfLoggedIn().then(() => getSpaces());
   }, []);
 
   return (
