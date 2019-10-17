@@ -15,6 +15,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -42,6 +44,9 @@ public class SessionControllerShould {
 
     @MockBean
     private SpaceRepository spaceRepository;
+
+    @MockBean
+    private JavaMailSender javaMailSender;
 
     @BeforeEach
     void setUp() {
@@ -120,8 +125,6 @@ public class SessionControllerShould {
         when(sessionRepository.findById(1L))
                 .thenReturn(Optional.of(session));
 
-
-
         session.setLocation(differentSpace);
         when(sessionRepository.save(any()))
                 .thenReturn(session);
@@ -148,6 +151,7 @@ public class SessionControllerShould {
         verify(sessionRepository).findById(1L);
         verify(spaceRepository).findById(2L);
         verify(sessionRepository).save(session);
+        verify(javaMailSender).send((SimpleMailMessage) any());
     }
 
     @Test

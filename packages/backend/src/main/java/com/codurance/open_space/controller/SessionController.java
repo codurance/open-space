@@ -6,12 +6,17 @@ import com.codurance.open_space.domain.Space;
 import com.codurance.open_space.repository.SessionRepository;
 import com.codurance.open_space.repository.SpaceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -22,6 +27,32 @@ public class SessionController {
 
     private final SessionRepository sessionRepository;
     private final SpaceRepository spaceRepository;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    void sendEmail(Session session) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        String mailList[] = new String[session.getLikes().size()];
+        int i = 0;
+        for (String mail: session.getLikes()){
+            mailList[i++] = mail;
+        }
+        msg.setTo(mailList);
+
+        msg.setSubject("Updates on session " + session.getTitle());
+
+        msg.setText("+----------------------------------------\n"
+                +"+ Title: "+session.getTitle() +"\n"
+                +"+++++++++++++++++++++++++++++++++++++++++\n"
+                +"+ Location:" + session.getLocation().getName() +"\n"
+                +"+ Presenter: " + session.getPresenter() +"\n"
+                +"+ Time: " + session.getTime() +"\n"
+                +"+ Type:" + session.getType() +"\n"
+                +"+----------------------------------------");
+
+        javaMailSender.send(msg);
+    }
 
     @GetMapping
     public List<Session> getAllOpenSpaceSessions() {
@@ -57,6 +88,8 @@ public class SessionController {
         session.setTime(sessionRequestBody.getTime());
         session.setTitle(sessionRequestBody.getTitle());
         session.setType(sessionRequestBody.getType());
+
+        CompletableFuture.runAsync(() -> sendEmail(session));
 
         try {
             return new ResponseEntity<>(sessionRepository.save(session), OK);

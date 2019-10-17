@@ -1,8 +1,8 @@
 insert into spaces (id, name, description, location, facilities)
-values (1, 'Name 1', 'Big size space with 10 chairs, aircon, and TV', '3rd floor', 'TV, Chromecast');
+values (1, 'Location 1', 'Big size space with 10 chairs, aircon, and TV', '3rd floor', 'TV, Chromecast');
 
 insert into spaces (id, name, description, location, facilities)
-values (2, 'Name 2', 'Tiny room with no windows', '4th floor', 'TV, Chromecast, Projecter');
+values (2, 'Location 2', 'Tiny room with no windows', '4th floor', 'TV, Chromecast, Projecter');
 
 insert into sessions (title, location_id, time, presenter, type)
 values ('Session 1', 1, '11:00', 'David', 'Round Table');
