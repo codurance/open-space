@@ -41,6 +41,6 @@ export const getSessions = async () => {
 
 export const updateSessionInterest = (sessionId: number): void => {
   localStorageHelper.retrieveUserInformation().then((userInfo: User) => {
-    post(`/api/sessions/${sessionId}/like/${userInfo.email}`, {});
+    post(`/api/sessions/${sessionId}/likes/${userInfo.email}`, {});
   });
 };
