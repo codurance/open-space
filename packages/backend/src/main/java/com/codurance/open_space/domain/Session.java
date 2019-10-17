@@ -28,7 +28,6 @@ public class Session {
     private String type;
 
     @ElementCollection
-    @CollectionTable(name = "user_email", joinColumns = @JoinColumn(name = "email"))
     @Column(name = "likes")
     private Set<String> likes = new HashSet<>();
 }

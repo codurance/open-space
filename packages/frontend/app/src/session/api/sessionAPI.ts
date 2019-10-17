@@ -1,5 +1,7 @@
 import { get, post, put } from "../../common/http";
 import { ISession } from "../sessionsContext";
+import * as localStorageHelper from "../../common/localStorageHelper";
+import { User } from "../../common/User";
 
 export interface SessionRequestBody {
   title: string;
@@ -35,4 +37,10 @@ export const getSessions = async () => {
   const getSessionResponse = await get<ISession[]>(`/api/sessions`);
   const sessions = getSessionResponse.parsedBody;
   return sessions;
+};
+
+export const updateSessionInterest = (sessionId: number): void => {
+  localStorageHelper.retrieveUserInformation().then((userInfo: User) => {
+    post(`/api/sessions/${sessionId}/likes/${userInfo.email}`, {});
+  });
 };
