@@ -12,11 +12,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Column;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.ManyToOne;
+import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -72,31 +70,30 @@ public class SessionController {
     }
 
     @PutMapping("/{id}/like/{email}")
+    @Transactional
     public ResponseEntity<?> like(@PathVariable Long id, @PathVariable String email) {
         Session session = repository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
         List<User> users = userRepository.findAll();
-        boolean idExists = users.stream()
-                .anyMatch(t -> t.getEmail().equals(email));
-        if(!idExists) {
-            //create the new user
+
+        User user  = users.stream()
+                .filter(t -> t.getEmail().equals(email))
+                .findAny()
+                .orElse(null);
+
+        if(user == null) {
+            user = new User();
+            user.setEmail(email);
+            userRepository.save(user);
         }
 
+        session.getLikes().add(user);
+        user.getLikedSessions().add(session);
+        userRepository.save(user);
+        Session savedSession = repository.save(session);
 
-        Space space = spaceRepository.findById(sessionRequestBody.getSpaceId()).get();
-        session.setLocation(space);
-
-        session.setPresenter(sessionRequestBody.getPresenter());
-        session.setTime(sessionRequestBody.getTime());
-        session.setTitle(sessionRequestBody.getTitle());
-        session.setType(sessionRequestBody.getType());
-
-        try {
-            return new ResponseEntity<>(repository.save(session), OK);
-        } catch (DataIntegrityViolationException e) {
-            return new ResponseEntity<>(new ErrorResponse("Session type is required"), BAD_REQUEST);
-        }
+        return new ResponseEntity<>(savedSession, OK);
     }
 
     @ResponseStatus(NO_CONTENT)

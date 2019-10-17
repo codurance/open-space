@@ -17,13 +17,14 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique=true)
     private String email;
 
     @ManyToMany
     @JoinTable(
         name = "session_like",
         joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "course_id"))
+        inverseJoinColumns = @JoinColumn(name = "session_id"))
     Set<Session> likedSessions;
 
 }
