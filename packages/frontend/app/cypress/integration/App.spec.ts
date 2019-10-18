@@ -20,16 +20,15 @@ describe("OPEN-SPACE e2e", function() {
       .next("input")
       .first()
       .type("Serverless");
+    cy.get(".selectLocation").click();
     cy.get("label")
-      .contains("Location")
-      .next("input")
-      .first()
-      .type("Location 3");
+      .contains("Title")
+      .click();
+    cy.get("input.presenter").type("test user");
+    cy.get(".typeDropdown").click();
     cy.get("label")
-      .contains("Presenter")
-      .next("input")
-      .first()
-      .type("Enric");
+      .contains("Title")
+      .click();
     cy.get("label")
       .contains("Time")
       .next("input")
@@ -49,7 +48,7 @@ describe("OPEN-SPACE e2e", function() {
 
     // get card to edit
     cy.get("div")
-      .contains("Enric")
+      .contains("David")
       .closest(".session")
       .as("sessionDiv");
 
@@ -65,19 +64,19 @@ describe("OPEN-SPACE e2e", function() {
     cy.get("label")
       .contains("Title")
       .next("input")
-      .should("have.value", "Serverless");
-    cy.get("label")
-      .contains("Location")
-      .next("input")
-      .should("have.value", "Location 3");
+      .should("have.value", "Session 1");
     cy.get("label")
       .contains("Presenter")
       .next("input")
-      .should("have.value", "Enric");
+      .should("have.value", "David");
+    cy.get(".typeDropdown").click();
+    cy.get("label")
+      .contains("Title")
+      .click();
     cy.get("label")
       .contains("Time")
       .next("input")
-      .should("have.value", "15:00");
+      .should("have.value", "11:00");
 
     // edit card
     cy.get("label")
@@ -92,13 +91,13 @@ describe("OPEN-SPACE e2e", function() {
     // check card was edited
     cy.get("@sessionDiv")
       .children(".extra")
-      .should("have.html", "Location 3 @ 16:00");
+      .should("have.html", "Location 1 @ 16:00");
   });
 
   it("Delete submitted session", function() {
     // get card to edit
     cy.get("div")
-      .contains("Enric")
+      .contains("David")
       .closest(".session")
       .as("sessionDiv");
 

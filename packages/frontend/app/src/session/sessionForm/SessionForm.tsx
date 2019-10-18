@@ -120,6 +120,7 @@ const SessionForm: React.FC = () => {
           <Form.Field>
             <label>Location</label>
             <SpaceDropdown
+              className="selectLocation"
               value={sessionSpaceId}
               onChange={(_event, data) =>
                 setSessionSpaceId(data.value as number)
@@ -135,6 +136,7 @@ const SessionForm: React.FC = () => {
           <Form.Field>
             <label>Presenter</label>
             <input
+              className="presenter"
               placeholder="presenter"
               value={sessionPresenter}
               onChange={e => setSessionPresenter(e.target.value)}
@@ -148,7 +150,7 @@ const SessionForm: React.FC = () => {
           <Form.Field>
             <label>Session Type: </label>
             <Dropdown
-              className="dropdown"
+              className="typeDropdown"
               placeholder="Session Type"
               selection
               options={SESSION_TYPES}
