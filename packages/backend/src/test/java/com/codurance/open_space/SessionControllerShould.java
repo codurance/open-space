@@ -151,7 +151,7 @@ public class SessionControllerShould {
         verify(sessionRepository).findById(1L);
         verify(spaceRepository).findById(2L);
         verify(sessionRepository).save(session);
-        verify(javaMailSender).send((SimpleMailMessage) any());
+        verify(javaMailSender, atLeast(1)).send((SimpleMailMessage) any());
     }
 
     @Test
