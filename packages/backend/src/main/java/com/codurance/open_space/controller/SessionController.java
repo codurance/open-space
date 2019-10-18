@@ -33,7 +33,7 @@ public class SessionController {
 
     void sendEmail(Session session) {
         SimpleMailMessage msg = new SimpleMailMessage();
-        String mailList[] = new String[session.getLikes().size()];
+        String[] mailList = new String[session.getLikes().size()];
         int i = 0;
         for (String mail: session.getLikes()){
             mailList[i++] = mail;
