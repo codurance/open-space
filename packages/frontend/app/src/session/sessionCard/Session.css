@@ -1,4 +1,16 @@
 .session.ui.card {
-  margin-top: 10px;
+  margin: 15px auto;
+  width: 500px;
   padding: 1em;
+}
+
+.session-presenter {
+  text-align: left;
+}
+
+.presenter-name {
+  position: absolute;
+  left: 75px;
+  top: 27px;
+  margin: 0;
 }
