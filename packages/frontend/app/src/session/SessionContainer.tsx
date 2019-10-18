@@ -63,7 +63,7 @@ const SessionContainer: React.FC = () => {
           icon
           onClick={() => toggleFilterByInterest(!filterByInterest)}
         >
-          <Icon name="heart" />
+          <Icon as="i" name="heart" style={{ letterSpacing: 2 }} />
           Filter by Interest
         </Button>
 

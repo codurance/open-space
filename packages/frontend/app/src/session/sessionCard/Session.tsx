@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { deleteSession } from "../../common/http";
-import { Button, Card, Icon } from "semantic-ui-react";
+import { Button, Card, Icon, Image } from "semantic-ui-react";
 import * as localStorageHelper from "../../common/localStorageHelper";
 import SessionsContext, { ISession } from "../sessionsContext";
 import * as sessionAPI from "../api/sessionAPI";
@@ -61,30 +61,38 @@ export const Session = ({
           onConfirm={() => deleteSessionById()}
         />
       )}
-      <Card className="session" fluid>
+      <Card className="session">
         <Card.Content>
-          <Card.Header className="session-title">{title}</Card.Header>
-          <Card.Description className="session-presenter">
+          <div className="session-presenter">
             <Icon name="user" />
-            {presenter}
-          </Card.Description>
+            <h4 className="presenter-name">{presenter}</h4>
+          </div>
+          <Card.Header className="session-title">{title}</Card.Header>
+          <Card.Meta>{type}</Card.Meta>
         </Card.Content>
         <Card.Content extra className="session-extra-details">
           {location} @ {time}
         </Card.Content>
-        <Card.Content extra className="session-type">
-          A {type} session
-        </Card.Content>
-        <Card.Content>
-          <Button icon onClick={() => toggleInterest()}>
+        <Card.Content extra>
+          <Button basic floated="left" icon onClick={() => toggleInterest()}>
             <Icon name={interest ? "heart" : "heart outline"} />
           </Button>
-          <Button className="delete-session" icon onClick={() => setOpen(true)}>
+          <Button
+            className="delete-session"
+            icon
+            basic
+            color="red"
+            floated="right"
+            onClick={() => setOpen(true)}
+          >
             <Icon name="trash" />
           </Button>
           <Button
             className="edit-session"
             icon
+            basic
+            floated="right"
+            color="green"
             onClick={() => onEditClicked(id)}
           >
             <Icon name="pencil" />
