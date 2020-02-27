@@ -6,7 +6,6 @@ import SessionForm from "./sessionForm/SessionForm";
 import Sessions from "./Sessions";
 import SessionsContext from "./sessionsContext";
 import "./SessionContainer.css";
-import "../logout/logoutButton.css";
 import * as localStorageHelper from "../common/localStorageHelper";
 import { GoogleLogout } from "react-google-login";
 
@@ -61,7 +60,7 @@ const SessionContainer: React.FC = () => {
         setSessionTypesToFilter
       }}
     >
-      <div className="session-buttons button-bar">
+      <div className="session-buttons button-bar buttons-float">
         <Button className="add-session-button" onClick={() => onAddSession()}>
           Add session
         </Button>
@@ -75,12 +74,12 @@ const SessionContainer: React.FC = () => {
         </Button>
         <SessionsFilters />
         <GoogleLogout
+          className="logout-button"
           clientId="1004102739157-02ek62abehjg70tb9fh865j2c8krclhc.apps.googleusercontent.com"
           buttonText="Logout"
           onLogoutSuccess={logout}
         ></GoogleLogout>
       </div>
-
       {currentSession !== undefined && <SessionForm />}
       <Sessions isFilteringByInterest={filterByInterest} />
     </SessionsContext.Provider>

@@ -1,3 +1,15 @@
 i.icon.heart {
   margin-right: 3px !important;
 }
+
+.buttons-float {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.logout-button {
+  position: absolute;
+  right: 10px;
+}
