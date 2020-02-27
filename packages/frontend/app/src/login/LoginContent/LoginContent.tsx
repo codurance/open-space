@@ -1,16 +1,29 @@
 import React from "react";
-import { GoogleLogin } from "react-google-login";
+import {
+  GoogleLogin,
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline
+} from "react-google-login";
 import { User } from "../../common/User";
 import * as localStorageHelper from "../../common/localStorageHelper";
 
-const successGoogle = (response: any) => {
+/*
+ * This GoogleLogin is basically a wrapper over Google OAuth2 API
+ * It'll do some conversion for response, but that's not well documented anywhere.
+ * So just treat this response as a GoogleUser
+ * Check https://developers.google.com/identity/sign-in/web/reference#googleusergetbasicprofile
+ */
+const successGoogle = (
+  response: GoogleLoginResponse | GoogleLoginResponseOffline
+) => {
+  const profile = (response as GoogleLoginResponse).getBasicProfile();
   const user: User = {
-    id: response.profileObj.googleId,
-    email: response.profileObj.email,
-    name: response.profileObj.name
+    id: profile.getId(),
+    email: profile.getEmail(),
+    name: profile.getName()
   };
   localStorageHelper.storeUserInformation(user);
-  document.location.href = "/";
+  document.location.assign("/");
 };
 
 const failureGoogle = (response: any) => {
