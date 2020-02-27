@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { deleteSession } from "../../common/http";
-import { Button, Card, Icon, Image } from "semantic-ui-react";
+import { Button, Card, Icon } from "semantic-ui-react";
 import * as localStorageHelper from "../../common/localStorageHelper";
 import SessionsContext, { ISession } from "../sessionsContext";
 import * as sessionAPI from "../api/sessionAPI";
