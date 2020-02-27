@@ -35,8 +35,7 @@ export const postSession = async (session: SessionRequestBody) => {
 
 export const getSessions = async () => {
   const getSessionResponse = await get<ISession[]>(`/api/sessions`);
-  const sessions = getSessionResponse.parsedBody;
-  return sessions;
+  return getSessionResponse.parsedBody;
 };
 
 export const updateSessionInterest = (sessionId: number): void => {

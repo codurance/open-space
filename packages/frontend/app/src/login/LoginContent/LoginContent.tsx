@@ -4,10 +4,11 @@ import { User } from "../../common/User";
 import * as localStorageHelper from "../../common/localStorageHelper";
 
 const successGoogle = (response: any) => {
+  console.log(response);
   const user: User = {
-    id: response.w3.Eea,
-    email: response.w3.U3,
-    name: response.w3.ig
+    id: response.profileObj.googleId,
+    email: response.profileObj.email,
+    name: response.profileObj.name
   };
   localStorageHelper.storeUserInformation(user);
   document.location.href = "/";
