@@ -4,7 +4,6 @@ import { User } from "../../common/User";
 import * as localStorageHelper from "../../common/localStorageHelper";
 
 const successGoogle = (response: any) => {
-  console.log(response);
   const user: User = {
     id: response.profileObj.googleId,
     email: response.profileObj.email,

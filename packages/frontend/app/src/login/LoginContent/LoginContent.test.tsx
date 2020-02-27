@@ -1,7 +1,6 @@
 import React from "react";
 import enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import { any } from "prop-types";
 import LoginContent from "./LoginContent";
 enzyme.configure({ adapter: new Adapter() });
 

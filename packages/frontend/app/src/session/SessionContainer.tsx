@@ -6,7 +6,9 @@ import SessionForm from "./sessionForm/SessionForm";
 import Sessions from "./Sessions";
 import SessionsContext from "./sessionsContext";
 import "./SessionContainer.css";
+import "../logout/logoutButton.css";
 import * as localStorageHelper from "../common/localStorageHelper";
+import { GoogleLogout } from "react-google-login";
 
 const SessionContainer: React.FC = () => {
   const [sessions, setSessions] = useState();
@@ -43,6 +45,11 @@ const SessionContainer: React.FC = () => {
     setCurrentSession(session);
   };
 
+  const logout = () => {
+    localStorage.clear();
+    document.location.href = "/";
+  };
+
   return (
     <SessionsContext.Provider
       value={{
@@ -66,9 +73,14 @@ const SessionContainer: React.FC = () => {
           <Icon as="i" name="heart" style={{ letterSpacing: 2 }} />
           Filter by Interest
         </Button>
-
         <SessionsFilters />
+        <GoogleLogout
+          clientId="1004102739157-02ek62abehjg70tb9fh865j2c8krclhc.apps.googleusercontent.com"
+          buttonText="Logout"
+          onLogoutSuccess={logout}
+        ></GoogleLogout>
       </div>
+
       {currentSession !== undefined && <SessionForm />}
       <Sessions isFilteringByInterest={filterByInterest} />
     </SessionsContext.Provider>
