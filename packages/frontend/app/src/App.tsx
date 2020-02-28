@@ -11,7 +11,6 @@ const App: React.FC = () => {
     <>
       <div className="App">
         <Header />
-
         <Router>
           <Switch>
             <Route path="/admin" component={Admin} />

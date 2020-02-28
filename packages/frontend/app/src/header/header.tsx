@@ -16,7 +16,7 @@ const Header: React.FC = () => {
     localStorageHelper.retrieveUserInformation().then((userInfo: User) => {
       setName(userInfo.name);
     });
-    setIsLoggedIn(localStorageHelper.isUserLoggedIn());
+    setIsLoggedIn(localStorage.getItem("userId"));
   }, []);
 
   return (
