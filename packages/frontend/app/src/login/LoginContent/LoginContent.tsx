@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   GoogleLogin,
   GoogleLoginResponse,
@@ -13,27 +13,36 @@ import * as localStorageHelper from "../../common/localStorageHelper";
  * So just treat this response as a GoogleUser
  * Check https://developers.google.com/identity/sign-in/web/reference#googleusergetbasicprofile
  */
-const successGoogle = (
-  response: GoogleLoginResponse | GoogleLoginResponseOffline
-) => {
-  const profile = (response as GoogleLoginResponse).getBasicProfile();
-  const user: User = {
-    id: profile.getId(),
-    email: profile.getEmail(),
-    name: profile.getName()
-  };
-  localStorageHelper.storeUserInformation(user);
-  document.location.assign("/");
-};
-
-const failureGoogle = (response: any) => {
-  console.log(response);
-};
 
 const LoginContent: React.FC = () => {
+  const [isFailedLogin, setIsFailedLogin] = useState();
+
+  const loginMessage = isFailedLogin ? (
+    <p>Wrong email address! Please use your Codurance email account!</p>
+  ) : (
+    <p>Login with your Codurance account here:</p>
+  );
+
+  const successGoogle = (
+    response: GoogleLoginResponse | GoogleLoginResponseOffline
+  ) => {
+    const profile = (response as GoogleLoginResponse).getBasicProfile();
+    const user: User = {
+      id: profile.getId(),
+      email: profile.getEmail(),
+      name: profile.getName()
+    };
+    localStorageHelper.storeUserInformation(user);
+    document.location.assign("/");
+  };
+
+  const failureGoogle = (response: any) => {
+    setIsFailedLogin(true);
+  };
+
   return (
     <div>
-      <p>Login with your codurance account here:</p>
+      {loginMessage}
       <GoogleLogin
         className="googleButtonLogin"
         clientId="1004102739157-02ek62abehjg70tb9fh865j2c8krclhc.apps.googleusercontent.com"
@@ -41,6 +50,7 @@ const LoginContent: React.FC = () => {
         onSuccess={successGoogle}
         onFailure={failureGoogle}
         cookiePolicy={"single_host_origin"}
+        hostedDomain="codurance.com"
       />
     </div>
   );

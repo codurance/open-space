@@ -8,5 +8,5 @@ it("Renders content of login page", () => {
   const wrapper = enzyme.shallow(<LoginContent />);
   const titleContent = wrapper.find("p").text();
 
-  expect(titleContent).toBe("Login with your codurance account here:");
+  expect(titleContent).toBe("Login with your Codurance account here:");
 });
