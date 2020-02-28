@@ -11,14 +11,15 @@ const App: React.FC = () => {
     <>
       <div className="App">
         <Header />
+
+        <Router>
+          <Switch>
+            <Route path="/admin" component={Admin} />
+            <Route path="/login" component={Login} />
+            <Route path="/" component={Home} />
+          </Switch>
+        </Router>
       </div>
-      <Router>
-        <Switch>
-          <Route path="/admin" component={Admin} />
-          <Route path="/login" component={Login} />
-          <Route path="/" component={Home} />
-        </Switch>
-      </Router>
     </>
   );
 };

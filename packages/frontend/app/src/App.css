@@ -11,9 +11,9 @@
   padding: 10px;
   margin-bottom: 30px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -23,7 +23,7 @@
 }
 
 .buttons {
-  display: "inline-block";
+  display: inline-block;
 }
 
 .button-bar {
