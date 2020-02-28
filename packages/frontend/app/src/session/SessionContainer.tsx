@@ -22,7 +22,7 @@ const SessionContainer: React.FC = () => {
   const checkIfLoggedIn: Function = (): Promise<void> => {
     return new Promise(resolve => {
       localStorageHelper.isUserLoggedIn().then((answer: Boolean) => {
-        if (!answer) document.location.href = "/login";
+        if (!answer) document.location.assign("/login");
         resolve();
       });
     });
