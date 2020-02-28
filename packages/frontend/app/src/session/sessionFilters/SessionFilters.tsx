@@ -4,7 +4,7 @@ import { useSessionsContext } from "../sessionsContext";
 import "./SessionFilters.css";
 import { SESSION_TYPES } from "../sessionTypes";
 
-const SessionsFilters: React.FC = () => {
+const SessionFilters: React.FC = () => {
   const { setSessionTypesToFilter } = useSessionsContext();
 
   return (
@@ -23,4 +23,4 @@ const SessionsFilters: React.FC = () => {
   );
 };
 
-export default SessionsFilters;
+export default SessionFilters;

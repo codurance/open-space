@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, Icon } from "semantic-ui-react";
 import * as sessionAPI from "./api/sessionAPI";
-import SessionsFilters from "./sessionFilters/SessionFilters";
+import SessionFilters from "./sessionFilters/SessionFilters";
 import SessionForm from "./sessionForm/SessionForm";
 import Sessions from "./Sessions";
 import SessionsContext from "./sessionsContext";
 import "./SessionContainer.css";
 import * as localStorageHelper from "../common/localStorageHelper";
-import { GoogleLogout } from "react-google-login";
 
 const SessionContainer: React.FC = () => {
   const [sessions, setSessions] = useState();
@@ -44,11 +43,6 @@ const SessionContainer: React.FC = () => {
     setCurrentSession(session);
   };
 
-  const logout = () => {
-    localStorage.clear();
-    document.location.href = "/";
-  };
-
   return (
     <SessionsContext.Provider
       value={{
@@ -60,7 +54,7 @@ const SessionContainer: React.FC = () => {
         setSessionTypesToFilter
       }}
     >
-      <div className="session-buttons button-bar buttons-float">
+      <div className="session-buttons button-bar">
         <Button className="add-session-button" onClick={() => onAddSession()}>
           Add session
         </Button>
@@ -72,13 +66,7 @@ const SessionContainer: React.FC = () => {
           <Icon as="i" name="heart" style={{ letterSpacing: 2 }} />
           Filter by Interest
         </Button>
-        <SessionsFilters />
-        <GoogleLogout
-          className="logout-button"
-          clientId="1004102739157-02ek62abehjg70tb9fh865j2c8krclhc.apps.googleusercontent.com"
-          buttonText="Logout"
-          onLogoutSuccess={logout}
-        ></GoogleLogout>
+        <SessionFilters />
       </div>
       {currentSession !== undefined && <SessionForm />}
       <Sessions isFilteringByInterest={filterByInterest} />
