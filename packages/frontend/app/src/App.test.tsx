@@ -16,9 +16,3 @@ it("Render and Redirect to login if no user data", async () => {
   expect(redirect.mock.calls[0][0]).toBe("/login");
   ReactDOM.unmountComponentAtNode(div);
 });
-
-it('Displays "OpenSpace"', () => {
-  const wrapper = enzyme.shallow(<App />);
-  const helloWorldElement = wrapper.find(".OpenSpace");
-  expect(helloWorldElement.text()).toBe("OpenSpace");
-});
